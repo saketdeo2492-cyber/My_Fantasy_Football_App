@@ -34,45 +34,10 @@ module.exports = async (req, res) => {
       redirect: 'manual',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'Mozilla/5.0 (compatible; SquadWire/1.0)',
-        Accept: 'text/html,application/xhtml+xml',
-      },
-      body: form.toString(),
-    });
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language':
 
-    const location = loginRes.headers.get('location') || '';
-    const failed = loginRes.status !== 302 || location.includes('access-denied') || location.includes('Login');
-
-    // Node 20's fetch Headers supports getSetCookie(); fall back gracefully if not.
-    const rawCookies = typeof loginRes.headers.getSetCookie === 'function'
-      ? loginRes.headers.getSetCookie()
-      : (loginRes.headers.get('set-cookie') ? [loginRes.headers.get('set-cookie')] : []);
-
-    const wanted = {};
-    rawCookies.forEach((c) => {
-      const [pair] = c.split(';');
-      const idx = pair.indexOf('=');
-      const name = pair.slice(0, idx).trim();
-      const value = pair.slice(idx + 1).trim();
-      if (['pl_profile', 'sessionid', 'csrftoken'].includes(name)) {
-        wanted[name] = value;
-      }
-    });
-
-    if (failed || !wanted.pl_profile) {
-      res.status(401).json({ error: 'FPL login failed — check your email and password.' });
-      return;
-    }
-
-    const bundled = Buffer.from(JSON.stringify(wanted)).toString('base64');
-    const maxAge = 60 * 60 * 12; // 12 hours
-
-    res.setHeader(
-      'Set-Cookie',
-      `sw_fpl=${bundled}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAge}`
-    );
-    res.status(200).json({ ok: true });
-  } catch (err) {
-    res.status(502).json({ error: 'Could not reach FPL login service.', detail: String(err) });
-  }
-};
+git add .
+git commit -m "improve login headers"
+git push
