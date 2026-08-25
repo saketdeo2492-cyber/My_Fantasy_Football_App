@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQUAD WIRE — FPL Transfer Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple:#37003C;
+    --purple-dark:#220026;
+    --panel:#2B0030;
+    --green:#00FF85;
+    --pink:#E90052;
+    --cyan:#04F5FF;
+    --ink:#F2F0F1;
+    --dim:#B79DBB;
+    --line:#5A2E60;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--purple);
+    color:var(--ink);
+    font-family:'IBM Plex Mono', monospace;
+    -webkit-font-smoothing:antialiased;
+  }
+  .display{ font-family:'Space Mono', monospace; }
+
+  .ticker-wrap{
+    background:#000;
+    border-bottom:2px solid var(--green);
+    overflow:hidden;
+    white-space:nowrap;
+    padding:7px 0;
+  }
+  .ticker{
+    display:inline-block;
+    padding-left:100%;
+    animation: scroll 28s linear infinite;
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    letter-spacing:.5px;
+  }
+  .ticker span{ color:var(--green); margin-right:48px; }
+  .ticker span.down{ color:var(--pink); }
+  @keyframes scroll{ 0%{transform:translateX(0);} 100%{transform:translateX(-100%);} }
+
+  header{ padding:28px 20px 18px; border-bottom:2px solid var(--line); }
+  .wordmark{
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:clamp(28px,6vw,44px);
+    letter-spacing:1px;
+    line-height:1;
+    margin:0;
+  }
+  .wordmark .bar{ background:var(--green); color:var(--purple); padding:0 8px; }
+  .subline{
+    color:var(--dim);
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-top:8px;
+  }
+
+  main{ max-width:960px; margin:0 auto; padding:24px 20px 80px; }
+
+  .entry-row{
+    display:flex; gap:10px; flex-wrap:wrap;
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:16px;
+    margin-bottom:26px;
+  }
+  .entry-row label{
+    font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--dim);
+    display:block; margin-bottom:6px;
+  }
+  .entry-row input{
+    background:#1A001E;
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:15px;
+    padding:10px 12px;
+    width:200px;
+    outline:none;
+  }
+  .entry-row input:focus{ border-color:var(--green); }
+  .btn{
+    background:var(--green);
+    color:var(--purple);
+    border:none;
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    letter-spacing:1px;
+    font-size:14px;
+    padding:0 20px;
+    cursor:pointer;
+    text-transform:uppercase;
+    align-self:flex-end;
+    height:42px;
+  }
+  .btn:hover{ background:var(--cyan); }
+  .btn:disabled{ background:var(--line); color:var(--dim); cursor:wait; }
+  .hint{ font-size:11px; color:var(--dim); align-self:flex-end; height:42px; display:flex; align-items:center; }
+
+  .status-line{
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    color:var(--cyan);
+    min-height:20px;
+    margin-bottom:20px;
+    letter-spacing:.5px;
+  }
+  .status-line.err{ color:var(--pink); }
+
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:30px;
+  }
+  .summary .cell{ background:var(--purple-dark); padding:14px 12px; }
+  .summary .cell .num{ font-family:'Space Mono', monospace; font-size:22px; color:var(--green); font-weight:700; }
+  .summary .cell .lbl{ font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); margin-top:4px; }
+
+  h2.section{
+    font-family:'Space Mono', monospace;
+    font-size:15px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    border-left:4px solid var(--green);
+    padding-left:10px;
+    margin:36px 0 14px;
+  }
+
+  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  th{
+    text-align:left; font-size:10px; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--dim); border-bottom:1px solid var(--line); padding:8px 6px;
+  }
+  td{ padding:9px 6px; border-bottom:1px solid rgba(90,46,96,.4); vertical-align:middle; }
+  tr.bench td{ opacity:.55; }
+  .pos-tag{ display:inline-block; font-family:'Space Mono', monospace; font-size:10px; font-weight:700; padding:2px 6px; color:var(--purple); }
+  .pos-GKP{ background:#FFD34D; }
+  .pos-DEF{ background:var(--cyan); }
+  .pos-MID{ background:var(--green); }
+  .pos-FWD{ background:var(--pink); color:#fff; }
+  .name{ font-weight:600; }
+  .sub{ color:var(--dim); font-size:11px; }
+  .flag{ color:var(--pink); font-size:11px; margin-left:6px; }
+  .cap{ color:var(--green); font-weight:700; margin-left:4px; }
+
+  .rec-card{
+    background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--pink);
+    padding:14px 16px; margin-bottom:14px;
+  }
+  .rec-head{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+  .rec-head .out{ font-family:'Space Mono', monospace; font-weight:700; font-size:15px; }
+  .rec-head .why{ font-size:11px; color:var(--dim); }
+  .rec-list{ display:grid; gap:8px; }
+  .rec-opt{ display:flex; justify-content:space-between; align-items:center; background:#1A001E; padding:8px 10px; border:1px solid var(--line); }
+  .rec-opt .n{ font-weight:600; }
+  .rec-opt .stats{ font-size:11px; color:var(--dim); }
+  .rec-opt .arrow{ color:var(--green); margin-right:8px; font-family:'Space Mono',monospace; }
+  .empty-note{ color:var(--dim); font-size:12px; margin-bottom:14px; }
+
+  footer{
+    max-width:960px; margin:40px auto 0; padding:16px 20px;
+    border-top:1px solid var(--line); color:var(--dim); font-size:11px; line-height:1.6;
+  }
+  a{ color:var(--cyan); }
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap"><div class="ticker" id="ticker"><span>LOADING LIVE WIRE…</span></div></div>
+
+<header>
+  <h1 class="wordmark"><span class="bar">SQUAD</span> WIRE</h1>
+  <div class="subline">Fantasy Premier League · Live Transfer Terminal</div>
+</header>
+
+<main>
+  <div class="entry-row">
+    <div>
+      <label for="teamId">Your FPL Team ID</label>
+      <input id="teamId" type="text" inputmode="numeric" placeholder="e.g. 1234567">
+    </div>
+    <button class="btn" id="loadBtn">Pull My Team</button>
+    <div class="hint">from fantasy.premierleague.com/entry/&lt;ID&gt;/</div>
+  </div>
+
+  <div class="status-line" id="status"></div>
+
+  <div id="results" style="display:none;">
+    <div class="summary" id="summary"></div>
+
+    <h2 class="section">// Current Squad</h2>
+    <table>
+      <thead>
+        <tr><th>Pos</th><th>Player</th><th>Team</th><th>£</th><th>Form</th><th>Pts</th><th>GW</th><th>Status</th></tr>
+      </thead>
+      <tbody id="squadBody"></tbody>
+    </table>
+
+    <h2 class="section">// Transfer Recommender</h2>
+    <div id="recWrap"></div>
+  </div>
+</main>
+
+<footer>
+  DATA: official FPL API, fetched server-side through this app's own proxy — no third-party relay involved.
+  Prices in £m, Form = avg pts over last 30 days, GW = most recent gameweek score. Recommender ranks alternatives
+  in the same position, affordable within your squad value + bank, by current form and next-fixture expected points —
+  it's a decision aid, not a certainty.
+</footer>
+
+<script>
+const statusEl = document.getElementById('status');
+const tickerEl = document.getElementById('ticker');
+const loadBtn = document.getElementById('loadBtn');
+const teamInput = document.getElementById('teamId');
+
+const POS = {1:'GKP', 2:'DEF', 3:'MID', 4:'FWD'};
+
+function setStatus(msg, isErr){
+  statusEl.textContent = msg;
+  statusEl.classList.toggle('err', !!isErr);
+}
+
+async function apiFetch(path){
+  const res = await fetch('/api/fpl?path=' + encodeURIComponent(path), { cache: 'no-store' });
+  if(!res.ok){
+    let detail = '';
+    try{ detail = (await res.json()).error || ''; }catch(e){}
+    throw new Error('API ' + res.status + (detail ? ': ' + detail : ''));
+  }
+  return res.json();
+}
+
+function money(tenths){ return '£' + (tenths/10).toFixed(1); }
+
+function statusBadge(el){
+  if(el.status === 'i') return '<span class="flag">INJ</span>';
+  if(el.status === 'd') return '<span class="flag">' + (el.chance_of_playing_next_round ?? '?') + '%</span>';
+  if(el.status === 's') return '<span class="flag">SUSP</span>';
+  if(el.status === 'u') return '<span class="flag">UNAVAIL</span>';
+  return '';
+}
+
+let bootstrap = null;
+
+async function loadBootstrap(){
+  if(bootstrap) return bootstrap;
+  bootstrap = await apiFetch('bootstrap-static/');
+  return bootstrap;
+}
+
+function buildTicker(bs){
+  const els = bs.elements.filter(e => e.minutes > 0);
+  const topScorers = [...els].sort((a,b)=>b.event_points-a.event_points).slice(0,6);
+  const risers = [...bs.elements].sort((a,b)=>parseFloat(b.price_change_percent)-parseFloat(a.price_change_percent)).slice(0,4);
+  const fallers = [...bs.elements].sort((a,b)=>parseFloat(a.price_change_percent)-parseFloat(b.price_change_percent)).slice(0,4);
+
+  let parts = [];
+  topScorers.forEach(p => parts.push(`<span>${p.web_name.toUpperCase()} ${p.event_points}PTS</span>`));
+  risers.forEach(p => parts.push(`<span>▲ ${p.web_name.toUpperCase()} ${p.price_change_percent}%</span>`));
+  fallers.forEach(p => parts.push(`<span class="down">▼ ${p.web_name.toUpperCase()} ${p.price_change_percent}%</span>`));
+  tickerEl.innerHTML = parts.join('') + parts.join('');
+}
+
+async function loadTeam(){
+  const teamId = teamInput.value.trim();
+  if(!/^\d+$/.test(teamId)){
+    setStatus('Enter a numeric Team ID first.', true);
+    return;
+  }
+  try{ localStorage.setItem('squadwire_team_id', teamId); }catch(e){}
+
+  loadBtn.disabled = true;
+  document.getElementById('results').style.display = 'none';
+  setStatus('▌ CONNECTING TO FPL WIRE…');
+
+  try{
+    const bs = await loadBootstrap();
+    buildTicker(bs);
+
+    setStatus('▌ FETCHING ENTRY ' + teamId + '…');
+    const entry = await apiFetch(`entry/${teamId}/`);
+
+    const currentEvent = bs.events.find(e => e.is_current) || [...bs.events].reverse().find(e => e.finished) || bs.events[0];
+    const eventId = currentEvent.id;
+
+    setStatus('▌ LOADING GW' + eventId + ' PICKS…');
+    const picks = await apiFetch(`entry/${teamId}/event/${eventId}/picks/`);
+
+    renderTeam(bs, entry, picks, eventId);
+    setStatus('▌ LIVE — GW' + eventId + ' data loaded for "' + entry.name + '"');
+    document.getElementById('results').style.display = 'block';
+  }catch(err){
+    console.error(err);
+    setStatus('▌ ' + (err.message || 'Transmission failed.'), true);
+  }finally{
+    loadBtn.disabled = false;
+  }
+}
+
+function renderTeam(bs, entry, picks, eventId){
+  const byId = {}; bs.elements.forEach(e => byId[e.id] = e);
+  const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
+
+  const squad = picks.picks.map(p => ({...byId[p.element], pick:p}));
+  const starters = squad.filter(s => s.pick.position <= 11);
+  const bench = squad.filter(s => s.pick.position > 11);
+  const totalValue = squad.reduce((sum,s)=>sum+s.now_cost,0);
+  const bank = entry.last_deadline_bank ?? 0;
+
+  document.getElementById('summary').innerHTML = `
+    <div class="cell"><div class="num">${entry.summary_overall_points ?? '—'}</div><div class="lbl">Total Pts</div></div>
+    <div class="cell"><div class="num">${(entry.summary_overall_rank||0).toLocaleString()}</div><div class="lbl">Overall Rank</div></div>
+    <div class="cell"><div class="num">${entry.summary_event_points ?? '—'}</div><div class="lbl">GW${eventId} Pts</div></div>
+    <div class="cell"><div class="num">${money(totalValue)}</div><div class="lbl">Squad Value</div></div>
+    <div class="cell"><div class="num">${money(bank)}</div><div class="lbl">Bank</div></div>
+  `;
+
+  function row(s){
+    const p = s;
+    const capTag = s.pick.is_captain ? '<span class="cap">(C)</span>' : (s.pick.is_vice_captain ? '<span class="cap">(V)</span>' : '');
+    return `<tr class="${s.pick.position>11?'bench':''}">
+      <td><span class="pos-tag pos-${POS[p.element_type]}">${POS[p.element_type]}</span></td>
+      <td class="name">${p.web_name}${capTag}${statusBadge(p)}</td>
+      <td class="sub">${teamById[p.team]}</td>
+      <td>${money(p.now_cost)}</td>
+      <td>${p.form}</td>
+      <td>${p.total_points}</td>
+      <td>${p.event_points}</td>
+      <td class="sub">${p.status==='a' ? 'OK' : p.news ? p.news.slice(0,28) : '—'}</td>
+    </tr>`;
+  }
+  document.getElementById('squadBody').innerHTML =
+    starters.map(row).join('') + bench.map(row).join('');
+
+  renderRecommender(bs, squad, bank);
+}
+
+function renderRecommender(bs, squad, bank){
+  const ownedIds = new Set(squad.map(s=>s.id));
+  const wrap = document.getElementById('recWrap');
+  wrap.innerHTML = '';
+
+  const byPos = {1:[],2:[],3:[],4:[]};
+  squad.forEach(s => byPos[s.element_type].push(s));
+
+  let anyRec = false;
+
+  Object.keys(byPos).forEach(posKey => {
+    const pos = parseInt(posKey);
+    const group = byPos[pos].slice().sort((a,b)=>parseFloat(a.form)-parseFloat(b.form));
+    if(group.length === 0) return;
+    const weakest = group[0];
+    const isInjured = weakest.status !== 'a';
+    const isLowForm = parseFloat(weakest.form) < 3.0;
+    if(!isInjured && !isLowForm) return;
+
+    const affordable = weakest.now_cost + bank;
+    const candidates = bs.elements
+      .filter(e => e.element_type === pos)
+      .filter(e => !ownedIds.has(e.id))
+      .filter(e => e.now_cost <= affordable)
+      .filter(e => e.status === 'a')
+      .sort((a,b) => (parseFloat(b.form) + parseFloat(b.ep_next)) - (parseFloat(a.form) + parseFloat(a.ep_next)))
+      .slice(0,3);
+
+    if(candidates.length === 0) return;
+    anyRec = true;
+
+    const reason = isInjured
+      ? (weakest.news ? weakest.news : 'currently unavailable')
+      : `low current form (${weakest.form} pts/match avg)`;
+
+    const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
+
+    wrap.innerHTML += `
+      <div class="rec-card">
+        <div class="rec-head">
+          <div class="out">OUT: ${weakest.web_name} <span class="sub">(${POS[pos]}, ${money(weakest.now_cost)})</span></div>
+          <div class="why">${reason}</div>
+        </div>
+        <div class="rec-list">
+          ${candidates.map(c => `
+            <div class="rec-opt">
+              <div><span class="arrow">→</span><span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span></div>
+              <div class="stats">${money(c.now_cost)} · form ${c.form} · next ${c.ep_next}pts exp</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  if(!anyRec){
+    wrap.innerHTML = '<div class="empty-note">No red flags right now — your weakest-form players are still within reasonable range and nothing affordable clearly outperforms them. Squad looks stable.</div>';
+  }
+}
+
+loadBtn.addEventListener('click', loadTeam);
+teamInput.addEventListener('keydown', e => { if(e.key === 'Enter') loadTeam(); });
+
+(async () => {
+  try{
+    const saved = localStorage.getItem('squadwire_team_id');
+    if(saved){ teamInput.value = saved; }
+  }catch(e){}
+  try{
+    const bs = await loadBootstrap();
+    buildTicker(bs);
+    setStatus('Enter your Team ID above to pull your squad.');
+  }catch(e){
+    setStatus('Could not reach the live FPL wire yet — enter your Team ID and try "Pull My Team".', true);
+  }
+})();
+</script>
+</body>
+</html>

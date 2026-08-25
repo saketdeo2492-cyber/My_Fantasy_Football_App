@@ -1,0 +1,6 @@
+{
+  "name": "squad-wire",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FPL squad insights + transfer recommender, backed by a serverless proxy to the official FPL API."
+}
