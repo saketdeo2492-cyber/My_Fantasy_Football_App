@@ -36,6 +36,24 @@ If you'd rather have it auto-redeploy on every change:
   JSON. Has a small allowlist of endpoint prefixes so it can't be used as
   an open proxy to arbitrary URLs.
 
+## Auth model (login feature)
+
+- `api/login.js` — takes `{ email, password }`, logs into FPL's own login
+  service server-side, and on success sets an httpOnly `sw_fpl` cookie on
+  *this app's* domain containing the FPL session cookies (base64-encoded
+  JSON). The password itself is never stored or logged anywhere.
+- `api/fpl.js` — for paths under `my-team/`, reads that cookie and forwards
+  the embedded FPL cookies to fantasy.premierleague.com as the `Cookie`
+  header, so the request is authenticated as you.
+- `api/logout.js` — clears the cookie.
+- `api/session.js` — lets the frontend check "am I logged in?" on page load
+  without needing to know your team ID yet.
+
+This is unofficial — it uses FPL's reverse-engineered login flow (there's
+no public documentation for it from FPL), so it could in theory break if
+FPL changes that flow. It's the same technique several open-source FPL
+tools use.
+
 ## Extending it
 
 Some ideas for next passes:
@@ -43,3 +61,4 @@ Some ideas for next passes:
 - Multi-gameweek horizon instead of just next fixture
 - Chip awareness (don't suggest transfers if Wildcard/Free Hit is active)
 - A "sell now, upgrade later" two-step transfer path for saving toward a premium
+- Actually submitting transfers (not just recommending them) via the authenticated session

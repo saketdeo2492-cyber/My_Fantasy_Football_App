@@ -12,6 +12,23 @@ const ALLOWED_PREFIXES = [
   'element-summary/',
 ];
 
+// Endpoints under these prefixes require the logged-in manager's session
+// cookie (see api/login.js) — they return per-user data FPL won't hand out
+// on the public API.
+const AUTH_PREFIXES = ['my-team/'];
+
+function readSessionCookies(req) {
+  const header = req.headers.cookie || '';
+  const match = header.split(';').map((c) => c.trim()).find((c) => c.startsWith('sw_fpl='));
+  if (!match) return null;
+  try {
+    const raw = Buffer.from(match.slice('sw_fpl='.length), 'base64').toString('utf8');
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}
+
 module.exports = async (req, res) => {
   const { path } = req.query;
 
@@ -20,7 +37,8 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const allowed = ALLOWED_PREFIXES.some((p) => path.startsWith(p));
+  const needsAuth = AUTH_PREFIXES.some((p) => path.startsWith(p));
+  const allowed = needsAuth || ALLOWED_PREFIXES.some((p) => path.startsWith(p));
   if (!allowed) {
     res.status(400).json({ error: 'That FPL endpoint is not on the allowlist.' });
     return;
@@ -28,13 +46,22 @@ module.exports = async (req, res) => {
 
   const upstreamUrl = `https://fantasy.premierleague.com/api/${path}`;
 
+  const headers = {
+    'User-Agent': 'Mozilla/5.0 (compatible; SquadWire/1.0)',
+    Accept: 'application/json',
+  };
+
+  if (needsAuth) {
+    const cookies = readSessionCookies(req);
+    if (!cookies) {
+      res.status(401).json({ error: 'Not logged in. Log in with your FPL account first.' });
+      return;
+    }
+    headers.Cookie = Object.entries(cookies).map(([k, v]) => `${k}=${v}`).join('; ');
+  }
+
   try {
-    const upstream = await fetch(upstreamUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; SquadWire/1.0)',
-        Accept: 'application/json',
-      },
-    });
+    const upstream = await fetch(upstreamUrl, { headers });
 
     if (!upstream.ok) {
       res.status(upstream.status).json({

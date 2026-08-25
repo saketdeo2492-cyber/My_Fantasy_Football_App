@@ -12,6 +12,8 @@
     --purple-dark:#220026;
     --panel:#2B0030;
     --green:#00FF85;
+    --pitch:#013D1F;
+    --pitch-line:rgba(255,255,255,.16);
     --pink:#E90052;
     --cyan:#04F5FF;
     --ink:#F2F0F1;
@@ -47,7 +49,11 @@
   .ticker span.down{ color:var(--pink); }
   @keyframes scroll{ 0%{transform:translateX(0);} 100%{transform:translateX(-100%);} }
 
-  header{ padding:28px 20px 18px; border-bottom:2px solid var(--line); }
+  header{
+    padding:24px 20px 16px;
+    border-bottom:2px solid var(--line);
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px;
+  }
   .wordmark{
     font-family:'Space Mono', monospace;
     font-weight:700;
@@ -57,13 +63,17 @@
     margin:0;
   }
   .wordmark .bar{ background:var(--green); color:var(--purple); padding:0 8px; }
-  .subline{
-    color:var(--dim);
-    font-size:12px;
-    letter-spacing:2px;
+  .subline{ color:var(--dim); font-size:12px; letter-spacing:2px; text-transform:uppercase; margin-top:8px; }
+  .deadline{
+    font-family:'Space Mono', monospace;
+    text-align:right;
+    font-size:11px;
+    letter-spacing:1.5px;
     text-transform:uppercase;
-    margin-top:8px;
+    color:var(--dim);
   }
+  .deadline .clock{ color:var(--green); font-size:20px; font-weight:700; letter-spacing:1px; margin-top:2px; }
+  .deadline .clock.urgent{ color:var(--pink); }
 
   main{ max-width:960px; margin:0 auto; padding:24px 20px 80px; }
 
@@ -74,72 +84,130 @@
     padding:16px;
     margin-bottom:26px;
   }
-  .entry-row label{
-    font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--dim);
-    display:block; margin-bottom:6px;
-  }
+  .entry-row label{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:6px; }
   .entry-row input{
-    background:#1A001E;
-    border:1px solid var(--line);
-    color:var(--ink);
-    font-family:'IBM Plex Mono', monospace;
-    font-size:15px;
-    padding:10px 12px;
-    width:200px;
-    outline:none;
+    background:#1A001E; border:1px solid var(--line); color:var(--ink);
+    font-family:'IBM Plex Mono', monospace; font-size:15px; padding:10px 12px; width:200px; outline:none;
   }
   .entry-row input:focus{ border-color:var(--green); }
   .btn{
-    background:var(--green);
-    color:var(--purple);
-    border:none;
-    font-family:'Space Mono', monospace;
-    font-weight:700;
-    letter-spacing:1px;
-    font-size:14px;
-    padding:0 20px;
-    cursor:pointer;
-    text-transform:uppercase;
-    align-self:flex-end;
-    height:42px;
+    background:var(--green); color:var(--purple); border:none;
+    font-family:'Space Mono', monospace; font-weight:700; letter-spacing:1px; font-size:14px;
+    padding:0 20px; cursor:pointer; text-transform:uppercase; align-self:flex-end; height:42px;
   }
   .btn:hover{ background:var(--cyan); }
   .btn:disabled{ background:var(--line); color:var(--dim); cursor:wait; }
   .hint{ font-size:11px; color:var(--dim); align-self:flex-end; height:42px; display:flex; align-items:center; }
 
   .status-line{
-    font-family:'Space Mono', monospace;
-    font-size:13px;
-    color:var(--cyan);
-    min-height:20px;
-    margin-bottom:20px;
-    letter-spacing:.5px;
+    font-family:'Space Mono', monospace; font-size:13px; color:var(--cyan);
+    min-height:20px; margin-bottom:20px; letter-spacing:.5px;
   }
   .status-line.err{ color:var(--pink); }
 
-  .summary{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-    gap:1px;
-    background:var(--line);
-    border:1px solid var(--line);
-    margin-bottom:30px;
+  .auth-row{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;
+    background:var(--purple-dark); border:1px solid var(--line);
+    padding:14px 16px; margin-bottom:16px;
   }
-  .summary .cell{ background:var(--purple-dark); padding:14px 12px; }
-  .summary .cell .num{ font-family:'Space Mono', monospace; font-size:22px; color:var(--green); font-weight:700; }
-  .summary .cell .lbl{ font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); margin-top:4px; }
+  .auth-row .field{ flex:1; min-width:160px; }
+  .auth-row label{ font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); display:block; margin-bottom:6px; }
+  .auth-row input{
+    width:100%; background:#1A001E; border:1px solid var(--line); color:var(--ink);
+    font-family:'IBM Plex Mono', monospace; font-size:14px; padding:9px 10px; outline:none;
+  }
+  .auth-row input:focus{ border-color:var(--cyan); }
+  .btn-ghost{
+    background:transparent; border:1px solid var(--cyan); color:var(--cyan);
+    font-family:'Space Mono', monospace; font-weight:700; letter-spacing:1px; font-size:13px;
+    padding:0 16px; height:38px; cursor:pointer; text-transform:uppercase;
+  }
+  .btn-ghost:hover{ background:var(--cyan); color:var(--purple-dark); }
+  .auth-status{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase;
+    color:var(--dim); margin-bottom:16px;
+  }
+  .auth-status.on{ color:var(--green); }
+  .live-tag{ color:var(--green); font-size:9px; margin-left:4px; }
+
+  .summary{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); margin-bottom:30px;
+  }
+  .summary .cell{ background:var(--purple-dark); padding:14px 10px; }
+  .summary .cell .num{ font-family:'Space Mono', monospace; font-size:20px; color:var(--green); font-weight:700; }
+  .summary .cell .num.pink{ color:var(--pink); }
+  .summary .cell .lbl{ font-size:9px; letter-spacing:1.3px; text-transform:uppercase; color:var(--dim); margin-top:4px; }
+  .chip-badge{
+    display:inline-block; margin-top:6px; font-family:'Space Mono',monospace; font-size:10px;
+    background:var(--pink); color:#fff; padding:2px 6px; letter-spacing:1px; text-transform:uppercase;
+  }
 
   h2.section{
-    font-family:'Space Mono', monospace;
-    font-size:15px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    border-left:4px solid var(--green);
-    padding-left:10px;
-    margin:36px 0 14px;
+    font-family:'Space Mono', monospace; font-size:15px; letter-spacing:2px; text-transform:uppercase;
+    border-left:4px solid var(--green); padding-left:10px; margin:36px 0 14px;
   }
 
-  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  /* ---- Pitch formation ---- */
+  .pitch{
+    position:relative;
+    background:
+      repeating-linear-gradient(0deg, var(--pitch) 0 40px, #024a26 40px 80px);
+    border:2px solid var(--pitch-line);
+    border-radius:4px;
+    padding:18px 10px 14px;
+    overflow:hidden;
+  }
+  .pitch::before{
+    content:'';
+    position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--pitch-line);
+    transform:translateX(-50%);
+  }
+  .pitch::after{
+    content:'';
+    position:absolute; left:50%; top:50%; width:90px; height:90px; margin:-45px 0 0 -45px;
+    border:1px solid var(--pitch-line); border-radius:50%;
+  }
+  .pitch-row{
+    display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
+    margin-bottom:18px; position:relative; z-index:1;
+  }
+  .pitch-card{
+    background:var(--purple-dark);
+    border:1px solid var(--pitch-line);
+    border-radius:4px;
+    padding:6px 8px;
+    min-width:78px;
+    text-align:center;
+    position:relative;
+  }
+  .pitch-card .pname{
+    font-family:'Space Mono', monospace; font-weight:700; font-size:11px;
+    color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:90px;
+  }
+  .pitch-card .pmeta{ font-size:9px; color:var(--dim); margin-top:2px; }
+  .pitch-card .parmband{
+    position:absolute; top:-8px; right:-6px;
+    background:var(--green); color:var(--purple);
+    font-family:'Space Mono',monospace; font-weight:700; font-size:9px;
+    width:16px; height:16px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .pitch-card.injured{ border-color:var(--pink); }
+  .pitch-card .pflag{ color:var(--pink); font-size:9px; margin-top:2px; }
+
+  .bench-strip{
+    display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; padding-top:14px;
+    border-top:1px dashed var(--line);
+  }
+  .bench-label{
+    font-family:'Space Mono',monospace; font-size:10px; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--dim); width:100%; margin-bottom:6px;
+  }
+  .bench-strip .pitch-card{ opacity:.75; background:var(--panel); }
+
+  /* ---- Detail table ---- */
+  table{ width:100%; border-collapse:collapse; font-size:13px; margin-top:8px; }
   th{
     text-align:left; font-size:10px; letter-spacing:1.5px; text-transform:uppercase;
     color:var(--dim); border-bottom:1px solid var(--line); padding:8px 6px;
@@ -170,6 +238,12 @@
   .rec-opt .arrow{ color:var(--green); margin-right:8px; font-family:'Space Mono',monospace; }
   .empty-note{ color:var(--dim); font-size:12px; margin-bottom:14px; }
 
+  details.table-toggle{ margin-top:18px; }
+  details.table-toggle summary{
+    cursor:pointer; font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--cyan); padding:6px 0;
+  }
+
   footer{
     max-width:960px; margin:40px auto 0; padding:16px 20px;
     border-top:1px solid var(--line); color:var(--dim); font-size:11px; line-height:1.6;
@@ -182,8 +256,14 @@
 <div class="ticker-wrap"><div class="ticker" id="ticker"><span>LOADING LIVE WIRE…</span></div></div>
 
 <header>
-  <h1 class="wordmark"><span class="bar">SQUAD</span> WIRE</h1>
-  <div class="subline">Fantasy Premier League · Live Transfer Terminal</div>
+  <div>
+    <h1 class="wordmark"><span class="bar">SQUAD</span> WIRE</h1>
+    <div class="subline">Fantasy Premier League · Live Transfer Terminal</div>
+  </div>
+  <div class="deadline" id="deadlineBox">
+    <div>Next Deadline</div>
+    <div class="clock" id="deadlineClock">—</div>
+  </div>
 </header>
 
 <main>
@@ -196,18 +276,38 @@
     <div class="hint">from fantasy.premierleague.com/entry/&lt;ID&gt;/</div>
   </div>
 
+  <div class="auth-status" id="authStatus">
+    ▌ NOT LOGGED IN — showing public data + estimated free transfers
+    <button class="btn-ghost" id="logoutBtn" style="display:none; margin-left:10px; height:24px; font-size:10px; padding:0 10px;">Log Out</button>
+  </div>
+  <div class="auth-row" id="authRow">
+    <div class="field">
+      <label for="fplEmail">FPL Email</label>
+      <input id="fplEmail" type="email" autocomplete="username" placeholder="you@example.com">
+    </div>
+    <div class="field">
+      <label for="fplPassword">FPL Password</label>
+      <input id="fplPassword" type="password" autocomplete="current-password">
+    </div>
+    <button class="btn-ghost" id="loginBtn">Log In</button>
+  </div>
+
   <div class="status-line" id="status"></div>
 
   <div id="results" style="display:none;">
     <div class="summary" id="summary"></div>
 
     <h2 class="section">// Current Squad</h2>
-    <table>
-      <thead>
-        <tr><th>Pos</th><th>Player</th><th>Team</th><th>£</th><th>Form</th><th>Pts</th><th>GW</th><th>Status</th></tr>
-      </thead>
-      <tbody id="squadBody"></tbody>
-    </table>
+    <div class="pitch" id="pitch"></div>
+    <details class="table-toggle">
+      <summary>▸ Show full stats table</summary>
+      <table>
+        <thead>
+          <tr><th>Pos</th><th>Player</th><th>Team</th><th>£</th><th>Form</th><th>Pts</th><th>GW</th><th>Status</th></tr>
+        </thead>
+        <tbody id="squadBody"></tbody>
+      </table>
+    </details>
 
     <h2 class="section">// Transfer Recommender</h2>
     <div id="recWrap"></div>
@@ -216,9 +316,12 @@
 
 <footer>
   DATA: official FPL API, fetched server-side through this app's own proxy — no third-party relay involved.
-  Prices in £m, Form = avg pts over last 30 days, GW = most recent gameweek score. Recommender ranks alternatives
-  in the same position, affordable within your squad value + bank, by current form and next-fixture expected points —
-  it's a decision aid, not a certainty.
+  Prices in £m, Form = avg pts over last 30 days. Logging in fetches your exact bank and free transfers straight
+  from FPL's account API — your password is sent to this app's own server once to establish the session, never
+  stored or logged, and the resulting session is kept in an httpOnly cookie your browser's JavaScript can't read.
+  Without logging in, Free Transfers is an estimate reconstructed from public transfer history instead. Recommender
+  ranks alternatives in the same position, affordable within squad value + bank, by current form and next-fixture
+  expected points.
 </footer>
 
 <script>
@@ -226,8 +329,74 @@ const statusEl = document.getElementById('status');
 const tickerEl = document.getElementById('ticker');
 const loadBtn = document.getElementById('loadBtn');
 const teamInput = document.getElementById('teamId');
+const deadlineClockEl = document.getElementById('deadlineClock');
 
 const POS = {1:'GKP', 2:'DEF', 3:'MID', 4:'FWD'};
+const CHIP_LABEL = {wildcard:'WILDCARD', freehit:'FREE HIT', bboost:'BENCH BOOST', '3xc':'TRIPLE CAPTAIN'};
+
+let isLoggedIn = false;
+let lastLoadedTeamId = null;
+
+const authStatusEl = document.getElementById('authStatus');
+const authRowEl = document.getElementById('authRow');
+const loginBtn = document.getElementById('loginBtn');
+
+const logoutBtn = document.getElementById('logoutBtn');
+
+function setAuthUI(loggedIn){
+  isLoggedIn = loggedIn;
+  if(loggedIn){
+    authStatusEl.innerHTML = '▌ LOGGED IN — pulling exact bank + free transfers from your account <button class="btn-ghost" id="logoutBtn" style="height:24px; font-size:10px; padding:0 10px;">Log Out</button>';
+    authStatusEl.classList.add('on');
+    authRowEl.style.display = 'none';
+    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+  }else{
+    authStatusEl.textContent = '▌ NOT LOGGED IN — showing public data + estimated free transfers';
+    authStatusEl.classList.remove('on');
+    authRowEl.style.display = 'flex';
+  }
+}
+
+async function handleLogout(){
+  try{ await fetch('/api/logout', {method:'POST'}); }catch(e){}
+  setAuthUI(false);
+  setStatus('▌ Logged out.');
+}
+
+async function handleLogin(){
+  const email = document.getElementById('fplEmail').value.trim();
+  const password = document.getElementById('fplPassword').value;
+  if(!email || !password){
+    setStatus('Enter your FPL email and password to log in.', true);
+    return;
+  }
+  loginBtn.disabled = true;
+  loginBtn.textContent = 'Logging in…';
+  try{
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email, password})
+    });
+    const data = await res.json();
+    if(!res.ok || !data.ok){
+      setStatus('▌ ' + (data.error || 'Login failed.'), true);
+      setAuthUI(false);
+      return;
+    }
+    document.getElementById('fplPassword').value = '';
+    setAuthUI(true);
+    setStatus('▌ Logged in. Re-pulling your team for exact numbers…');
+    if(lastLoadedTeamId){ loadTeam(); }
+  }catch(err){
+    setStatus('▌ Could not reach login service.', true);
+  }finally{
+    loginBtn.disabled = false;
+    loginBtn.textContent = 'Log In';
+  }
+}
+
+loginBtn.addEventListener('click', handleLogin);
 
 function setStatus(msg, isErr){
   statusEl.textContent = msg;
@@ -255,6 +424,7 @@ function statusBadge(el){
 }
 
 let bootstrap = null;
+let deadlineTimer = null;
 
 async function loadBootstrap(){
   if(bootstrap) return bootstrap;
@@ -275,6 +445,49 @@ function buildTicker(bs){
   tickerEl.innerHTML = parts.join('') + parts.join('');
 }
 
+function startDeadlineClock(bs){
+  const next = bs.events.find(e => e.is_next) || bs.events.find(e => !e.finished);
+  if(!next){ deadlineClockEl.textContent = 'SEASON OVER'; return; }
+  const deadline = new Date(next.deadline_time).getTime();
+
+  if(deadlineTimer) clearInterval(deadlineTimer);
+  function tick(){
+    const diff = deadline - Date.now();
+    if(diff <= 0){
+      deadlineClockEl.textContent = 'GATES CLOSED';
+      deadlineClockEl.classList.add('urgent');
+      clearInterval(deadlineTimer);
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    deadlineClockEl.textContent = `${d}D ${h}H ${m}M`;
+    deadlineClockEl.classList.toggle('urgent', diff < 3600000 * 6);
+  }
+  tick();
+  deadlineTimer = setInterval(tick, 30000);
+}
+
+// Reconstructs an estimate of banked free transfers from gameweek history.
+// FPL doesn't expose this number directly via the public API.
+function estimateFreeTransfers(historyCurrent, chips){
+  let banked = 1; // entering GW2
+  const chipByEvent = {};
+  (chips||[]).forEach(c => { chipByEvent[c.event] = c.name; });
+
+  const finished = (historyCurrent||[]).filter(gw => gw.event >= 2);
+  finished.forEach(gw => {
+    const chip = chipByEvent[gw.event];
+    const chipFreeWeek = chip === 'wildcard' || chip === 'freehit';
+    if(!chipFreeWeek){
+      banked = Math.max(banked - (gw.event_transfers||0), 0);
+    }
+    banked = Math.min(banked + 1, 5);
+  });
+  return Math.min(banked, 5);
+}
+
 async function loadTeam(){
   const teamId = teamInput.value.trim();
   if(!/^\d+$/.test(teamId)){
@@ -282,6 +495,7 @@ async function loadTeam(){
     return;
   }
   try{ localStorage.setItem('squadwire_team_id', teamId); }catch(e){}
+  lastLoadedTeamId = teamId;
 
   loadBtn.disabled = true;
   document.getElementById('results').style.display = 'none';
@@ -290,6 +504,7 @@ async function loadTeam(){
   try{
     const bs = await loadBootstrap();
     buildTicker(bs);
+    startDeadlineClock(bs);
 
     setStatus('▌ FETCHING ENTRY ' + teamId + '…');
     const entry = await apiFetch(`entry/${teamId}/`);
@@ -300,7 +515,22 @@ async function loadTeam(){
     setStatus('▌ LOADING GW' + eventId + ' PICKS…');
     const picks = await apiFetch(`entry/${teamId}/event/${eventId}/picks/`);
 
-    renderTeam(bs, entry, picks, eventId);
+    setStatus('▌ LOADING TRANSFER HISTORY…');
+    let history = null;
+    try{ history = await apiFetch(`entry/${teamId}/history/`); }catch(e){ /* non-fatal */ }
+
+    let myTeam = null;
+    if(isLoggedIn){
+      setStatus('▌ FETCHING EXACT ACCOUNT DATA…');
+      try{
+        myTeam = await apiFetch(`my-team/${teamId}/`);
+      }catch(e){
+        if(String(e.message).includes('401')){ setAuthUI(false); }
+        // fall through to estimate-based numbers
+      }
+    }
+
+    renderTeam(bs, entry, picks, eventId, history, myTeam);
     setStatus('▌ LIVE — GW' + eventId + ' data loaded for "' + entry.name + '"');
     document.getElementById('results').style.display = 'block';
   }catch(err){
@@ -311,15 +541,39 @@ async function loadTeam(){
   }
 }
 
-function renderTeam(bs, entry, picks, eventId){
+function renderTeam(bs, entry, picks, eventId, history, myTeam){
   const byId = {}; bs.elements.forEach(e => byId[e.id] = e);
   const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
 
   const squad = picks.picks.map(p => ({...byId[p.element], pick:p}));
   const starters = squad.filter(s => s.pick.position <= 11);
   const bench = squad.filter(s => s.pick.position > 11);
-  const totalValue = squad.reduce((sum,s)=>sum+s.now_cost,0);
-  const bank = entry.last_deadline_bank ?? 0;
+  const eh = picks.entry_history || {};
+  let totalValue = eh.value ?? squad.reduce((sum,s)=>sum+s.now_cost,0);
+  let bank = eh.bank ?? entry.last_deadline_bank ?? 0;
+
+  let ftHtml = '<div class="num">—</div><div class="lbl">Free Transfers</div>';
+  let activeChipHtml = '';
+
+  if(myTeam && myTeam.transfers){
+    // Exact numbers, straight from FPL's authenticated endpoint.
+    const t = myTeam.transfers;
+    if(typeof t.bank === 'number') bank = t.bank;
+    if(typeof t.value === 'number') totalValue = t.value;
+    const limit = t.limit; // null means unlimited (wildcard/free hit active)
+    const ftLabel = limit == null ? '∞' : limit;
+    ftHtml = `<div class="num">${ftLabel}<span class="live-tag">●LIVE</span></div><div class="lbl">Free Transfers</div>`;
+  }else if(history){
+    const ft = estimateFreeTransfers(history.current, history.chips);
+    ftHtml = `<div class="num">${ft}</div><div class="lbl">Free Transfers (est.)</div>`;
+  }
+
+  if(history){
+    const usedThisWeek = (history.chips||[]).find(c => c.event === eventId);
+    if(usedThisWeek){
+      activeChipHtml = `<span class="chip-badge">${CHIP_LABEL[usedThisWeek.name] || usedThisWeek.name}</span>`;
+    }
+  }
 
   document.getElementById('summary').innerHTML = `
     <div class="cell"><div class="num">${entry.summary_overall_points ?? '—'}</div><div class="lbl">Total Pts</div></div>
@@ -327,7 +581,10 @@ function renderTeam(bs, entry, picks, eventId){
     <div class="cell"><div class="num">${entry.summary_event_points ?? '—'}</div><div class="lbl">GW${eventId} Pts</div></div>
     <div class="cell"><div class="num">${money(totalValue)}</div><div class="lbl">Squad Value</div></div>
     <div class="cell"><div class="num">${money(bank)}</div><div class="lbl">Bank</div></div>
+    <div class="cell">${ftHtml}${activeChipHtml}</div>
   `;
+
+  renderPitch(starters, bench, teamById);
 
   function row(s){
     const p = s;
@@ -347,6 +604,35 @@ function renderTeam(bs, entry, picks, eventId){
     starters.map(row).join('') + bench.map(row).join('');
 
   renderRecommender(bs, squad, bank);
+}
+
+function pitchCard(p, teamById){
+  const capTag = p.pick.is_captain ? '<div class="parmband">C</div>' : (p.pick.is_vice_captain ? '<div class="parmband">V</div>' : '');
+  const injured = p.status !== 'a';
+  return `
+    <div class="pitch-card${injured ? ' injured' : ''}">
+      ${capTag}
+      <div class="pname">${p.web_name}</div>
+      <div class="pmeta">${teamById[p.team]} · ${money(p.now_cost)}</div>
+      ${injured ? `<div class="pflag">${p.status==='i'?'INJ':p.status==='s'?'SUSP':p.status.toUpperCase()}</div>` : ''}
+    </div>`;
+}
+
+function renderPitch(starters, bench, teamById){
+  const rows = {1:[],2:[],3:[],4:[]};
+  starters.forEach(s => rows[s.element_type].push(s));
+
+  const pitchHtml = [1,2,3,4].map(pos =>
+    rows[pos].length ? `<div class="pitch-row">${rows[pos].map(p=>pitchCard(p,teamById)).join('')}</div>` : ''
+  ).join('');
+
+  const benchHtml = `
+    <div class="bench-strip">
+      <div class="bench-label">Bench</div>
+      ${bench.map(p=>pitchCard(p,teamById)).join('')}
+    </div>`;
+
+  document.getElementById('pitch').innerHTML = pitchHtml + benchHtml;
 }
 
 function renderRecommender(bs, squad, bank){
@@ -417,9 +703,16 @@ teamInput.addEventListener('keydown', e => { if(e.key === 'Enter') loadTeam(); }
     const saved = localStorage.getItem('squadwire_team_id');
     if(saved){ teamInput.value = saved; }
   }catch(e){}
+
+  try{
+    const sess = await fetch('/api/session').then(r => r.json());
+    setAuthUI(!!sess.loggedIn);
+  }catch(e){ setAuthUI(false); }
+
   try{
     const bs = await loadBootstrap();
     buildTicker(bs);
+    startDeadlineClock(bs);
     setStatus('Enter your Team ID above to pull your squad.');
   }catch(e){
     setStatus('Could not reach the live FPL wire yet — enter your Team ID and try "Pull My Team".', true);
