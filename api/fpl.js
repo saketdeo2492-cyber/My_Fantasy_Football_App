@@ -15,7 +15,7 @@ const ALLOWED_PREFIXES = [
 // Endpoints under these prefixes require the logged-in manager's session
 // cookie (see api/login.js) — they return per-user data FPL won't hand out
 // on the public API.
-const AUTH_PREFIXES = ['my-team/'];
+const AUTH_PREFIXES = ['my-team/', 'me/'];
 
 function readSessionCookies(req) {
   const header = req.headers.cookie || '';

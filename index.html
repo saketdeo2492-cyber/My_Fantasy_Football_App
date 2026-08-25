@@ -721,3 +721,36 @@ teamInput.addEventListener('keydown', e => { if(e.key === 'Enter') loadTeam(); }
 </script>
 </body>
 </html>
+<script>
+(function(){
+  const btn = document.getElementById('loginBtn');
+  const clone = btn.cloneNode(true);
+  btn.parentNode.replaceChild(clone, btn);
+  clone.addEventListener('click', async () => {
+    const email = document.getElementById('fplEmail').value.trim();
+    const password = document.getElementById('fplPassword').value;
+    if(!email || !password){ setStatus('Enter your FPL email and password to log in.', true); return; }
+    clone.disabled = true; clone.textContent = 'Logging in…';
+    try{
+      const res = await fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email,password})});
+      const data = await res.json();
+      if(!res.ok || !data.ok){ setStatus('▌ ' + (data.error || 'Login failed.'), true); setAuthUI(false); return; }
+      document.getElementById('fplPassword').value = '';
+      setAuthUI(true);
+      setStatus('▌ Logged in. Finding your team…');
+      try{
+        const me = await apiFetch('me/');
+        if(me && me.player && me.player.entry){
+          teamInput.value = me.player.entry;
+          try{ localStorage.setItem('squadwire_team_id', String(me.player.entry)); }catch(e){}
+        }
+      }catch(e){}
+      loadTeam();
+    }catch(err){
+      setStatus('▌ Could not reach login service.', true);
+    }finally{
+      clone.disabled = false; clone.textContent = 'Log In';
+    }
+  });
+})();
+</script>
