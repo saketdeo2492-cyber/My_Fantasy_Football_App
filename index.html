@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -267,7 +268,7 @@
 </header>
 
 <main>
-  <div class="entry-row" style="display:none;">
+  <div class="entry-row">
     <div>
       <label for="teamId">Your FPL Team ID</label>
       <input id="teamId" type="text" inputmode="numeric" placeholder="e.g. 1234567">
@@ -277,19 +278,18 @@
   </div>
 
   <div class="auth-status" id="authStatus">
-    ▌ NOT LOGGED IN — showing public data + estimated free transfers
-    <button class="btn-ghost" id="logoutBtn" style="display:none; margin-left:10px; height:24px; font-size:10px; padding:0 10px;">Log Out</button>
+    ▌ NOT CONNECTED — showing public data + estimated free transfers
+    <button class="btn-ghost" id="logoutBtn" style="display:none; margin-left:10px; height:24px; font-size:10px; padding:0 10px;">Disconnect</button>
   </div>
   <div class="auth-row" id="authRow">
-    <div class="field">
-      <label for="fplEmail">FPL Email</label>
-      <input id="fplEmail" type="email" autocomplete="username" placeholder="you@example.com">
+    <div class="field" style="flex:3;">
+      <label for="cookieValue">pl_profile Cookie Value</label>
+      <input id="cookieValue" type="password" autocomplete="off" placeholder="Paste the long value here">
     </div>
-    <div class="field">
-      <label for="fplPassword">FPL Password</label>
-      <input id="fplPassword" type="password" autocomplete="current-password">
-    </div>
-    <button class="btn-ghost" id="loginBtn">Log In</button>
+    <button class="btn-ghost" id="loginBtn">Connect</button>
+  </div>
+  <div class="hint" style="margin:-10px 0 16px;">
+    Log into fantasy.premierleague.com in this browser first, then grab your pl_profile cookie from DevTools → Application → Cookies. <a href="#" id="cookieHelpLink" style="color:var(--cyan);">How?</a>
   </div>
 
   <div class="status-line" id="status"></div>
@@ -346,12 +346,12 @@ const logoutBtn = document.getElementById('logoutBtn');
 function setAuthUI(loggedIn){
   isLoggedIn = loggedIn;
   if(loggedIn){
-    authStatusEl.innerHTML = '▌ LOGGED IN — pulling exact bank + free transfers from your account <button class="btn-ghost" id="logoutBtn" style="height:24px; font-size:10px; padding:0 10px;">Log Out</button>';
+    authStatusEl.innerHTML = '▌ CONNECTED — pulling exact bank + free transfers from your account <button class="btn-ghost" id="logoutBtn" style="height:24px; font-size:10px; padding:0 10px;">Disconnect</button>';
     authStatusEl.classList.add('on');
     authRowEl.style.display = 'none';
     document.getElementById('logoutBtn').addEventListener('click', handleLogout);
   }else{
-    authStatusEl.textContent = '▌ NOT LOGGED IN — showing public data + estimated free transfers';
+    authStatusEl.textContent = '▌ NOT CONNECTED — showing public data + estimated free transfers';
     authStatusEl.classList.remove('on');
     authRowEl.style.display = 'flex';
   }
@@ -360,39 +360,45 @@ function setAuthUI(loggedIn){
 async function handleLogout(){
   try{ await fetch('/api/logout', {method:'POST'}); }catch(e){}
   setAuthUI(false);
-  setStatus('▌ Logged out.');
+  setStatus('▌ Disconnected.');
 }
 
 async function handleLogin(){
-  const email = document.getElementById('fplEmail').value.trim();
-  const password = document.getElementById('fplPassword').value;
-  if(!email || !password){
-    setStatus('Enter your FPL email and password to log in.', true);
+  const cookieVal = document.getElementById('cookieValue').value.trim();
+  if(!cookieVal){
+    setStatus('Paste your pl_profile cookie value first.', true);
     return;
   }
   loginBtn.disabled = true;
-  loginBtn.textContent = 'Logging in…';
+  loginBtn.textContent = 'Connecting…';
   try{
-    const res = await fetch('/api/login', {
+    const res = await fetch('/api/set-session', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({email, password})
+      body: JSON.stringify({pl_profile: cookieVal})
     });
     const data = await res.json();
     if(!res.ok || !data.ok){
-      setStatus('▌ ' + (data.error || 'Login failed.'), true);
+      setStatus('▌ ' + (data.error || 'Connection failed.'), true);
       setAuthUI(false);
       return;
     }
-    document.getElementById('fplPassword').value = '';
+    document.getElementById('cookieValue').value = '';
     setAuthUI(true);
-    setStatus('▌ Logged in. Re-pulling your team for exact numbers…');
-    if(lastLoadedTeamId){ loadTeam(); }
+    setStatus('▌ Connected. Finding your team…');
+    try{
+      const me = await apiFetch('me/');
+      if(me && me.player && me.player.entry){
+        teamInput.value = me.player.entry;
+        try{ localStorage.setItem('squadwire_team_id', String(me.player.entry)); }catch(e){}
+      }
+    }catch(e){ /* fall back to whatever team id is already in the box */ }
+    if(teamInput.value){ loadTeam(); }
   }catch(err){
-    setStatus('▌ Could not reach login service.', true);
+    setStatus('▌ Could not reach the app\'s own server.', true);
   }finally{
     loginBtn.disabled = false;
-    loginBtn.textContent = 'Log In';
+    loginBtn.textContent = 'Connect';
   }
 }
 
@@ -721,36 +727,3 @@ teamInput.addEventListener('keydown', e => { if(e.key === 'Enter') loadTeam(); }
 </script>
 </body>
 </html>
-<script>
-(function(){
-  const btn = document.getElementById('loginBtn');
-  const clone = btn.cloneNode(true);
-  btn.parentNode.replaceChild(clone, btn);
-  clone.addEventListener('click', async () => {
-    const email = document.getElementById('fplEmail').value.trim();
-    const password = document.getElementById('fplPassword').value;
-    if(!email || !password){ setStatus('Enter your FPL email and password to log in.', true); return; }
-    clone.disabled = true; clone.textContent = 'Logging in…';
-    try{
-      const res = await fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email,password})});
-      const data = await res.json();
-      if(!res.ok || !data.ok){ setStatus('▌ ' + (data.error || 'Login failed.'), true); setAuthUI(false); return; }
-      document.getElementById('fplPassword').value = '';
-      setAuthUI(true);
-      setStatus('▌ Logged in. Finding your team…');
-      try{
-        const me = await apiFetch('me/');
-        if(me && me.player && me.player.entry){
-          teamInput.value = me.player.entry;
-          try{ localStorage.setItem('squadwire_team_id', String(me.player.entry)); }catch(e){}
-        }
-      }catch(e){}
-      loadTeam();
-    }catch(err){
-      setStatus('▌ Could not reach login service.', true);
-    }finally{
-      clone.disabled = false; clone.textContent = 'Log In';
-    }
-  });
-})();
-</script>
