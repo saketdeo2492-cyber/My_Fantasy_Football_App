@@ -262,6 +262,24 @@
   .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
   .table-scroll table{ min-width:520px; }
 
+  /* ---- Results fade-in + skeleton loading state ---- */
+  #results{ opacity:0; transition:opacity .35s ease; }
+  #results.visible{ opacity:1; }
+
+  @keyframes skel-shimmer{ 0%{ background-position:-260px 0; } 100%{ background-position:260px 0; } }
+  .skel{
+    display:inline-block;
+    background:linear-gradient(90deg, var(--line) 25%, rgba(255,255,255,.14) 50%, var(--line) 75%);
+    background-size:260px 100%;
+    animation:skel-shimmer 1.3s linear infinite;
+    border-radius:2px;
+  }
+  .skel-num{ width:46px; height:18px; margin:0 0 6px; }
+  .skel-lbl{ width:68px; height:8px; }
+  .skel-name{ width:52px; height:11px; margin:0 auto 6px; }
+  .skel-meta{ width:36px; height:8px; margin:0 auto; }
+  .pitch-card.skeleton{ border-style:dashed; }
+
   /* ---- Mobile ---- */
   @media (max-width:600px){
     main{ padding:18px 14px 60px; }
@@ -528,6 +546,46 @@ function estimateFreeTransfers(historyCurrent, chips){
   return Math.min(banked, 5);
 }
 
+const resultsEl = document.getElementById('results');
+
+function showResults(){
+  resultsEl.style.display = 'block';
+  // Force a layout flush so the browser doesn't collapse the opacity
+  // transition into the display:none -> block jump (no transition possible
+  // while display:none, so we need one committed frame at opacity:0 first).
+  void resultsEl.offsetWidth;
+  resultsEl.classList.add('visible');
+}
+
+function hideResults(){
+  resultsEl.classList.remove('visible');
+  resultsEl.style.display = 'none';
+}
+
+// Placeholder squad + summary shown the instant a pull starts, so the pitch
+// isn't just blank while the FPL API calls are in flight.
+function renderSkeleton(){
+  document.getElementById('summary').innerHTML = Array.from({length:6}).map(() => `
+    <div class="cell">
+      <div class="skel skel-num"></div>
+      <div class="skel skel-lbl"></div>
+    </div>`).join('');
+
+  const skelCard = '<div class="pitch-card skeleton"><div class="skel skel-name"></div><div class="skel skel-meta"></div></div>';
+  document.getElementById('pitch').innerHTML = `
+    <div class="pitch-row">${skelCard}</div>
+    <div class="pitch-row">${skelCard.repeat(4)}</div>
+    <div class="pitch-row">${skelCard.repeat(4)}</div>
+    <div class="pitch-row">${skelCard.repeat(2)}</div>
+    <div class="bench-strip">
+      <div class="bench-label">Bench</div>
+      ${skelCard.repeat(4)}
+    </div>`;
+
+  document.getElementById('squadBody').innerHTML = '';
+  document.getElementById('recWrap').innerHTML = '';
+}
+
 async function loadTeam(){
   const teamId = teamInput.value.trim();
   if(!/^\d+$/.test(teamId)){
@@ -538,7 +596,8 @@ async function loadTeam(){
   lastLoadedTeamId = teamId;
 
   loadBtn.disabled = true;
-  document.getElementById('results').style.display = 'none';
+  renderSkeleton();
+  showResults();
   setStatus('▌ CONNECTING TO FPL WIRE…');
 
   try{
@@ -572,10 +631,10 @@ async function loadTeam(){
 
     renderTeam(bs, entry, picks, eventId, history, myTeam);
     setStatus('▌ LIVE — GW' + eventId + ' data loaded for "' + entry.name + '"');
-    document.getElementById('results').style.display = 'block';
   }catch(err){
     console.error(err);
     setStatus('▌ ' + (err.message || 'Transmission failed.'), true);
+    hideResults();
   }finally{
     loadBtn.disabled = false;
   }
