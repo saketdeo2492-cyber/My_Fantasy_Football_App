@@ -7,9 +7,7 @@
 // work. See project notes for the DevTools extraction one-liner.
 
 const TOKEN_URL = 'https://account.premierleague.com/as/token';
-// Best-effort default based on community reference implementations —
-// override via env var if FPL's client_id differs from this.
-const CLIENT_ID = process.env.FPL_OIDC_CLIENT_ID || 'fpl-web';
+const CLIENT_ID = process.env.FPL_OIDC_CLIENT_ID || 'bfcbaf69-aade-4c1b-8f00-c1cb8a193030';
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -43,7 +41,6 @@ module.exports = async (req, res) => {
     try { data = JSON.parse(rawText); } catch (e) { data = null; }
 
     if (!tokenRes.ok || !data || !data.access_token) {
-      // Surface the REAL error from FPL/PingOne instead of guessing blind.
       res.status(tokenRes.status || 502).json({
         error: 'Token exchange failed.',
         upstream_status: tokenRes.status,
@@ -54,12 +51,12 @@ module.exports = async (req, res) => {
 
     const bundled = Buffer.from(JSON.stringify({
       access_token: data.access_token,
-      refresh_token: data.refresh_token || refresh_token, // rotates
+      refresh_token: data.refresh_token || refresh_token,
       expires_in: data.expires_in || 3600,
       obtained_at: Date.now(),
     })).toString('base64');
 
-    const maxAge = 60 * 60 * 12; // 12 hours (well past token expiry; we refresh as needed)
+    const maxAge = 60 * 60 * 12;
 
     res.setHeader(
       'Set-Cookie',
