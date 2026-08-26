@@ -203,6 +203,11 @@
   }
   .pitch-card.injured{ border-color:var(--pink); }
   .pitch-card .pflag{ color:var(--pink); font-size:9px; margin-top:2px; }
+  .pcard-fixtures{ display:flex; gap:2px; justify-content:center; flex-wrap:wrap; margin-top:4px; }
+  .pcard-fdr{
+    font-family:'Space Mono',monospace; font-weight:700; font-size:7px;
+    padding:1px 3px; border-radius:2px; letter-spacing:.2px; line-height:1.4;
+  }
 
   .bench-strip{
     display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; padding-top:14px;
@@ -608,6 +613,28 @@ function fdrClass(difficulty){
   return 'fdr-mid';
 }
 
+// Shared by the pitch-card fixture strips, the recommender's fixture
+// weighting, and the team score — a team's next `limit` unplayed fixtures,
+// each as {opp, isHome, difficulty}.
+function nextFixturesForTeam(teamId, teamsFullById, fixtures, limit){
+  if(!fixtures) return [];
+  return fixtures
+    .filter(f => !f.finished && (f.team_h === teamId || f.team_a === teamId))
+    .sort((a,b) => {
+      if(a.event !== b.event) return (a.event ?? 999) - (b.event ?? 999);
+      return new Date(a.kickoff_time || 0) - new Date(b.kickoff_time || 0);
+    })
+    .slice(0, limit)
+    .map(f => {
+      const isHome = f.team_h === teamId;
+      return {
+        opp: teamsFullById[isHome ? f.team_a : f.team_h],
+        isHome,
+        difficulty: isHome ? f.team_h_difficulty : f.team_a_difficulty,
+      };
+    });
+}
+
 // Next few fixtures for every team currently in the squad, difficulty
 // color-coded from each fixture's team_h_difficulty/team_a_difficulty (1-5).
 function renderSquadFixtures(bs, squad, fixtures){
@@ -876,6 +903,7 @@ async function loadTeam(){
 function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
   const byId = {}; bs.elements.forEach(e => byId[e.id] = e);
   const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
+  const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
 
   const squad = picks.picks.map(p => ({...byId[p.element], pick:p}));
   const starters = squad.filter(s => s.pick.position <= 11);
@@ -916,7 +944,7 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
     <div class="cell">${ftHtml}${activeChipHtml}</div>
   `;
 
-  renderPitch(starters, bench, teamById);
+  renderPitch(starters, bench, teamById, teamsFullById, fixtures);
 
   function row(s){
     const p = s;
@@ -939,30 +967,37 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
   renderRecommender(bs, squad, bank);
 }
 
-function pitchCard(p, teamById){
+function pitchCard(p, teamById, teamsFullById, fixtures){
   const capTag = p.pick.is_captain ? '<div class="parmband">C</div>' : (p.pick.is_vice_captain ? '<div class="parmband">V</div>' : '');
   const injured = p.status !== 'a';
+
+  const nextFx = nextFixturesForTeam(p.team, teamsFullById, fixtures, 3);
+  const fxHtml = nextFx.length ? `<div class="pcard-fixtures">${nextFx.map(f => `
+      <span class="pcard-fdr ${fdrClass(f.difficulty)}" title="${f.opp ? f.opp.name : 'TBD'} (${f.isHome ? 'Home' : 'Away'}) — difficulty ${f.difficulty}/5">${f.opp ? f.opp.short_name : '?'}${f.isHome ? 'H' : 'A'}</span>
+    `).join('')}</div>` : '';
+
   return `
     <div class="pitch-card${injured ? ' injured' : ''}">
       ${capTag}
       <div class="pname">${p.web_name}</div>
       <div class="pmeta">${teamById[p.team]} · ${money(p.now_cost)}</div>
       ${injured ? `<div class="pflag">${p.status==='i'?'INJ':p.status==='s'?'SUSP':p.status.toUpperCase()}</div>` : ''}
+      ${fxHtml}
     </div>`;
 }
 
-function renderPitch(starters, bench, teamById){
+function renderPitch(starters, bench, teamById, teamsFullById, fixtures){
   const rows = {1:[],2:[],3:[],4:[]};
   starters.forEach(s => rows[s.element_type].push(s));
 
   const pitchHtml = [1,2,3,4].map(pos =>
-    rows[pos].length ? `<div class="pitch-row">${rows[pos].map(p=>pitchCard(p,teamById)).join('')}</div>` : ''
+    rows[pos].length ? `<div class="pitch-row">${rows[pos].map(p=>pitchCard(p,teamById,teamsFullById,fixtures)).join('')}</div>` : ''
   ).join('');
 
   const benchHtml = `
     <div class="bench-strip">
       <div class="bench-label">Bench</div>
-      ${bench.map(p=>pitchCard(p,teamById)).join('')}
+      ${bench.map(p=>pitchCard(p,teamById,teamsFullById,fixtures)).join('')}
     </div>`;
 
   document.getElementById('pitch').innerHTML = pitchHtml + benchHtml;
