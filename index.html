@@ -257,9 +257,10 @@
   .rec-head .out{ font-family:'Space Mono', monospace; font-weight:700; font-size:15px; }
   .rec-head .why{ font-size:11px; color:var(--dim); }
   .rec-list{ display:grid; gap:8px; }
-  .rec-opt{ display:flex; justify-content:space-between; align-items:center; background:#1A001E; padding:8px 10px; border:1px solid var(--line); }
+  .rec-opt{ display:flex; justify-content:space-between; align-items:flex-start; background:#1A001E; padding:8px 10px; border:1px solid var(--line); }
   .rec-opt .n{ font-weight:600; }
-  .rec-opt .stats{ font-size:11px; color:var(--dim); }
+  .rec-opt .stats{ font-size:11px; color:var(--dim); text-align:right; }
+  .rec-opt .rec-why{ font-size:10px; color:var(--green); margin-top:2px; }
   .rec-opt .arrow{ color:var(--green); margin-right:8px; font-family:'Space Mono',monospace; }
   .empty-note{ color:var(--dim); font-size:12px; margin-bottom:14px; }
 
@@ -392,7 +393,7 @@
     h2.section{ font-size:13px; margin:28px 0 12px; }
     .rec-head{ flex-direction:column; align-items:flex-start; }
     .rec-opt{ flex-direction:column; align-items:flex-start; gap:3px; }
-    .rec-opt .stats{ font-size:10px; }
+    .rec-opt .stats{ font-size:10px; text-align:left; }
     .fdr-team{ min-width:34px; font-size:11px; }
     .fdr-chip{ min-width:38px; padding:3px 4px; }
     .gw-match{ grid-template-columns:1fr; gap:4px; text-align:center; padding:10px; }
@@ -1076,7 +1077,7 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
     starters.map(row).join('') + bench.map(row).join('');
 
   renderSquadFixtures(bs, squad, fixtures);
-  renderRecommender(bs, squad, bank);
+  renderRecommender(bs, squad, bank, fixtures, teamsFullById);
 }
 
 function pitchCard(p, teamById, teamsFullById, fixtures){
@@ -1118,7 +1119,37 @@ function renderPitch(starters, bench, teamById, teamsFullById, fixtures){
   document.getElementById('pitch').innerHTML = pitchHtml + benchHtml;
 }
 
-function renderRecommender(bs, squad, bank){
+// Average fixture difficulty (1=easiest, 5=hardest) over a team's next
+// `limit` games; 3 (neutral) when fixtures haven't loaded or the team has
+// nothing scheduled, so callers don't have to null-check separately.
+function avgFixtureDifficulty(teamId, teamsFullById, fixtures, limit){
+  const fx = nextFixturesForTeam(teamId, teamsFullById, fixtures, limit);
+  if(fx.length === 0) return 3;
+  return fx.reduce((sum, f) => sum + f.difficulty, 0) / fx.length;
+}
+
+// Short "why this one" line for a suggested replacement, comparing it
+// against the player it would replace on fixtures, form, and price.
+function suggestionReason(candidate, outgoing, candAvgDiff, outAvgDiff){
+  const formDelta = (parseFloat(candidate.form) || 0) - (parseFloat(outgoing.form) || 0);
+  const priceDelta = (candidate.now_cost - outgoing.now_cost) / 10; // £m
+  const fixtureDelta = outAvgDiff - candAvgDiff; // positive = candidate's run is easier
+
+  const priceNote = Math.abs(priceDelta) < 0.3
+    ? 'similar price'
+    : priceDelta < 0
+      ? `£${Math.abs(priceDelta).toFixed(1)}m cheaper`
+      : `£${priceDelta.toFixed(1)}m more`;
+
+  const parts = [];
+  if(fixtureDelta >= 0.5) parts.push('better fixtures next 3 GWs');
+  if(formDelta >= 0.5) parts.push(`higher form + ${priceNote}`);
+  if(parts.length === 0) parts.push(`comparable form + ${priceNote}`);
+
+  return parts.slice(0, 2).join(' · ');
+}
+
+function renderRecommender(bs, squad, bank, fixtures, teamsFullById){
   const ownedIds = new Set(squad.map(s=>s.id));
   const wrap = document.getElementById('recWrap');
   wrap.innerHTML = '';
@@ -1127,15 +1158,29 @@ function renderRecommender(bs, squad, bank){
   squad.forEach(s => byPos[s.element_type].push(s));
 
   let anyRec = false;
+  const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
 
   Object.keys(byPos).forEach(posKey => {
     const pos = parseInt(posKey);
-    const group = byPos[pos].slice().sort((a,b)=>parseFloat(a.form)-parseFloat(b.form));
+    const group = byPos[pos];
     if(group.length === 0) return;
-    const weakest = group[0];
-    const isInjured = weakest.status !== 'a';
-    const isLowForm = parseFloat(weakest.form) < 3.0;
-    if(!isInjured && !isLowForm) return;
+
+    // Flag anyone injured/suspended, in poor current form, OR facing a
+    // genuinely tough run of fixtures — form alone misses a player who's
+    // fine right now but about to hit three difficulty-5 games in a row.
+    const scored = group.map(s => {
+      const avgDiff = avgFixtureDifficulty(s.team, teamsFullById, fixtures, 3);
+      const form = parseFloat(s.form) || 0;
+      const isInjured = s.status !== 'a';
+      const isLowForm = form < 3.0;
+      const toughFixtures = avgDiff >= 4;
+      return { s, form, avgDiff, isInjured, isLowForm, toughFixtures, flagged: isInjured || isLowForm || toughFixtures };
+    });
+
+    const flagged = scored.filter(x => x.flagged).sort((a,b) => a.form - b.form);
+    if(flagged.length === 0) return;
+    const weakestInfo = flagged[0];
+    const weakest = weakestInfo.s;
 
     const affordable = weakest.now_cost + bank;
     const candidates = bs.elements
@@ -1143,29 +1188,38 @@ function renderRecommender(bs, squad, bank){
       .filter(e => !ownedIds.has(e.id))
       .filter(e => e.now_cost <= affordable)
       .filter(e => e.status === 'a')
-      .sort((a,b) => (parseFloat(b.form) + parseFloat(b.ep_next)) - (parseFloat(a.form) + parseFloat(a.ep_next)))
+      .map(e => {
+        const avgDiff = avgFixtureDifficulty(e.team, teamsFullById, fixtures, 3);
+        // Form + next-GW expected points, with a small nudge for an
+        // easier fixture run so it can edge out a similar-form option.
+        const rankScore = (parseFloat(e.form) || 0) + (parseFloat(e.ep_next) || 0) + (5 - avgDiff) * 0.5;
+        return { ...e, _avgDiff: avgDiff, _rankScore: rankScore };
+      })
+      .sort((a,b) => b._rankScore - a._rankScore)
       .slice(0,3);
 
     if(candidates.length === 0) return;
     anyRec = true;
 
-    const reason = isInjured
-      ? (weakest.news ? weakest.news : 'currently unavailable')
-      : `low current form (${weakest.form} pts/match avg)`;
-
-    const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
+    const reasonParts = [];
+    if(weakestInfo.isInjured) reasonParts.push(weakest.news ? weakest.news : 'currently unavailable');
+    if(weakestInfo.isLowForm) reasonParts.push(`low current form (${weakest.form} pts/match avg)`);
+    if(weakestInfo.toughFixtures) reasonParts.push(`tough fixtures ahead (avg difficulty ${weakestInfo.avgDiff.toFixed(1)}/5)`);
 
     wrap.innerHTML += `
       <div class="rec-card">
         <div class="rec-head">
           <div class="out">OUT: ${weakest.web_name} <span class="sub">(${POS[pos]}, ${money(weakest.now_cost)})</span></div>
-          <div class="why">${reason}</div>
+          <div class="why">${reasonParts.join(' · ')}</div>
         </div>
         <div class="rec-list">
           ${candidates.map(c => `
             <div class="rec-opt">
               <div><span class="arrow">→</span><span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span></div>
-              <div class="stats">${money(c.now_cost)} · form ${c.form} · next ${c.ep_next}pts exp</div>
+              <div class="stats">
+                ${money(c.now_cost)} · form ${c.form} · next ${c.ep_next}pts exp
+                <div class="rec-why">${suggestionReason(c, weakest, c._avgDiff, weakestInfo.avgDiff)}</div>
+              </div>
             </div>
           `).join('')}
         </div>
@@ -1174,7 +1228,7 @@ function renderRecommender(bs, squad, bank){
   });
 
   if(!anyRec){
-    wrap.innerHTML = '<div class="empty-note">No red flags right now — your weakest-form players are still within reasonable range and nothing affordable clearly outperforms them. Squad looks stable.</div>';
+    wrap.innerHTML = '<div class="empty-note">No red flags right now — form, fixtures, and availability all look fine across the squad. Squad looks stable.</div>';
   }
 }
 
