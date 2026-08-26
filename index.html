@@ -135,8 +135,11 @@
     display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:1px;
     background:var(--line); border:1px solid var(--line); margin-bottom:30px;
   }
-  .summary .cell{ background:var(--purple-dark); padding:14px 10px; }
-  .summary .cell .num{ font-family:'Space Mono', monospace; font-size:20px; color:var(--green); font-weight:700; }
+  .summary .cell{
+    background:var(--purple-dark); padding:14px 10px; min-height:66px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .summary .cell .num{ font-family:'Space Mono', monospace; font-size:20px; color:var(--green); font-weight:700; line-height:1.15; }
   .summary .cell .num.pink{ color:var(--pink); }
   .summary .cell .lbl{ font-size:9px; letter-spacing:1.3px; text-transform:uppercase; color:var(--dim); margin-top:4px; }
   .chip-badge{
@@ -179,8 +182,12 @@
     border-radius:4px;
     padding:6px 8px;
     min-width:78px;
+    min-height:52px;
     text-align:center;
     position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
   }
   .pitch-card .pname{
     font-family:'Space Mono', monospace; font-weight:700; font-size:11px;
@@ -250,6 +257,32 @@
     border-top:1px solid var(--line); color:var(--dim); font-size:11px; line-height:1.6;
   }
   a{ color:var(--cyan); }
+
+  /* ---- Table stays scrollable in its own box instead of blowing out the page ---- */
+  .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .table-scroll table{ min-width:520px; }
+
+  /* ---- Mobile ---- */
+  @media (max-width:600px){
+    main{ padding:18px 14px 60px; }
+    header{ padding:18px 14px 14px; }
+    .deadline{ text-align:left; width:100%; }
+    .deadline .clock{ font-size:17px; }
+    .entry-row, .auth-row{ padding:14px; }
+    .entry-row input{ width:100%; }
+    .entry-row .btn{ width:100%; align-self:stretch; }
+    .auth-row .field{ flex:1 1 100%; }
+    .auth-row .btn-ghost{ width:100%; }
+    .summary{ grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); }
+    .summary .cell{ padding:10px 8px; min-height:58px; }
+    .summary .cell .num{ font-size:17px; }
+    .pitch-card{ min-width:70px; padding:5px 6px; }
+    .pitch-card .pname{ font-size:10px; max-width:74px; }
+    h2.section{ font-size:13px; margin:28px 0 12px; }
+    .rec-head{ flex-direction:column; align-items:flex-start; }
+    .rec-opt{ flex-direction:column; align-items:flex-start; gap:3px; }
+    .rec-opt .stats{ font-size:10px; }
+  }
 </style>
 </head>
 <body>
@@ -301,12 +334,14 @@
     <div class="pitch" id="pitch"></div>
     <details class="table-toggle">
       <summary>▸ Show full stats table</summary>
-      <table>
-        <thead>
-          <tr><th>Pos</th><th>Player</th><th>Team</th><th>£</th><th>Form</th><th>Pts</th><th>GW</th><th>Status</th></tr>
-        </thead>
-        <tbody id="squadBody"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Pos</th><th>Player</th><th>Team</th><th>£</th><th>Form</th><th>Pts</th><th>GW</th><th>Status</th></tr>
+          </thead>
+          <tbody id="squadBody"></tbody>
+        </table>
+      </div>
     </details>
 
     <h2 class="section">// Transfer Recommender</h2>
