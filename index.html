@@ -189,9 +189,11 @@
     flex-direction:column;
     justify-content:center;
   }
+  .pname-row{ display:flex; align-items:center; justify-content:center; gap:3px; }
+  .jersey-icon{ flex-shrink:0; }
   .pitch-card .pname{
     font-family:'Space Mono', monospace; font-weight:700; font-size:11px;
-    color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:90px;
+    color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:74px;
   }
   .pitch-card .pmeta{ font-size:9px; color:var(--dim); margin-top:2px; }
   .pitch-card .parmband{
@@ -582,6 +584,38 @@ async function apiFetch(path){
 }
 
 function money(tenths){ return '£' + (tenths/10).toFixed(1); }
+
+// bootstrap-static's teams array carries no color field, so club colors
+// are a curated lookup by short_name (real primary shirt colors where
+// recognizable). Any short_name not in the list — a promoted/renamed club
+// the map hasn't been updated for — still gets a color, just derived
+// deterministically from the code itself so it's stable across renders
+// instead of random or missing.
+const TEAM_COLORS = {
+  ARS:'#EF0107', AVL:'#670E36', BOU:'#DA291C', BRE:'#E30613', BHA:'#0057B8',
+  CHE:'#034694', COV:'#78B9E7', CRY:'#1B458F', EVE:'#003399', FUL:'#FFFFFF',
+  HUL:'#F5A12D', IPS:'#0044A9', LEE:'#FFFFFF', LIV:'#C8102E', MCI:'#6CABDD',
+  MUN:'#DA291C', NEW:'#241F20', NFO:'#DD0000', TOT:'#FFFFFF', SUN:'#EB172B',
+};
+
+function teamColor(shortName){
+  if(TEAM_COLORS[shortName]) return TEAM_COLORS[shortName];
+  let hash = 0;
+  for(let i = 0; i < shortName.length; i++){ hash = (hash * 31 + shortName.charCodeAt(i)) | 0; }
+  return `hsl(${Math.abs(hash) % 360}, 65%, 50%)`;
+}
+
+// Minimal jersey silhouette, not a full illustration — a colored fill is
+// enough to read as "that club's kit" at pitch-card scale. A translucent
+// white stroke keeps light-colored kits (Fulham, Leeds, Spurs) visible
+// against the dark card background.
+function jerseyIcon(shortName){
+  const color = teamColor(shortName);
+  return `<svg class="jersey-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12,2 L9,2 C9,3.5 7.5,4.5 6,4 L2,7 L4,11 L6,9.5 L6,20 C6,21 7,22 8,22 L16,22 C17,22 18,21 18,20 L18,9.5 L20,11 L22,7 L18,4 C16.5,4.5 15,3.5 15,2 L12,2 Z"
+      fill="${color}" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+  </svg>`;
+}
 
 function statusBadge(el){
   if(el.status === 'i') return '<span class="flag">INJ</span>';
@@ -979,7 +1013,10 @@ function pitchCard(p, teamById, teamsFullById, fixtures){
   return `
     <div class="pitch-card${injured ? ' injured' : ''}">
       ${capTag}
-      <div class="pname">${p.web_name}</div>
+      <div class="pname-row">
+        ${jerseyIcon(teamById[p.team])}
+        <div class="pname">${p.web_name}</div>
+      </div>
       <div class="pmeta">${teamById[p.team]} · ${money(p.now_cost)}</div>
       ${injured ? `<div class="pflag">${p.status==='i'?'INJ':p.status==='s'?'SUSP':p.status.toUpperCase()}</div>` : ''}
       ${fxHtml}
