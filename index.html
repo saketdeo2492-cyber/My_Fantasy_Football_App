@@ -714,13 +714,30 @@ teamInput.addEventListener('keydown', e => { if(e.key === 'Enter') loadTeam(); }
     setAuthUI(!!sess.loggedIn);
   }catch(e){ setAuthUI(false); }
 
-  try{
-    const bs = await loadBootstrap();
-    buildTicker(bs);
-    startDeadlineClock(bs);
-    setStatus('Enter your Team ID above to pull your squad.');
-  }catch(e){
-    setStatus('Could not reach the live FPL wire yet — enter your Team ID and try "Pull My Team".', true);
+  if(isLoggedIn){
+    // Mirrors the team-lookup handleLogin() does after connecting — needed
+    // here too because the browser extension connects directly via its
+    // background script, bypassing handleLogin() entirely.
+    try{
+      const me = await apiFetch('me/');
+      if(me && me.player && me.player.entry){
+        teamInput.value = me.player.entry;
+        try{ localStorage.setItem('squadwire_team_id', String(me.player.entry)); }catch(e){}
+      }
+    }catch(e){ /* fall back to whatever team id is already in the box */ }
+  }
+
+  if(teamInput.value){
+    loadTeam();
+  }else{
+    try{
+      const bs = await loadBootstrap();
+      buildTicker(bs);
+      startDeadlineClock(bs);
+      setStatus('Enter your Team ID above to pull your squad.');
+    }catch(e){
+      setStatus('Could not reach the live FPL wire yet — enter your Team ID and try "Pull My Team".', true);
+    }
   }
 })();
 </script>
