@@ -310,6 +310,21 @@
   .fdr-dot.fdr-mid{ background:var(--cyan); }
   .fdr-dot.fdr-hard{ background:var(--pink); }
 
+  /* ---- Tab nav ---- */
+  .tab-nav{
+    display:flex; border-bottom:2px solid var(--line); margin-bottom:22px;
+  }
+  .tab-btn{
+    flex:1; text-align:center;
+    background:transparent; border:none; border-bottom:2px solid transparent; margin-bottom:-2px;
+    color:var(--dim); font-family:'Space Mono', monospace; font-weight:700; font-size:12px;
+    letter-spacing:1.5px; text-transform:uppercase; padding:12px 10px; cursor:pointer;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .tab-btn:hover{ color:var(--ink); }
+  .tab-btn.active{ color:var(--green); border-bottom-color:var(--green); }
+  .tab-panel[hidden]{ display:none; }
+
   /* ---- Gameweek fixture calendar ---- */
   .gw-nav{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
@@ -366,6 +381,7 @@
     .gw-match{ grid-template-columns:1fr; gap:4px; text-align:center; padding:10px; }
     .gw-team, .gw-team.away{ justify-content:center; flex-direction:row; }
     .gw-kickoff{ order:3; }
+    .tab-btn{ padding:10px 4px; font-size:10px; letter-spacing:1px; }
   }
 </style>
 </head>
@@ -411,36 +427,48 @@
 
   <div class="status-line" id="status"></div>
 
-  <h2 class="section">// Gameweek Fixtures</h2>
-  <div class="gw-nav">
-    <button class="btn-ghost" id="gwPrevBtn">‹ PREV</button>
-    <div class="gw-nav-label" id="gwNavLabel">GW —</div>
-    <button class="btn-ghost" id="gwNextBtn">NEXT ›</button>
-  </div>
-  <div id="fixtureCalendar" class="fixture-calendar"></div>
-
   <div id="results" style="display:none;">
-    <div class="summary" id="summary"></div>
+    <nav class="tab-nav" id="tabNav">
+      <button class="tab-btn active" type="button" data-tab="squad">Squad</button>
+      <button class="tab-btn" type="button" data-tab="fixtures">Fixtures</button>
+      <button class="tab-btn" type="button" data-tab="recommender">Recommender</button>
+    </nav>
 
-    <h2 class="section">// Current Squad</h2>
-    <div class="pitch" id="pitch"></div>
-    <details class="table-toggle">
-      <summary>▸ Show full stats table</summary>
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr><th>Pos</th><th>Player</th><th>Team</th><th>£</th><th>Form</th><th>Pts</th><th>GW</th><th>Status</th></tr>
-          </thead>
-          <tbody id="squadBody"></tbody>
-        </table>
+    <div class="tab-panel" id="tabPanel-squad" data-tab-panel="squad">
+      <div class="summary" id="summary"></div>
+
+      <h2 class="section">// Current Squad</h2>
+      <div class="pitch" id="pitch"></div>
+      <details class="table-toggle">
+        <summary>▸ Show full stats table</summary>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Pos</th><th>Player</th><th>Team</th><th>£</th><th>Form</th><th>Pts</th><th>GW</th><th>Status</th></tr>
+            </thead>
+            <tbody id="squadBody"></tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+    <div class="tab-panel" id="tabPanel-fixtures" data-tab-panel="fixtures" hidden>
+      <h2 class="section">// Gameweek Fixtures</h2>
+      <div class="gw-nav">
+        <button class="btn-ghost" id="gwPrevBtn">‹ PREV</button>
+        <div class="gw-nav-label" id="gwNavLabel">GW —</div>
+        <button class="btn-ghost" id="gwNextBtn">NEXT ›</button>
       </div>
-    </details>
+      <div id="fixtureCalendar" class="fixture-calendar"></div>
 
-    <h2 class="section">// Upcoming Fixtures</h2>
-    <div id="squadFixtures" class="fdr-panel"></div>
+      <h2 class="section">// Upcoming Fixtures</h2>
+      <div id="squadFixtures" class="fdr-panel"></div>
+    </div>
 
-    <h2 class="section">// Transfer Recommender</h2>
-    <div id="recWrap"></div>
+    <div class="tab-panel" id="tabPanel-recommender" data-tab-panel="recommender" hidden>
+      <h2 class="section">// Transfer Recommender</h2>
+      <div id="recWrap"></div>
+    </div>
   </div>
 </main>
 
@@ -670,6 +698,20 @@ async function showGameweek(delta){
 document.getElementById('gwPrevBtn').addEventListener('click', () => showGameweek(-1));
 document.getElementById('gwNextBtn').addEventListener('click', () => showGameweek(1));
 
+// ---- Tab nav: Squad / Fixtures / Recommender ----
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  document.querySelectorAll('.tab-panel').forEach(panel => {
+    panel.hidden = panel.dataset.tabPanel !== tab;
+  });
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
 function buildTicker(bs){
   const els = bs.elements.filter(e => e.minutes > 0);
   const topScorers = [...els].sort((a,b)=>b.event_points-a.event_points).slice(0,6);
@@ -784,6 +826,7 @@ async function loadTeam(){
   loadBtn.disabled = true;
   renderSkeleton();
   showResults();
+  switchTab('squad'); // squad view is the home tab for every fresh pull
   setStatus('▌ CONNECTING TO FPL WIRE…');
 
   try{
