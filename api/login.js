@@ -1,14 +1,15 @@
-// Vercel Serverless Function — logs into FPL on the user's behalf.
+// Vercel Serverless Function — exchanges a PingOne OIDC refresh token
+// (extracted by the user from their own browser's localStorage) for a
+// short-lived access token, and stores both in an httpOnly cookie.
 //
-// Flow:
-//  1. Browser POSTs { email, password } to this endpoint over HTTPS.
-//  2. We POST those credentials to FPL's own login service, server-side.
-//  3. FPL responds with session cookies (pl_profile, sessionid, csrftoken).
-//  4. We bundle just those into our OWN httpOnly cookie on our domain —
-//     the browser never sees the raw FPL cookies, and our frontend JS
-//     can't read this cookie back out (httpOnly), which limits XSS risk.
-//  5. The password is never stored or logged — it exists only for the
-//     duration of this single request.
+// FPL migrated its web login to PingOne OIDC around the 2025/26 season.
+// The old email/password POST + pl_profile/sessionid cookies no longer
+// work. See project notes for the DevTools extraction one-liner.
+
+const TOKEN_URL = 'https://account.premierleague.com/as/token';
+// Best-effort default based on community reference implementations —
+// override via env var if FPL's client_id differs from this.
+const CLIENT_ID = process.env.FPL_OIDC_CLIENT_ID || 'fpl-web';
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -16,56 +17,49 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const { email, password } = req.body || {};
-  if (!email || !password) {
-    res.status(400).json({ error: 'Email and password are required.' });
+  const { refresh_token } = req.body || {};
+  if (!refresh_token || typeof refresh_token !== 'string' || refresh_token.length < 10) {
+    res.status(400).json({ error: 'That doesn\'t look like a valid refresh token.' });
     return;
   }
 
   try {
     const form = new URLSearchParams();
-    form.set('login', email);
-    form.set('password', password);
-    form.set('app', 'plfpl-web');
-    form.set('redirect_uri', 'https://fantasy.premierleague.com/a/login');
+    form.set('grant_type', 'refresh_token');
+    form.set('refresh_token', refresh_token);
+    form.set('client_id', CLIENT_ID);
 
-    const loginRes = await fetch('https://users.premierleague.com/accounts/login/', {
+    const tokenRes = await fetch(TOKEN_URL, {
       method: 'POST',
-      redirect: 'manual',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'Mozilla/5.0 (compatible; SquadWire/1.0)',
-        Accept: 'text/html,application/xhtml+xml',
+        Accept: 'application/json',
       },
       body: form.toString(),
     });
 
-    const location = loginRes.headers.get('location') || '';
-    const failed = loginRes.status !== 302 || location.includes('access-denied') || location.includes('Login');
+    const rawText = await tokenRes.text();
+    let data;
+    try { data = JSON.parse(rawText); } catch (e) { data = null; }
 
-    // Node 20's fetch Headers supports getSetCookie(); fall back gracefully if not.
-    const rawCookies = typeof loginRes.headers.getSetCookie === 'function'
-      ? loginRes.headers.getSetCookie()
-      : (loginRes.headers.get('set-cookie') ? [loginRes.headers.get('set-cookie')] : []);
-
-    const wanted = {};
-    rawCookies.forEach((c) => {
-      const [pair] = c.split(';');
-      const idx = pair.indexOf('=');
-      const name = pair.slice(0, idx).trim();
-      const value = pair.slice(idx + 1).trim();
-      if (['pl_profile', 'sessionid', 'csrftoken'].includes(name)) {
-        wanted[name] = value;
-      }
-    });
-
-    if (failed || !wanted.pl_profile) {
-      res.status(401).json({ error: 'FPL login failed — check your email and password.' });
+    if (!tokenRes.ok || !data || !data.access_token) {
+      // Surface the REAL error from FPL/PingOne instead of guessing blind.
+      res.status(tokenRes.status || 502).json({
+        error: 'Token exchange failed.',
+        upstream_status: tokenRes.status,
+        upstream_body: rawText.slice(0, 500),
+      });
       return;
     }
 
-    const bundled = Buffer.from(JSON.stringify(wanted)).toString('base64');
-    const maxAge = 60 * 60 * 12; // 12 hours
+    const bundled = Buffer.from(JSON.stringify({
+      access_token: data.access_token,
+      refresh_token: data.refresh_token || refresh_token, // rotates
+      expires_in: data.expires_in || 3600,
+      obtained_at: Date.now(),
+    })).toString('base64');
+
+    const maxAge = 60 * 60 * 12; // 12 hours (well past token expiry; we refresh as needed)
 
     res.setHeader(
       'Set-Cookie',
@@ -73,6 +67,6 @@ module.exports = async (req, res) => {
     );
     res.status(200).json({ ok: true });
   } catch (err) {
-    res.status(502).json({ error: 'Could not reach FPL login service.', detail: String(err) });
+    res.status(502).json({ error: 'Could not reach the FPL token service.', detail: String(err) });
   }
 };
