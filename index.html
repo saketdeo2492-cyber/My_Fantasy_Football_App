@@ -310,6 +310,37 @@
   .fdr-dot.fdr-mid{ background:var(--cyan); }
   .fdr-dot.fdr-hard{ background:var(--pink); }
 
+  /* ---- Gameweek fixture calendar ---- */
+  .gw-nav{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    margin-bottom:14px;
+  }
+  .gw-nav .btn-ghost{ height:32px; font-size:11px; padding:0 12px; flex-shrink:0; }
+  .gw-nav .btn-ghost:disabled{ border-color:var(--line); color:var(--line); cursor:default; }
+  .gw-nav .btn-ghost:disabled:hover{ background:transparent; color:var(--line); }
+  .gw-nav-label{
+    font-family:'Space Mono',monospace; font-size:13px; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--cyan); text-align:center;
+  }
+  .fixture-calendar{
+    display:grid; gap:1px; background:var(--line); border:1px solid var(--line);
+    margin-bottom:30px;
+  }
+  .gw-match{
+    background:var(--purple-dark); display:grid;
+    grid-template-columns:1fr auto 1fr; align-items:center; gap:10px;
+    padding:11px 14px; font-size:13px;
+  }
+  .gw-team{
+    display:flex; align-items:center; gap:6px; min-width:0;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .gw-team.away{ justify-content:flex-end; flex-direction:row-reverse; }
+  .gw-kickoff{
+    font-family:'Space Mono',monospace; font-size:11px; color:var(--dim);
+    white-space:nowrap; text-align:center;
+  }
+
   /* ---- Mobile ---- */
   @media (max-width:600px){
     main{ padding:18px 14px 60px; }
@@ -330,6 +361,11 @@
     .rec-head{ flex-direction:column; align-items:flex-start; }
     .rec-opt{ flex-direction:column; align-items:flex-start; gap:3px; }
     .rec-opt .stats{ font-size:10px; }
+    .fdr-team{ min-width:34px; font-size:11px; }
+    .fdr-chip{ min-width:38px; padding:3px 4px; }
+    .gw-match{ grid-template-columns:1fr; gap:4px; text-align:center; padding:10px; }
+    .gw-team, .gw-team.away{ justify-content:center; flex-direction:row; }
+    .gw-kickoff{ order:3; }
   }
 </style>
 </head>
@@ -374,6 +410,14 @@
   </div>
 
   <div class="status-line" id="status"></div>
+
+  <h2 class="section">// Gameweek Fixtures</h2>
+  <div class="gw-nav">
+    <button class="btn-ghost" id="gwPrevBtn">‹ PREV</button>
+    <div class="gw-nav-label" id="gwNavLabel">GW —</div>
+    <button class="btn-ghost" id="gwNextBtn">NEXT ›</button>
+  </div>
+  <div id="fixtureCalendar" class="fixture-calendar"></div>
 
   <div id="results" style="display:none;">
     <div class="summary" id="summary"></div>
@@ -573,6 +617,58 @@ function renderSquadFixtures(bs, squad, fixtures){
     </div>`;
   }).join('');
 }
+
+// ---- Gameweek-by-gameweek fixture calendar (standalone, not squad-specific) ----
+let calendarEventId = null;
+
+function defaultEventId(bs){
+  const ev = bs.events.find(e => e.is_next) || bs.events.find(e => e.is_current) || bs.events.find(e => !e.finished) || bs.events[0];
+  return ev.id;
+}
+
+function renderFixtureCalendar(bs, fixtures, eventId){
+  calendarEventId = eventId;
+  const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t);
+  const ev = bs.events.find(e => e.id === eventId);
+  const tag = ev && ev.is_current ? ' (CURRENT)' : ev && ev.is_next ? ' (NEXT)' : '';
+  document.getElementById('gwNavLabel').textContent = `GW${eventId}${tag}`;
+
+  const matches = fixtures
+    .filter(f => f.event === eventId)
+    .sort((a,b) => new Date(a.kickoff_time || 0) - new Date(b.kickoff_time || 0));
+
+  document.getElementById('fixtureCalendar').innerHTML = matches.map(f => {
+    const home = teamById[f.team_h], away = teamById[f.team_a];
+    const kickoff = f.kickoff_time
+      ? new Date(f.kickoff_time).toLocaleString(undefined, {weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
+      : 'TBD';
+    const score = f.finished ? `${f.team_h_score}–${f.team_a_score}` : kickoff;
+    return `<div class="gw-match">
+      <div class="gw-team home"><span class="fdr-dot ${fdrClass(f.team_h_difficulty)}"></span>${home ? home.name : f.team_h}</div>
+      <div class="gw-kickoff">${score}</div>
+      <div class="gw-team away">${away ? away.name : f.team_a}<span class="fdr-dot ${fdrClass(f.team_a_difficulty)}"></span></div>
+    </div>`;
+  }).join('') || '<div class="empty-note" style="padding:14px;">No fixtures scheduled for this gameweek.</div>';
+
+  document.getElementById('gwPrevBtn').disabled = eventId <= bs.events[0].id;
+  document.getElementById('gwNextBtn').disabled = eventId >= bs.events[bs.events.length - 1].id;
+}
+
+async function showGameweek(delta){
+  try{
+    const bs = await loadBootstrap();
+    const fixtures = await loadFixtures();
+    const base = calendarEventId ?? defaultEventId(bs);
+    const minId = bs.events[0].id, maxId = bs.events[bs.events.length - 1].id;
+    const id = Math.max(minId, Math.min(maxId, base + delta));
+    renderFixtureCalendar(bs, fixtures, id);
+  }catch(e){
+    document.getElementById('fixtureCalendar').innerHTML = '<div class="empty-note" style="padding:14px;">Could not load the fixture calendar.</div>';
+  }
+}
+
+document.getElementById('gwPrevBtn').addEventListener('click', () => showGameweek(-1));
+document.getElementById('gwNextBtn').addEventListener('click', () => showGameweek(1));
 
 function buildTicker(bs){
   const els = bs.elements.filter(e => e.minutes > 0);
@@ -915,6 +1011,8 @@ teamInput.addEventListener('keydown', e => { if(e.key === 'Enter') loadTeam(); }
       }
     }catch(e){ /* fall back to whatever team id is already in the box */ }
   }
+
+  showGameweek(0); // independent of squad pull — loads its own bootstrap/fixtures data
 
   if(teamInput.value){
     loadTeam();
