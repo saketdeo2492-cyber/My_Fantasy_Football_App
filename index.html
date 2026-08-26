@@ -283,13 +283,13 @@
   </div>
   <div class="auth-row" id="authRow">
     <div class="field" style="flex:3;">
-      <label for="cookieValue">pl_profile Cookie Value</label>
-      <input id="cookieValue" type="password" autocomplete="off" placeholder="Paste the long value here">
+      <label for="cookieValue">FPL Refresh Token</label>
+      <input id="cookieValue" type="password" autocomplete="off" placeholder="Paste your refresh token here">
     </div>
     <button class="btn-ghost" id="loginBtn">Connect</button>
   </div>
   <div class="hint" style="margin:-10px 0 16px;">
-    Log into fantasy.premierleague.com in this browser first, then grab your pl_profile cookie from DevTools → Application → Cookies. <a href="#" id="cookieHelpLink" style="color:var(--cyan);">How?</a>
+    Log into fantasy.premierleague.com in this browser first, then extract your refresh token (see the app's README for the DevTools command). <a href="#" id="cookieHelpLink" style="color:var(--cyan);">How?</a>
   </div>
 
   <div class="status-line" id="status"></div>
@@ -316,12 +316,11 @@
 
 <footer>
   DATA: official FPL API, fetched server-side through this app's own proxy — no third-party relay involved.
-  Prices in £m, Form = avg pts over last 30 days. Logging in fetches your exact bank and free transfers straight
-  from FPL's account API — your password is sent to this app's own server once to establish the session, never
-  stored or logged, and the resulting session is kept in an httpOnly cookie your browser's JavaScript can't read.
-  Without logging in, Free Transfers is an estimate reconstructed from public transfer history instead. Recommender
-  ranks alternatives in the same position, affordable within squad value + bank, by current form and next-fixture
-  expected points.
+  Prices in £m, Form = avg pts over last 30 days. Connecting exchanges an FPL OIDC refresh token you provide
+  for a short-lived access token used to fetch your exact bank and free transfers — the token is kept in an
+  httpOnly cookie your browser's JavaScript can't read, and is never logged. Without connecting, Free Transfers
+  is an estimate reconstructed from public transfer history instead. Recommender ranks alternatives in the same
+  position, affordable within squad value + bank, by current form and next-fixture expected points.
 </footer>
 
 <script>
@@ -366,16 +365,16 @@ async function handleLogout(){
 async function handleLogin(){
   const cookieVal = document.getElementById('cookieValue').value.trim();
   if(!cookieVal){
-    setStatus('Paste your pl_profile cookie value first.', true);
+    setStatus('Paste your FPL refresh token first.', true);
     return;
   }
   loginBtn.disabled = true;
   loginBtn.textContent = 'Connecting…';
   try{
-    const res = await fetch('/api/set-session', {
+    const res = await fetch('/api/login', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({pl_profile: cookieVal})
+      body: JSON.stringify({refresh_token: cookieVal})
     });
     const data = await res.json();
     if(!res.ok || !data.ok){
