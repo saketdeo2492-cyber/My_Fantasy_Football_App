@@ -280,6 +280,36 @@
   .skel-meta{ width:36px; height:8px; margin:0 auto; }
   .pitch-card.skeleton{ border-style:dashed; }
 
+  /* ---- Fixture difficulty (squad-specific list + gameweek calendar) ---- */
+  .fdr-panel{
+    background:var(--panel); border:1px solid var(--line);
+    padding:4px 16px; margin-bottom:10px;
+  }
+  .fdr-row{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    padding:10px 0; border-bottom:1px solid rgba(90,46,96,.4);
+  }
+  .fdr-row:last-child{ border-bottom:none; }
+  .fdr-team{
+    font-family:'Space Mono',monospace; font-weight:700; font-size:12px;
+    letter-spacing:.5px; min-width:40px; color:var(--ink);
+  }
+  .fdr-chips{ display:flex; gap:6px; flex-wrap:wrap; flex:1; }
+  .fdr-chip{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-width:44px; padding:4px 6px; border-radius:3px;
+    font-family:'Space Mono',monospace; line-height:1.3;
+  }
+  .fdr-chip .fdr-opp{ font-size:10px; font-weight:700; }
+  .fdr-chip .fdr-loc{ font-size:8px; opacity:.8; }
+  .fdr-easy{ background:var(--green); color:var(--purple); }
+  .fdr-mid{ background:var(--cyan); color:var(--purple); }
+  .fdr-hard{ background:var(--pink); color:#fff; }
+  .fdr-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .fdr-dot.fdr-easy{ background:var(--green); }
+  .fdr-dot.fdr-mid{ background:var(--cyan); }
+  .fdr-dot.fdr-hard{ background:var(--pink); }
+
   /* ---- Mobile ---- */
   @media (max-width:600px){
     main{ padding:18px 14px 60px; }
@@ -361,6 +391,9 @@
         </table>
       </div>
     </details>
+
+    <h2 class="section">// Upcoming Fixtures</h2>
+    <div id="squadFixtures" class="fdr-panel"></div>
 
     <h2 class="section">// Transfer Recommender</h2>
     <div id="recWrap"></div>
@@ -482,12 +515,63 @@ function statusBadge(el){
 }
 
 let bootstrap = null;
+let fixturesCache = null;
 let deadlineTimer = null;
 
 async function loadBootstrap(){
   if(bootstrap) return bootstrap;
   bootstrap = await apiFetch('bootstrap-static/');
   return bootstrap;
+}
+
+async function loadFixtures(){
+  if(fixturesCache) return fixturesCache;
+  fixturesCache = await apiFetch('fixtures/');
+  return fixturesCache;
+}
+
+function fdrClass(difficulty){
+  if(difficulty <= 2) return 'fdr-easy';
+  if(difficulty >= 4) return 'fdr-hard';
+  return 'fdr-mid';
+}
+
+// Next few fixtures for every team currently in the squad, difficulty
+// color-coded from each fixture's team_h_difficulty/team_a_difficulty (1-5).
+function renderSquadFixtures(bs, squad, fixtures){
+  const wrap = document.getElementById('squadFixtures');
+  if(!fixtures){ wrap.innerHTML = '<div class="empty-note">Could not load fixtures.</div>'; return; }
+
+  const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t);
+  const squadTeamIds = [...new Set(squad.map(s => s.team))]
+    .sort((a,b) => (teamById[a]?.short_name || '').localeCompare(teamById[b]?.short_name || ''));
+
+  const upcoming = fixtures
+    .filter(f => !f.finished)
+    .sort((a,b) => {
+      if(a.event !== b.event) return (a.event ?? 999) - (b.event ?? 999);
+      return new Date(a.kickoff_time || 0) - new Date(b.kickoff_time || 0);
+    });
+
+  wrap.innerHTML = squadTeamIds.map(tid => {
+    const team = teamById[tid];
+    const teamFixtures = upcoming.filter(f => f.team_h === tid || f.team_a === tid).slice(0, 5);
+
+    const chips = teamFixtures.map(f => {
+      const isHome = f.team_h === tid;
+      const opp = teamById[isHome ? f.team_a : f.team_h];
+      const difficulty = isHome ? f.team_h_difficulty : f.team_a_difficulty;
+      return `<div class="fdr-chip ${fdrClass(difficulty)}">
+        <span class="fdr-opp">${opp ? opp.short_name : '?'}</span>
+        <span class="fdr-loc">${isHome ? 'H' : 'A'}</span>
+      </div>`;
+    }).join('') || '<span class="sub">No upcoming fixtures scheduled.</span>';
+
+    return `<div class="fdr-row">
+      <div class="fdr-team">${team ? team.short_name : tid}</div>
+      <div class="fdr-chips">${chips}</div>
+    </div>`;
+  }).join('');
 }
 
 function buildTicker(bs){
@@ -584,6 +668,12 @@ function renderSkeleton(){
 
   document.getElementById('squadBody').innerHTML = '';
   document.getElementById('recWrap').innerHTML = '';
+
+  document.getElementById('squadFixtures').innerHTML = Array.from({length:4}).map(() => `
+    <div class="fdr-row">
+      <div class="skel skel-name" style="margin:0 12px 0 0;"></div>
+      <div class="fdr-chips">${'<div class="skel" style="width:44px;height:24px;"></div>'.repeat(4)}</div>
+    </div>`).join('');
 }
 
 async function loadTeam(){
@@ -618,6 +708,10 @@ async function loadTeam(){
     let history = null;
     try{ history = await apiFetch(`entry/${teamId}/history/`); }catch(e){ /* non-fatal */ }
 
+    setStatus('▌ LOADING FIXTURES…');
+    let fixtures = null;
+    try{ fixtures = await loadFixtures(); }catch(e){ /* non-fatal */ }
+
     let myTeam = null;
     if(isLoggedIn){
       setStatus('▌ FETCHING EXACT ACCOUNT DATA…');
@@ -629,7 +723,7 @@ async function loadTeam(){
       }
     }
 
-    renderTeam(bs, entry, picks, eventId, history, myTeam);
+    renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures);
     setStatus('▌ LIVE — GW' + eventId + ' data loaded for "' + entry.name + '"');
   }catch(err){
     console.error(err);
@@ -640,7 +734,7 @@ async function loadTeam(){
   }
 }
 
-function renderTeam(bs, entry, picks, eventId, history, myTeam){
+function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
   const byId = {}; bs.elements.forEach(e => byId[e.id] = e);
   const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
 
@@ -702,6 +796,7 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam){
   document.getElementById('squadBody').innerHTML =
     starters.map(row).join('') + bench.map(row).join('');
 
+  renderSquadFixtures(bs, squad, fixtures);
   renderRecommender(bs, squad, bank);
 }
 
