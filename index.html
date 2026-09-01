@@ -277,6 +277,12 @@
     font-size:12px; padding:10px 14px; margin-bottom:14px; letter-spacing:.3px;
   }
   .rec-card.punt-card{ border-left-color:var(--cyan); }
+  .rec-card.bench-card{ border-left-color:var(--dim); opacity:.85; }
+  .bench-badge{
+    display:inline-block; background:transparent; border:1px solid var(--dim); color:var(--dim);
+    font-family:'Space Mono',monospace; font-size:9px; font-weight:700; padding:1px 5px;
+    letter-spacing:.5px; text-transform:uppercase; vertical-align:middle; margin-right:4px;
+  }
 
   details.table-toggle{ margin-top:18px; }
   details.table-toggle summary{
@@ -1201,6 +1207,31 @@ function availabilityMultiplier(e){
   return 0.05; // injured/suspended/unavailable — near-zero rather than exactly 0
 }
 
+// FPL's own doubt signal (chance_of_playing_next_round: 0-100, or null
+// meaning "no doubt") blended with how many minutes a player actually
+// tends to get when selected. Distinct from availabilityMultiplier above
+// (which feeds the points formula itself) — this one is used purely to
+// weight *how much a flag matters* in the recommender's ranking: a
+// nailed-on starter's issue matters far more than a fringe player's, and
+// it's what separates a real "Bench Upgrade" from a starting-XI concern.
+function starterReliability(e){
+  const cop = e.chance_of_playing_next_round;
+  const chanceFactor = (cop === null || cop === undefined) ? 1 : cop / 100;
+  const minsFactor = clamp(avgMinutesPerGame(e) / 75, 0, 1); // ~75+ min/game reads as a nailed starter
+  return clamp(chanceFactor * (0.25 + 0.75 * minsFactor), 0, 1);
+}
+
+// A cheap, currently-benched squad player who rarely plays — kept purely
+// as a value "enabler" to fund the rest of the squad, not a real
+// point-scoring concern. Swaps for these are only worth flagging as a
+// distinct, lower-priority "Bench Upgrade" — see renderRecommender().
+function isBenchEnabler(s){
+  const isBenched = s.pick && s.pick.position > 11;
+  const cheap = s.now_cost <= 45; // £4.5m — typical enabler price ceiling
+  const rarelyPlays = avgMinutesPerGame(s) < 30;
+  return !!(isBenched && cheap && rarelyPlays);
+}
+
 // Season-aggregate proxies for "how good is this team defensively / going
 // forward" — used only as a small nudge on top of FPL's own fixture
 // `difficulty`, which is already the primary fixture-strength signal.
@@ -1410,6 +1441,34 @@ function findPuntPicks(bs, ownedIds, windowEventIds, fixtures, teamsFullById, ex
   return punts.sort((a,b) => b.week1Points - a.week1Points).slice(0, 3);
 }
 
+// Candidate replacements for `outgoingTeamId`'s slot in `pos`, legal
+// against `teamIdsForClubCheck` (the 3-per-club limit is checked on the
+// *resultant* squad — that list minus one outgoing-team slot, plus the
+// candidate) and affordable within `budget`. Shared by the ranking preview
+// pass and the final sequential-simulation pass in renderRecommender().
+function findCandidates(pos, ownedIds, excludeIds, budget, outgoingTeamId, teamIdsForClubCheck, windowEventIds, fixtures, bs, teamsFullById, limit){
+  return bs.elements
+    .filter(e => e.element_type === pos)
+    .filter(e => !ownedIds.has(e.id) && !excludeIds.has(e.id))
+    .filter(e => e.now_cost <= budget)
+    .filter(e => e.status === 'a')
+    .filter(e => e.minutes > 0) // exclude completely unproven players — no per-90 signal to rank them on
+    .filter(e => {
+      const counts = {};
+      teamIdsForClubCheck.forEach(t => counts[t] = (counts[t]||0) + 1);
+      counts[outgoingTeamId] = Math.max(0, (counts[outgoingTeamId]||0) - 1);
+      counts[e.team] = (counts[e.team]||0) + 1;
+      return counts[e.team] <= 3; // 3-per-club limit against the resultant squad
+    })
+    .map(e => ({ ...e, _proj: computePlayerProjection(e, windowEventIds, fixtures, bs), _avgDiff: avgFixtureDifficulty(e.team, teamsFullById, fixtures, NUM_GWS) }))
+    .sort((a,b) => b._proj.blendedScore - a._proj.blendedScore)
+    .slice(0, limit || 3);
+}
+
+const DEFAULT_VISIBLE_SUGGESTIONS = 3;
+const MAX_TOTAL_SUGGESTIONS = 6;
+const MIN_GAIN_TO_FLAG = 2; // a swap has to be worth at least this many blended pts to be worth mentioning at all
+
 function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfers){
   const wrap = document.getElementById('recWrap');
   wrap.innerHTML = '';
@@ -1427,6 +1486,7 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
 
   const ownedIds = new Set(squad.map(s => s.id));
   const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
+  const squadTeamIds = squad.map(s => s.team);
 
   const squadProjections = {};
   squad.forEach(s => { squadProjections[s.id] = computePlayerProjection(s, windowEventIds, fixtures, bs); });
@@ -1444,98 +1504,138 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
     wrap.innerHTML += `<div class="squad-risk-banner">⚠ BLANK GAMEWEEK RISK — ${lines.join(' · ')}</div>`;
   }
 
-  // ---- Flag weak squad players, position by position ----
-  const byPos = {1:[],2:[],3:[],4:[]};
-  squad.forEach(s => byPos[s.element_type].push(s));
+  // ---- Evaluate every squad player for a potential upgrade ----
+  //
+  // Earlier versions flagged "the weakest player per position" and ranked
+  // by raw blended score — which meant a minimum-price bench enabler (who
+  // barely plays and was never going to score much regardless) constantly
+  // out-ranked real starting-XI concerns, since its low score always read
+  // as "weakest." Instead: evaluate the whole squad in one pool, size each
+  // potential swap by its actual point impact (weighted by how likely the
+  // player is to actually start — see starterReliability()), and keep
+  // cheap/benched "enabler" swaps in their own lower-priority tier so they
+  // can't crowd out a real issue.
+  const BENCH_PRICE_BAND = 10; // £1.0m — "similarly priced" ceiling for enabler-tier swaps
 
-  const flaggedCandidates = [];
-  Object.keys(byPos).forEach(posKey => {
-    const pos = parseInt(posKey);
-    const group = byPos[pos];
-    if(!group.length) return;
-    const posAvgBlended = group.reduce((sum,s) => sum + squadProjections[s.id].blendedScore, 0) / group.length;
-    group.forEach(s => {
-      const proj = squadProjections[s.id];
-      const avgDiff = avgFixtureDifficulty(s.team, teamsFullById, fixtures, NUM_GWS);
-      const isInjured = s.status !== 'a';
-      const isWeak = proj.blendedScore < posAvgBlended * 0.75;
-      const toughFixtures = avgDiff >= 4;
-      const hasBgwInWindow = proj.weeks.some(w => w.isBGW);
-      if(isInjured || isWeak || toughFixtures || hasBgwInWindow){
-        flaggedCandidates.push({ s, pos, proj, avgDiff, isInjured, isWeak, toughFixtures, hasBgwInWindow });
-      }
-    });
+  const evaluations = squad.map(s => {
+    const proj = squadProjections[s.id];
+    const avgDiff = avgFixtureDifficulty(s.team, teamsFullById, fixtures, NUM_GWS);
+    const isInjured = s.status !== 'a';
+    const toughFixtures = avgDiff >= 4;
+    const hasBgwInWindow = proj.weeks.some(w => w.isBGW);
+    const reliability = starterReliability(s);
+    const benchEnabler = isBenchEnabler(s);
+
+    let candidates, best;
+    if(benchEnabler){
+      // A bench enabler's whole point is being cheap — searching the full
+      // bank would just surface the priciest affordable player (a premium
+      // swap, not "similarly priced"), which is the wrong comparison for
+      // this tier. Search a narrow same-price-tier band instead and rank
+      // by how nailed-on to start the replacement is, not blended score —
+      // that's the actual thing worth paying for here (see isBenchEnabler).
+      const narrowBudget = Math.min(s.now_cost + bank, s.now_cost + BENCH_PRICE_BAND);
+      candidates = findCandidates(s.element_type, ownedIds, new Set(), narrowBudget, s.team, squadTeamIds, windowEventIds, fixtures, bs, teamsFullById, 8)
+        .sort((a,b) => starterReliability(b) - starterReliability(a))
+        .slice(0, 3);
+      best = candidates[0] || null;
+    } else {
+      candidates = findCandidates(s.element_type, ownedIds, new Set(), s.now_cost + bank, s.team, squadTeamIds, windowEventIds, fixtures, bs, teamsFullById, 3);
+      best = candidates[0] || null;
+    }
+    const gain = best ? best._proj.blendedScore - proj.blendedScore : -Infinity;
+
+    return { s, pos: s.element_type, proj, avgDiff, isInjured, toughFixtures, hasBgwInWindow, reliability, benchEnabler, candidates, best, gain };
+  });
+
+  const eligible = evaluations.filter(ev => {
+    if(!ev.best) return false;
+    if(ev.benchEnabler){
+      // Bench/enabler tier: only worth a swap if it's a *genuinely*
+      // meaningful upgrade — similarly priced, but much more nailed-on to
+      // start (real risk reduction), not just a marginally better stat line.
+      const priceDelta = Math.abs(ev.best.now_cost - ev.s.now_cost) / 10;
+      const reliabilityGap = starterReliability(ev.best) - ev.reliability;
+      return priceDelta <= 1.0 && reliabilityGap >= 0.35;
+    }
+    return ev.gain >= MIN_GAIN_TO_FLAG || ev.isInjured || ev.toughFixtures || ev.hasBgwInWindow;
+  });
+
+  // Impact = the real point gap, damped by how likely the outgoing player
+  // actually is to feature (a reliability floor of 0.25 keeps a genuinely
+  // injured/doubtful starter from being unfairly buried — their gain is
+  // already large anyway, since their own blended score already accounts
+  // for their poor availability). Bench-tier swaps always sort below every
+  // starting-XI-tier one, regardless of impact value.
+  eligible.forEach(ev => { ev.impact = ev.gain * (0.25 + 0.75 * ev.reliability); });
+  eligible.sort((a,b) => {
+    if(a.benchEnabler !== b.benchEnabler) return a.benchEnabler ? 1 : -1;
+    return b.impact - a.impact;
   });
 
   const suggestedIncomingIds = new Set();
+  const cards = []; // { html, benchEnabler }
 
-  if(flaggedCandidates.length === 0){
+  if(eligible.length === 0){
     wrap.innerHTML += '<div class="empty-note">No red flags right now — projected points, underlying stats, and fixtures all look fine across the squad. Squad looks stable.</div>';
   } else {
-    flaggedCandidates.sort((a,b) => a.proj.blendedScore - b.proj.blendedScore);
-
     // freeTransfers is Infinity while a wildcard/free hit is active this
     // week (all transfers are free), a live count when connected, an
     // estimate from transfer history otherwise, or — if genuinely
     // unknown — a conservative fallback of 1 so hit suggestions stay rare.
     const ftBudget = freeTransfers == null ? 1 : freeTransfers;
-    const maxSwapsToShow = Math.min(flaggedCandidates.length, Math.max(ftBudget, 1) + 1);
 
     // Sequential simulation so a second suggested swap respects the
     // budget/club-limit consequences of the first (legality against the
     // *resultant* squad, not just the current one).
     let simBank = bank;
     let simTeamIds = squad.map(s => s.team);
-    let shown = 0;
 
-    for(const flagged of flaggedCandidates){
-      if(shown >= maxSwapsToShow) break;
-      const { s: weakest, pos, proj: outProj, avgDiff: outAvgDiff } = flagged;
+    for(const ev of eligible){
+      if(cards.length >= MAX_TOTAL_SUGGESTIONS) break;
+      const { s: weakest, pos, proj: outProj, avgDiff: outAvgDiff } = ev;
 
       const affordable = weakest.now_cost + simBank;
-      const candidates = bs.elements
-        .filter(e => e.element_type === pos)
-        .filter(e => !ownedIds.has(e.id) && !suggestedIncomingIds.has(e.id))
-        .filter(e => e.now_cost <= affordable)
-        .filter(e => e.status === 'a')
-        .filter(e => e.minutes > 0) // exclude completely unproven players — no per-90 signal to rank them on
-        .filter(e => {
-          const counts = {};
-          simTeamIds.forEach(t => counts[t] = (counts[t]||0) + 1);
-          counts[weakest.team] = Math.max(0, (counts[weakest.team]||0) - 1);
-          counts[e.team] = (counts[e.team]||0) + 1;
-          return counts[e.team] <= 3; // 3-per-club limit against the resultant squad
-        })
-        .map(e => ({ ...e, _proj: computePlayerProjection(e, windowEventIds, fixtures, bs), _avgDiff: avgFixtureDifficulty(e.team, teamsFullById, fixtures, NUM_GWS) }))
-        .sort((a,b) => b._proj.blendedScore - a._proj.blendedScore)
-        .slice(0, 3);
-
+      let candidates;
+      if(ev.benchEnabler){
+        // Same narrow same-price-tier, reliability-ranked search used for
+        // the eligibility gate above — a bench swap should stay "similarly
+        // priced, more nailed-on," not surface a premium the full bank
+        // happens to afford.
+        const narrowBudget = Math.min(affordable, weakest.now_cost + BENCH_PRICE_BAND);
+        candidates = findCandidates(pos, ownedIds, suggestedIncomingIds, narrowBudget, weakest.team, simTeamIds, windowEventIds, fixtures, bs, teamsFullById, 8)
+          .sort((a,b) => starterReliability(b) - starterReliability(a))
+          .slice(0, 3);
+      } else {
+        candidates = findCandidates(pos, ownedIds, suggestedIncomingIds, affordable, weakest.team, simTeamIds, windowEventIds, fixtures, bs, teamsFullById, 3);
+      }
       if(candidates.length === 0) continue;
       const best = candidates[0];
       const gain = best._proj.blendedScore - outProj.blendedScore;
-      const usesHit = shown >= ftBudget;
+      const usesHit = cards.length >= ftBudget;
       if(usesHit && gain <= 6) continue; // must "clearly" clear the -4 hit, not just edge past it
 
       simBank = simBank + weakest.now_cost - best.now_cost;
       const outIdx = simTeamIds.indexOf(weakest.team);
       if(outIdx >= 0) simTeamIds.splice(outIdx, 1, best.team);
       suggestedIncomingIds.add(best.id);
-      shown++;
 
       const reasonParts = [];
-      if(flagged.isInjured) reasonParts.push(weakest.news ? weakest.news : 'currently unavailable');
+      if(ev.isInjured) reasonParts.push(weakest.news ? weakest.news : 'currently unavailable');
       reasonParts.push(positionBreakdown(weakest, outAvgDiff));
-      if(flagged.hasBgwInWindow) reasonParts.push('blank gameweek in scoring window');
+      if(ev.hasBgwInWindow) reasonParts.push('blank gameweek in scoring window');
+      if(ev.benchEnabler) reasonParts.push('rarely features — bench enabler');
 
       const netGain = usesHit ? gain - 4 : gain;
       const hitBadge = usesHit
         ? `<span class="hit-badge">Hit: -4</span><span class="sub"> net +${netGain.toFixed(1)}pts</span>`
         : `<span class="free-badge">Free Transfer</span>`;
+      const benchBadge = ev.benchEnabler ? `<span class="bench-badge">Bench Upgrade</span>` : '';
 
-      wrap.innerHTML += `
-        <div class="rec-card">
+      const cardHtml = `
+        <div class="rec-card${ev.benchEnabler ? ' bench-card' : ''}">
           <div class="rec-head">
-            <div class="out">OUT: ${weakest.web_name} <span class="sub">(${POS[pos]}, ${money(weakest.now_cost)})</span> ${hitBadge}</div>
+            <div class="out">OUT: ${weakest.web_name} <span class="sub">(${POS[pos]}, ${money(weakest.now_cost)})</span> ${benchBadge}${hitBadge}</div>
             <div class="why">${reasonParts.join(' · ')}</div>
           </div>
           <div class="rec-list">
@@ -1551,10 +1651,17 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
           </div>
         </div>
       `;
+      cards.push(cardHtml);
     }
 
-    if(shown === 0){
+    if(cards.length === 0){
       wrap.innerHTML += '<div class="empty-note">Squad has flagged players, but no affordable/legal upgrade clears the bar right now (or would need a hit that isn\'t clearly worth it).</div>';
+    } else {
+      wrap.innerHTML += cards.slice(0, DEFAULT_VISIBLE_SUGGESTIONS).join('');
+      if(cards.length > DEFAULT_VISIBLE_SUGGESTIONS){
+        const rest = cards.slice(DEFAULT_VISIBLE_SUGGESTIONS);
+        wrap.innerHTML += `<details class="table-toggle"><summary>▸ Show ${rest.length} more suggestion${rest.length===1?'':'s'}</summary>${rest.join('')}</details>`;
+      }
     }
   }
 
