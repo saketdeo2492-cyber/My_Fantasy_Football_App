@@ -264,6 +264,20 @@
   .rec-opt .arrow{ color:var(--green); margin-right:8px; font-family:'Space Mono',monospace; }
   .empty-note{ color:var(--dim); font-size:12px; margin-bottom:14px; }
 
+  .hit-badge{
+    display:inline-block; background:var(--pink); color:#fff; font-family:'Space Mono',monospace;
+    font-size:9px; font-weight:700; padding:2px 6px; letter-spacing:.5px; text-transform:uppercase; vertical-align:middle;
+  }
+  .free-badge{
+    display:inline-block; background:var(--green); color:var(--purple); font-family:'Space Mono',monospace;
+    font-size:9px; font-weight:700; padding:2px 6px; letter-spacing:.5px; text-transform:uppercase; vertical-align:middle;
+  }
+  .squad-risk-banner{
+    background:var(--purple-dark); border:1px solid var(--pink); color:var(--pink);
+    font-size:12px; padding:10px 14px; margin-bottom:14px; letter-spacing:.3px;
+  }
+  .rec-card.punt-card{ border-left-color:var(--cyan); }
+
   details.table-toggle{ margin-top:18px; }
   details.table-toggle summary{
     cursor:pointer; font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px;
@@ -495,8 +509,12 @@
   Prices in £m, Form = avg pts over last 30 days. Connecting exchanges an FPL OIDC refresh token you provide
   for a short-lived access token used to fetch your exact bank and free transfers — the token is kept in an
   httpOnly cookie your browser's JavaScript can't read, and is never logged. Without connecting, Free Transfers
-  is an estimate reconstructed from public transfer history instead. Recommender ranks alternatives in the same
-  position, affordable within squad value + bank, by current form and next-fixture expected points.
+  is an estimate reconstructed from public transfer history instead. Recommender projects a position-specific
+  points score per player across the next 4 gameweeks (nearer weeks weighted more), using clean-sheet odds,
+  expected goals/assists, defensive-contribution thresholds, form, and fixture difficulty — double/blank
+  gameweeks are detected and weighted or flagged accordingly. Suggested swaps are checked for budget and the
+  3-per-club limit against the resulting squad; anything beyond your free transfers is only shown if the
+  projected gain clearly clears the -4 hit.
 </footer>
 
 <script>
@@ -1020,6 +1038,7 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
 
   let ftHtml = '<div class="num">—</div><div class="lbl">Free Transfers</div>';
   let activeChipHtml = '';
+  let freeTransfersCount = null; // fed to the recommender — see renderRecommender()
 
   if(myTeam && myTeam.transfers){
     // Exact numbers, straight from FPL's authenticated endpoint.
@@ -1028,9 +1047,11 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
     if(typeof t.value === 'number') totalValue = t.value;
     const limit = t.limit; // null means unlimited (wildcard/free hit active)
     const ftLabel = limit == null ? '∞' : limit;
+    freeTransfersCount = limit == null ? Infinity : limit;
     ftHtml = `<div class="num">${ftLabel}<span class="live-tag">●LIVE</span></div><div class="lbl">Free Transfers</div>`;
   }else if(history){
     const ft = estimateFreeTransfers(history.current, history.chips);
+    freeTransfersCount = ft;
     ftHtml = `<div class="num">${ft}</div><div class="lbl">Free Transfers (est.)</div>`;
   }
 
@@ -1077,7 +1098,7 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
     starters.map(row).join('') + bench.map(row).join('');
 
   renderSquadFixtures(bs, squad, fixtures);
-  renderRecommender(bs, squad, bank, fixtures, teamsFullById);
+  renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfersCount);
 }
 
 function pitchCard(p, teamById, teamsFullById, fixtures){
@@ -1128,107 +1149,435 @@ function avgFixtureDifficulty(teamId, teamsFullById, fixtures, limit){
   return fx.reduce((sum, f) => sum + f.difficulty, 0) / fx.length;
 }
 
-// Short "why this one" line for a suggested replacement, comparing it
-// against the player it would replace on fixtures, form, and price.
-function suggestionReason(candidate, outgoing, candAvgDiff, outAvgDiff){
-  const formDelta = (parseFloat(candidate.form) || 0) - (parseFloat(outgoing.form) || 0);
-  const priceDelta = (candidate.now_cost - outgoing.now_cost) / 10; // £m
-  const fixtureDelta = outAvgDiff - candAvgDiff; // positive = candidate's run is easier
+// =====================================================================
+// Position-specific projected-points model
+//
+// For every player we build a per-gameweek projected-points estimate for
+// each of the next NUM_GWS gameweeks, weight nearer gameweeks more
+// heavily (GW_WEIGHTS), and sum into one blended score. A gameweek with
+// 2+ fixtures (DGW) naturally sums both fixtures' contributions — no
+// special-casing needed, it just comes out roughly 2x that week's normal
+// contribution. A gameweek with 0 fixtures (BGW) contributes 0 for that
+// week and is flagged separately in the UI.
+//
+// Where a stat has both a season-total and a "_per_90" sibling (expected_
+// goals, expected_assists, expected_goal_involvements, expected_goals_
+// conceded, defensive_contribution), the per-90 rate is used — it's the
+// fair, minutes-normalized version of the same underlying number, which
+// matters a lot comparing a nailed starter to someone who's missed games.
+// =====================================================================
 
-  const priceNote = Math.abs(priceDelta) < 0.3
-    ? 'similar price'
-    : priceDelta < 0
-      ? `£${Math.abs(priceDelta).toFixed(1)}m cheaper`
-      : `£${priceDelta.toFixed(1)}m more`;
+const NUM_GWS = 4;
+const GW_WEIGHTS = [1.0, 0.85, 0.7, 0.55, 0.45]; // GW+1 .. GW+5; only the first NUM_GWS are used
+const DEFCON_THRESHOLD = { 2: 10, 3: 12, 4: 12 }; // DEF / MID / FWD CBIT(+recoveries) threshold for the 2pt bonus; GKP has none
 
-  const parts = [];
-  if(fixtureDelta >= 0.5) parts.push('better fixtures next 3 GWs');
-  if(formDelta >= 0.5) parts.push(`higher form + ${priceNote}`);
-  if(parts.length === 0) parts.push(`comparable form + ${priceNote}`);
+function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
 
-  return parts.slice(0, 2).join(' · ');
+// Per-90 rates are extrapolated from raw totals (rate = total / minutes *
+// 90), so a player with only a handful of minutes can show an absurd rate
+// off pure noise — e.g. 1 minute played with a single high-xG chance
+// extrapolates to an xG/90 north of 10. Shrink per-90 reliance toward 0
+// linearly until a player has ~2 full matches (180 mins) banked; full
+// weight after that. Applied everywhere a "_per_90" field is read.
+function statReliability(e){ return clamp((e.minutes || 0) / 180, 0, 1); }
+function reliablePer90(e, field){ return (parseFloat(e[field]) || 0) * statReliability(e); }
+
+// FPL doesn't expose "appearances" directly. points_per_game is total_points
+// divided by games played, so total_points / points_per_game backs that
+// count out; starts is the fallback for players with no points on the board.
+function estimatedGamesPlayed(e){
+  const ppg = parseFloat(e.points_per_game) || 0;
+  if(ppg > 0 && e.total_points > 0) return e.total_points / ppg;
+  return e.starts || (e.minutes > 0 ? 1 : 0);
+}
+function avgMinutesPerGame(e){
+  const games = estimatedGamesPlayed(e);
+  return games > 0 ? e.minutes / games : 0;
 }
 
-function renderRecommender(bs, squad, bank, fixtures, teamsFullById){
-  const ownedIds = new Set(squad.map(s=>s.id));
+function availabilityMultiplier(e){
+  if(e.status === 'a') return 1;
+  if(e.status === 'd') return (typeof e.chance_of_playing_next_round === 'number' ? e.chance_of_playing_next_round : 50) / 100;
+  return 0.05; // injured/suspended/unavailable — near-zero rather than exactly 0
+}
+
+// Season-aggregate proxies for "how good is this team defensively / going
+// forward" — used only as a small nudge on top of FPL's own fixture
+// `difficulty`, which is already the primary fixture-strength signal.
+// Minutes-weighted (not a plain average) so a one-minute cameo with a
+// noisy per-90 rate can't swing a team's aggregate the way it would a
+// straight mean over the squad.
+function minutesWeightedAvg(players, valueFn){
+  let weightSum = 0, total = 0;
+  players.forEach(e => { const w = e.minutes || 0; weightSum += w; total += valueFn(e) * w; });
+  return weightSum > 0 ? total / weightSum : null;
+}
+function teamDefensiveFactor(teamId, bs){
+  const defenders = bs.elements.filter(e => e.team === teamId && (e.element_type === 1 || e.element_type === 2) && e.minutes > 0);
+  const avg = minutesWeightedAvg(defenders, e => parseFloat(e.expected_goals_conceded_per_90) || 1.3);
+  return avg == null ? 1.3 : avg;
+}
+function teamAttackingFactor(teamId, bs){
+  const attackers = bs.elements.filter(e => e.team === teamId && (e.element_type === 3 || e.element_type === 4) && e.minutes > 0);
+  const avg = minutesWeightedAvg(attackers, e => (parseFloat(e.expected_goals_per_90)||0) + (parseFloat(e.expected_assists_per_90)||0));
+  return avg == null ? 0.45 : avg;
+}
+
+// Clean-sheet probability for `teamId` in one fixture, clamped 3%-65% —
+// never a certainty, never truly impossible.
+function cleanSheetProbability(teamId, opponentTeamId, difficulty, bs){
+  const base = 0.50 - (difficulty - 3) * 0.09; // diff1→.68 diff3→.50 diff5→.32
+  const defAdj = (1.4 - teamDefensiveFactor(teamId, bs)) * 0.10;
+  const attAdj = (0.45 - teamAttackingFactor(opponentTeamId, bs)) * 0.15;
+  return clamp(base + defAdj + attAdj, 0.03, 0.65);
+}
+
+// Mild fixture-difficulty scaler for attacking-return projections
+// (goals/assists) — season-long underlying stats are fixture-agnostic, so
+// a tough upcoming opponent should trim expected output a little, an easy
+// one should lift it a little.
+function fixtureAttackFactor(difficulty){
+  return 1 + (3 - difficulty) * 0.08; // diff1→1.16 diff3→1.00 diff5→0.84
+}
+
+// Probability of clearing the defensive-contribution points threshold in a
+// single match, from a player's season per-90 CBIT(+recoveries) rate.
+// Modeled as a logistic curve centered on the threshold itself (50% right
+// at their season rate == the threshold) — a reasonable proxy given we
+// only have the per-90 average, not real match-by-match variance.
+function defconHitProbability(per90rate, threshold){
+  const rate = parseFloat(per90rate) || 0;
+  const k = 4 / threshold;
+  return 1 / (1 + Math.exp(-k * (rate - threshold)));
+}
+
+// Single-fixture projected points for one player, position-specific.
+function playerFixtureScore(p, fixture, bs){
+  const isHome = fixture.team_h === p.team;
+  const oppId = isHome ? fixture.team_a : fixture.team_h;
+  const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
+  const csProb = cleanSheetProbability(p.team, oppId, difficulty, bs);
+  const attFactor = fixtureAttackFactor(difficulty);
+  const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
+  const form = parseFloat(p.form) || 0;
+  const xg90 = reliablePer90(p, 'expected_goals_per_90');
+  const xa90 = reliablePer90(p, 'expected_assists_per_90');
+  const defcon90 = reliablePer90(p, 'defensive_contribution_per_90');
+
+  let pts;
+  if(p.element_type === 1){ // GKP: appearance + CS (4pt) + save points + form
+    const saves90 = reliablePer90(p, 'saves_per_90');
+    pts = 2*minsFactor + csProb*4 + (saves90*minsFactor)/3 + form*0.25;
+  } else if(p.element_type === 2){ // DEF: appearance + CS (4pt) + attacking threat + DEFCON(10) + form
+    const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[2]);
+    const attackPts = (xg90*6 + xa90*3) * minsFactor * attFactor;
+    pts = 2*minsFactor + csProb*4 + attackPts + defconProb*2 + form*0.2;
+  } else if(p.element_type === 3){ // MID: xGI (primary) + CS (1pt) + DEFCON(12) + form
+    const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[3]);
+    const attackPts = (xg90*5 + xa90*3) * minsFactor * attFactor;
+    pts = 2*minsFactor + csProb*1 + attackPts + defconProb*2 + form*0.25;
+  } else { // FWD: xG (primary) + xGI (secondary, via assists) + DEFCON(12, usually low) + form
+    const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[4]);
+    const attackPts = (xg90*4 + xa90*3) * minsFactor * attFactor;
+    pts = 2*minsFactor + attackPts + defconProb*2 + form*0.25;
+  }
+
+  return { points: Math.max(0, pts) * availabilityMultiplier(p), csProb, difficulty, oppId, isHome };
+}
+
+// The next NUM_GWS event ids starting from the next unplayed gameweek.
+function buildScoringWindow(bs, numGws){
+  const start = bs.events.find(e => e.is_next) || bs.events.find(e => !e.finished);
+  if(!start) return [];
+  const maxId = bs.events[bs.events.length - 1].id;
+  const ids = [];
+  for(let i = 0; i < numGws; i++){
+    const id = start.id + i;
+    if(id <= maxId) ids.push(id);
+  }
+  return ids;
+}
+
+// Blended multi-GW score for one player: sums same-week fixtures (which is
+// where a DGW's boost falls out naturally), weights each week by
+// GW_WEIGHTS, and — for the very next gameweek only — blends in FPL's own
+// ep_next as a sanity anchor against our from-scratch estimate.
+function computePlayerProjection(p, windowEventIds, fixtures, bs){
+  let blended = 0;
+  const weeks = [];
+  windowEventIds.forEach((eventId, idx) => {
+    const weight = GW_WEIGHTS[idx] ?? GW_WEIGHTS[GW_WEIGHTS.length - 1];
+    const teamFixtures = fixtures.filter(f => f.event === eventId && (f.team_h === p.team || f.team_a === p.team));
+    const fx = teamFixtures.map(f => playerFixtureScore(p, f, bs));
+    let weekPoints = fx.reduce((sum, r) => sum + r.points, 0);
+    if(idx === 0){
+      const epNext = parseFloat(p.ep_next);
+      if(!isNaN(epNext)) weekPoints = weekPoints*0.8 + epNext*0.2;
+    }
+    blended += weekPoints * weight;
+    weeks.push({ eventId, weight, weekPoints, fixtureCount: teamFixtures.length, isDGW: teamFixtures.length >= 2, isBGW: teamFixtures.length === 0, fixtures: fx });
+  });
+  return { blendedScore: blended, weeks };
+}
+
+function diffQualifier(avgDiff){
+  if(avgDiff >= 3.7) return 'tough fixture run';
+  if(avgDiff <= 2.3) return 'strong fixture run';
+  return 'fixture run';
+}
+function xgiQualifier(xgi){
+  if(xgi < 0.3) return 'Low xGI';
+  if(xgi > 0.6) return 'Strong xGI';
+  return 'Moderate xGI';
+}
+
+// Short, position-specific score-breakdown line — shown for both flagged
+// outgoing squad players and Punt Pick callouts.
+function positionBreakdown(p, avgDiff){
+  const form = (parseFloat(p.form) || 0).toFixed(1);
+  const xgi = reliablePer90(p, 'expected_goal_involvements_per_90');
+  const xg = reliablePer90(p, 'expected_goals_per_90');
+  const defcon90 = reliablePer90(p, 'defensive_contribution_per_90');
+  const minsAvg = avgMinutesPerGame(p);
+  const diffTxt = `${diffQualifier(avgDiff)} (avg difficulty ${avgDiff.toFixed(1)})`;
+
+  if(p.element_type === 1){
+    return `Form ${form}, saves ${reliablePer90(p, 'saves_per_90').toFixed(1)}/90, ${diffTxt}`;
+  }
+  if(p.element_type === 2 || p.element_type === 3){
+    const threshold = DEFCON_THRESHOLD[p.element_type];
+    const defconProb = defconHitProbability(defcon90, threshold);
+    return `${xgiQualifier(xgi)} (${xgi.toFixed(2)}/90), DEFCON ${(defconProb*100).toFixed(0)}% chance (${defcon90.toFixed(1)}/90 actions), ${diffTxt}`;
+  }
+  const minsFlag = minsAvg > 0 && minsAvg < 60 ? ` — minutes risk (~${minsAvg.toFixed(0)}min/game)` : '';
+  return `xG ${xg.toFixed(2)}/90, xGI ${xgi.toFixed(2)}/90${minsFlag}, ${diffTxt}`;
+}
+
+// Short "why this one's better" line for a suggested replacement.
+function incomingReason(candidate, outgoing, candProj, outProj, candAvgDiff, outAvgDiff){
+  const parts = [];
+  const fixtureDelta = outAvgDiff - candAvgDiff;
+  const threshold = DEFCON_THRESHOLD[candidate.element_type];
+  if(fixtureDelta >= 0.5) parts.push('easier fixture run');
+  if(threshold){
+    const candDefconProb = defconHitProbability(reliablePer90(candidate, 'defensive_contribution_per_90'), threshold);
+    const outDefconProb = defconHitProbability(reliablePer90(outgoing, 'defensive_contribution_per_90'), threshold);
+    if(candDefconProb - outDefconProb >= 0.15) parts.push('defensive contribution upside');
+  }
+  const candXgi = reliablePer90(candidate, 'expected_goal_involvements_per_90');
+  const outXgi = reliablePer90(outgoing, 'expected_goal_involvements_per_90');
+  if(candidate.element_type >= 3 && candXgi - outXgi >= 0.1) parts.push('stronger underlying attacking numbers');
+  const candForm = parseFloat(candidate.form) || 0, outForm = parseFloat(outgoing.form) || 0;
+  if(candForm - outForm >= 0.5) parts.push('better recent form');
+  if(parts.length === 0) parts.push('comparable underlying numbers at a similar price');
+
+  const scoreDelta = candProj.blendedScore - outProj.blendedScore;
+  return `Higher blended score (+${scoreDelta.toFixed(1)}pts over ${NUM_GWS}GW): ${parts.slice(0,2).join(' + ')}`;
+}
+
+// Short-term punt picks: standout next-gameweek opportunities (weak
+// upcoming opponent + a group-best single-GW projection) even if the
+// player's multi-GW blended score is nothing special — shown as a
+// distinct callout, separate from the main OUT/IN recommendations.
+function findPuntPicks(bs, ownedIds, windowEventIds, fixtures, teamsFullById, excludeIds){
+  if(windowEventIds.length === 0) return [];
+  const pool = bs.elements.filter(e => !ownedIds.has(e.id) && !excludeIds.has(e.id) && e.status === 'a' && e.minutes > 0);
+  const byPos = {1:[],2:[],3:[],4:[]};
+  pool.forEach(e => byPos[e.element_type].push(e));
+
+  const punts = [];
+  Object.keys(byPos).forEach(posKey => {
+    const group = byPos[posKey];
+    if(group.length < 4) return;
+    const scored = group.map(e => {
+      const proj = computePlayerProjection(e, windowEventIds, fixtures, bs);
+      const week1 = proj.weeks[0];
+      const week1Difficulty = week1 && week1.fixtures[0] ? week1.fixtures[0].difficulty : null;
+      return { e, proj, week1Points: week1 ? week1.weekPoints : 0, week1Difficulty };
+    });
+    const sortedVals = scored.map(s => s.week1Points).sort((a,b) => a-b);
+    const median = sortedVals[Math.floor(sortedVals.length/2)] || 0;
+    scored.sort((a,b) => b.week1Points - a.week1Points);
+    scored.slice(0, 5).forEach(s => {
+      const easyFixture = s.week1Difficulty !== null && s.week1Difficulty <= 2;
+      const standout = median > 0 && s.week1Points >= median * 1.4;
+      if(easyFixture && standout){
+        punts.push({ ...s, avgDiff: avgFixtureDifficulty(s.e.team, teamsFullById, fixtures, NUM_GWS) });
+      }
+    });
+  });
+
+  return punts.sort((a,b) => b.week1Points - a.week1Points).slice(0, 3);
+}
+
+function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfers){
   const wrap = document.getElementById('recWrap');
   wrap.innerHTML = '';
 
+  if(!fixtures){
+    wrap.innerHTML = '<div class="empty-note">Could not load fixtures — the recommender needs them for fixture-aware scoring.</div>';
+    return;
+  }
+
+  const windowEventIds = buildScoringWindow(bs, NUM_GWS);
+  if(windowEventIds.length === 0){
+    wrap.innerHTML = '<div class="empty-note">No upcoming gameweeks to project — season may be over.</div>';
+    return;
+  }
+
+  const ownedIds = new Set(squad.map(s => s.id));
+  const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
+
+  const squadProjections = {};
+  squad.forEach(s => { squadProjections[s.id] = computePlayerProjection(s, windowEventIds, fixtures, bs); });
+
+  // ---- Squad risk banner: blank gameweeks inside the scoring window ----
+  const bgwByGw = {};
+  squad.forEach(s => {
+    squadProjections[s.id].weeks.forEach(w => {
+      if(w.isBGW) (bgwByGw[w.eventId] = bgwByGw[w.eventId] || []).push(s.web_name);
+    });
+  });
+  const bgwGws = Object.keys(bgwByGw).sort((a,b) => a-b);
+  if(bgwGws.length){
+    const lines = bgwGws.map(gw => `GW${gw}: ${bgwByGw[gw].join(', ')}`);
+    wrap.innerHTML += `<div class="squad-risk-banner">⚠ BLANK GAMEWEEK RISK — ${lines.join(' · ')}</div>`;
+  }
+
+  // ---- Flag weak squad players, position by position ----
   const byPos = {1:[],2:[],3:[],4:[]};
   squad.forEach(s => byPos[s.element_type].push(s));
 
-  let anyRec = false;
-  const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
-
+  const flaggedCandidates = [];
   Object.keys(byPos).forEach(posKey => {
     const pos = parseInt(posKey);
     const group = byPos[pos];
-    if(group.length === 0) return;
-
-    // Flag anyone injured/suspended, in poor current form, OR facing a
-    // genuinely tough run of fixtures — form alone misses a player who's
-    // fine right now but about to hit three difficulty-5 games in a row.
-    const scored = group.map(s => {
-      const avgDiff = avgFixtureDifficulty(s.team, teamsFullById, fixtures, 3);
-      const form = parseFloat(s.form) || 0;
+    if(!group.length) return;
+    const posAvgBlended = group.reduce((sum,s) => sum + squadProjections[s.id].blendedScore, 0) / group.length;
+    group.forEach(s => {
+      const proj = squadProjections[s.id];
+      const avgDiff = avgFixtureDifficulty(s.team, teamsFullById, fixtures, NUM_GWS);
       const isInjured = s.status !== 'a';
-      const isLowForm = form < 3.0;
+      const isWeak = proj.blendedScore < posAvgBlended * 0.75;
       const toughFixtures = avgDiff >= 4;
-      return { s, form, avgDiff, isInjured, isLowForm, toughFixtures, flagged: isInjured || isLowForm || toughFixtures };
+      const hasBgwInWindow = proj.weeks.some(w => w.isBGW);
+      if(isInjured || isWeak || toughFixtures || hasBgwInWindow){
+        flaggedCandidates.push({ s, pos, proj, avgDiff, isInjured, isWeak, toughFixtures, hasBgwInWindow });
+      }
     });
-
-    const flagged = scored.filter(x => x.flagged).sort((a,b) => a.form - b.form);
-    if(flagged.length === 0) return;
-    const weakestInfo = flagged[0];
-    const weakest = weakestInfo.s;
-
-    const affordable = weakest.now_cost + bank;
-    const candidates = bs.elements
-      .filter(e => e.element_type === pos)
-      .filter(e => !ownedIds.has(e.id))
-      .filter(e => e.now_cost <= affordable)
-      .filter(e => e.status === 'a')
-      .map(e => {
-        const avgDiff = avgFixtureDifficulty(e.team, teamsFullById, fixtures, 3);
-        // Form + next-GW expected points, with a small nudge for an
-        // easier fixture run so it can edge out a similar-form option.
-        const rankScore = (parseFloat(e.form) || 0) + (parseFloat(e.ep_next) || 0) + (5 - avgDiff) * 0.5;
-        return { ...e, _avgDiff: avgDiff, _rankScore: rankScore };
-      })
-      .sort((a,b) => b._rankScore - a._rankScore)
-      .slice(0,3);
-
-    if(candidates.length === 0) return;
-    anyRec = true;
-
-    const reasonParts = [];
-    if(weakestInfo.isInjured) reasonParts.push(weakest.news ? weakest.news : 'currently unavailable');
-    if(weakestInfo.isLowForm) reasonParts.push(`low current form (${weakest.form} pts/match avg)`);
-    if(weakestInfo.toughFixtures) reasonParts.push(`tough fixtures ahead (avg difficulty ${weakestInfo.avgDiff.toFixed(1)}/5)`);
-
-    wrap.innerHTML += `
-      <div class="rec-card">
-        <div class="rec-head">
-          <div class="out">OUT: ${weakest.web_name} <span class="sub">(${POS[pos]}, ${money(weakest.now_cost)})</span></div>
-          <div class="why">${reasonParts.join(' · ')}</div>
-        </div>
-        <div class="rec-list">
-          ${candidates.map(c => `
-            <div class="rec-opt">
-              <div><span class="arrow">→</span><span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span></div>
-              <div class="stats">
-                ${money(c.now_cost)} · form ${c.form} · next ${c.ep_next}pts exp
-                <div class="rec-why">${suggestionReason(c, weakest, c._avgDiff, weakestInfo.avgDiff)}</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
   });
 
-  if(!anyRec){
-    wrap.innerHTML = '<div class="empty-note">No red flags right now — form, fixtures, and availability all look fine across the squad. Squad looks stable.</div>';
+  const suggestedIncomingIds = new Set();
+
+  if(flaggedCandidates.length === 0){
+    wrap.innerHTML += '<div class="empty-note">No red flags right now — projected points, underlying stats, and fixtures all look fine across the squad. Squad looks stable.</div>';
+  } else {
+    flaggedCandidates.sort((a,b) => a.proj.blendedScore - b.proj.blendedScore);
+
+    // freeTransfers is Infinity while a wildcard/free hit is active this
+    // week (all transfers are free), a live count when connected, an
+    // estimate from transfer history otherwise, or — if genuinely
+    // unknown — a conservative fallback of 1 so hit suggestions stay rare.
+    const ftBudget = freeTransfers == null ? 1 : freeTransfers;
+    const maxSwapsToShow = Math.min(flaggedCandidates.length, Math.max(ftBudget, 1) + 1);
+
+    // Sequential simulation so a second suggested swap respects the
+    // budget/club-limit consequences of the first (legality against the
+    // *resultant* squad, not just the current one).
+    let simBank = bank;
+    let simTeamIds = squad.map(s => s.team);
+    let shown = 0;
+
+    for(const flagged of flaggedCandidates){
+      if(shown >= maxSwapsToShow) break;
+      const { s: weakest, pos, proj: outProj, avgDiff: outAvgDiff } = flagged;
+
+      const affordable = weakest.now_cost + simBank;
+      const candidates = bs.elements
+        .filter(e => e.element_type === pos)
+        .filter(e => !ownedIds.has(e.id) && !suggestedIncomingIds.has(e.id))
+        .filter(e => e.now_cost <= affordable)
+        .filter(e => e.status === 'a')
+        .filter(e => e.minutes > 0) // exclude completely unproven players — no per-90 signal to rank them on
+        .filter(e => {
+          const counts = {};
+          simTeamIds.forEach(t => counts[t] = (counts[t]||0) + 1);
+          counts[weakest.team] = Math.max(0, (counts[weakest.team]||0) - 1);
+          counts[e.team] = (counts[e.team]||0) + 1;
+          return counts[e.team] <= 3; // 3-per-club limit against the resultant squad
+        })
+        .map(e => ({ ...e, _proj: computePlayerProjection(e, windowEventIds, fixtures, bs), _avgDiff: avgFixtureDifficulty(e.team, teamsFullById, fixtures, NUM_GWS) }))
+        .sort((a,b) => b._proj.blendedScore - a._proj.blendedScore)
+        .slice(0, 3);
+
+      if(candidates.length === 0) continue;
+      const best = candidates[0];
+      const gain = best._proj.blendedScore - outProj.blendedScore;
+      const usesHit = shown >= ftBudget;
+      if(usesHit && gain <= 6) continue; // must "clearly" clear the -4 hit, not just edge past it
+
+      simBank = simBank + weakest.now_cost - best.now_cost;
+      const outIdx = simTeamIds.indexOf(weakest.team);
+      if(outIdx >= 0) simTeamIds.splice(outIdx, 1, best.team);
+      suggestedIncomingIds.add(best.id);
+      shown++;
+
+      const reasonParts = [];
+      if(flagged.isInjured) reasonParts.push(weakest.news ? weakest.news : 'currently unavailable');
+      reasonParts.push(positionBreakdown(weakest, outAvgDiff));
+      if(flagged.hasBgwInWindow) reasonParts.push('blank gameweek in scoring window');
+
+      const netGain = usesHit ? gain - 4 : gain;
+      const hitBadge = usesHit
+        ? `<span class="hit-badge">Hit: -4</span><span class="sub"> net +${netGain.toFixed(1)}pts</span>`
+        : `<span class="free-badge">Free Transfer</span>`;
+
+      wrap.innerHTML += `
+        <div class="rec-card">
+          <div class="rec-head">
+            <div class="out">OUT: ${weakest.web_name} <span class="sub">(${POS[pos]}, ${money(weakest.now_cost)})</span> ${hitBadge}</div>
+            <div class="why">${reasonParts.join(' · ')}</div>
+          </div>
+          <div class="rec-list">
+            ${candidates.map(c => `
+              <div class="rec-opt">
+                <div><span class="arrow">→</span><span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span></div>
+                <div class="stats">
+                  ${money(c.now_cost)} · blended ${c._proj.blendedScore.toFixed(1)}pts (${NUM_GWS}GW)
+                  <div class="rec-why">${incomingReason(c, weakest, c._proj, outProj, c._avgDiff, outAvgDiff)}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    if(shown === 0){
+      wrap.innerHTML += '<div class="empty-note">Squad has flagged players, but no affordable/legal upgrade clears the bar right now (or would need a hit that isn\'t clearly worth it).</div>';
+    }
+  }
+
+  // ---- Punt Pick callout ----
+  const punts = findPuntPicks(bs, ownedIds, windowEventIds, fixtures, teamsFullById, suggestedIncomingIds);
+  if(punts.length){
+    wrap.innerHTML += `<h2 class="section" style="margin-top:28px;">// Punt Picks — GW${windowEventIds[0]} Opportunity</h2>` +
+      punts.map(p => `
+        <div class="rec-card punt-card">
+          <div class="rec-head">
+            <div class="out">${p.e.web_name} <span class="sub">(${POS[p.e.element_type]}, ${teamById[p.e.team]}, ${money(p.e.now_cost)})</span></div>
+            <div class="why">Weak next opponent — ${positionBreakdown(p.e, p.avgDiff)}</div>
+          </div>
+          <div class="rec-list">
+            <div class="rec-opt">
+              <div><span class="n">GW${windowEventIds[0]} only</span></div>
+              <div class="stats">${p.week1Points.toFixed(1)}pts this GW · ${p.proj.blendedScore.toFixed(1)}pts blended (${NUM_GWS}GW)
+                <div class="rec-why">Standout single-gameweek opportunity, not a top multi-GW hold — worth a punt for this week alone.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
   }
 }
 
