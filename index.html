@@ -214,7 +214,9 @@
     display:flex; align-items:center; justify-content:center;
   }
   .pitch-card.injured{ border-color:var(--pink); }
+  .pitch-card.uncertain{ border-color:var(--cyan); }
   .pitch-card .pflag{ color:var(--pink); font-size:9px; margin-top:2px; }
+  .pitch-card .pflag.puncertain{ color:var(--cyan); }
   .pcard-fixtures{ display:flex; gap:2px; justify-content:center; flex-wrap:wrap; margin-top:4px; }
   .pcard-fdr{
     font-family:'Space Mono',monospace; font-weight:700; font-size:7px;
@@ -230,6 +232,64 @@
     color:var(--dim); width:100%; margin-bottom:6px;
   }
   .bench-strip .pitch-card{ opacity:.75; background:var(--panel); }
+
+  /* ---- Auto-Pick XI ---- */
+  .autopick-block{ margin-bottom:8px; }
+  .variant-toggle{ display:flex; gap:8px; margin-bottom:12px; }
+  .variant-btn{
+    background:transparent; border:1px solid var(--line); color:var(--dim);
+    font-family:'Space Mono',monospace; font-weight:700; font-size:11px; letter-spacing:1px;
+    text-transform:uppercase; padding:9px 16px; cursor:pointer; flex:1;
+  }
+  .variant-btn:hover{ color:var(--ink); }
+  .variant-btn.active{ border-color:var(--green); color:var(--green); }
+  .variant-btn.active.ceiling{ border-color:var(--cyan); color:var(--cyan); }
+  .variant-note{ font-size:11px; color:var(--dim); margin-bottom:14px; line-height:1.5; }
+  .formation-line{
+    font-family:'Space Mono',monospace; font-size:14px; color:var(--ink); letter-spacing:1px;
+    margin-bottom:12px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  }
+  .formation-line .tag{
+    background:var(--green); color:var(--purple); font-weight:700; padding:2px 8px; font-size:12px;
+  }
+  .formation-line.ceiling .tag{ background:var(--cyan); }
+  .formation-line .pts{ color:var(--dim); font-size:12px; }
+
+  .captain-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+  .captain-card{
+    flex:1; min-width:230px; background:var(--purple-dark); border:1px solid var(--line);
+    border-left:4px solid var(--green); padding:10px 12px;
+  }
+  .captain-card.vice{ border-left-color:var(--cyan); }
+  .captain-card .role{
+    font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--dim);
+  }
+  .captain-card .who{ font-weight:700; font-size:14px; margin:2px 0 3px; }
+  .captain-card .why{ font-size:11px; color:var(--dim); line-height:1.4; }
+
+  .pitch-card .pscore{ font-size:9px; color:var(--green); margin-top:2px; }
+  .pitch-card .prel{ font-size:8px; color:var(--dim); }
+  .pitch-card.diff-in{ box-shadow: inset 0 0 0 2px var(--green); }
+  .pitch-card.diff-out{ box-shadow: inset 0 0 0 2px var(--pink); }
+  .diff-tag{
+    font-family:'Space Mono',monospace; font-size:8px; font-weight:700;
+    letter-spacing:.4px; text-transform:uppercase; margin-top:3px;
+  }
+  .diff-tag.in{ color:var(--green); }
+  .diff-tag.out{ color:var(--pink); }
+  .sub-order{
+    position:absolute; top:-8px; left:-6px; background:var(--dim); color:var(--purple-dark);
+    font-family:'Space Mono',monospace; font-weight:700; font-size:9px; width:16px; height:16px;
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+  }
+  .diff-summary{
+    background:var(--purple-dark); border:1px solid var(--line); padding:10px 14px;
+    font-size:12px; color:var(--dim); margin-top:16px; line-height:1.7;
+  }
+  .diff-summary .diff-line{ margin:0; }
+  .diff-summary .diff-line + .diff-line{ margin-top:4px; }
+  .diff-summary strong{ color:var(--ink); }
 
   /* ---- Detail table ---- */
   table{ width:100%; border-collapse:collapse; font-size:13px; margin-top:8px; }
@@ -247,6 +307,7 @@
   .name{ font-weight:600; }
   .sub{ color:var(--dim); font-size:11px; }
   .flag{ color:var(--pink); font-size:11px; margin-left:6px; }
+  .flag.uncertain{ color:var(--cyan); }
   .cap{ color:var(--green); font-weight:700; margin-left:4px; }
 
   .rec-card{
@@ -275,6 +336,12 @@
   .squad-risk-banner{
     background:var(--purple-dark); border:1px solid var(--pink); color:var(--pink);
     font-size:12px; padding:10px 14px; margin-bottom:14px; letter-spacing:.3px;
+  }
+  .squad-risk-banner.uncertainty{ border-color:var(--cyan); color:var(--cyan); }
+  .uncertain-badge{
+    display:inline-block; background:transparent; border:1px solid var(--cyan); color:var(--cyan);
+    font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:600; padding:1px 6px;
+    letter-spacing:.2px; vertical-align:middle; margin-left:6px; white-space:normal;
   }
   .rec-card.punt-card{ border-left-color:var(--cyan); }
   .rec-card.bench-card{ border-left-color:var(--dim); opacity:.85; }
@@ -420,6 +487,8 @@
     .gw-team, .gw-team.away{ justify-content:center; flex-direction:row; }
     .gw-kickoff{ order:3; }
     .tab-btn{ padding:10px 4px; font-size:10px; letter-spacing:1px; }
+    .variant-toggle{ flex-direction:column; }
+    .captain-row{ flex-direction:column; }
   }
 </style>
 </head>
@@ -488,6 +557,9 @@
           </table>
         </div>
       </details>
+
+      <h2 class="section">// Auto-Pick XI</h2>
+      <div id="autopickWrap"></div>
     </div>
 
     <div class="tab-panel" id="tabPanel-fixtures" data-tab-panel="fixtures" hidden>
@@ -520,7 +592,11 @@
   expected goals/assists, defensive-contribution thresholds, form, and fixture difficulty — double/blank
   gameweeks are detected and weighted or flagged accordingly. Suggested swaps are checked for budget and the
   3-per-club limit against the resulting squad; anything beyond your free transfers is only shown if the
-  projected gain clearly clears the -4 hit.
+  projected gain clearly clears the -4 hit. Players who recently switched clubs or are short on minutes there
+  get a "New Signing / Limited Minutes" flag — season stats can be borrowed from a different club, and no
+  stats-only model can predict squad role or manager trust, so this is a caution to research further, not a
+  verdict; flagged players are shown with a down-weighted score if suggested as a transfer target, never ruled
+  out outright.
 </footer>
 
 <script>
@@ -902,12 +978,33 @@ function renderSkeleton(){
 
   document.getElementById('squadBody').innerHTML = '';
   document.getElementById('recWrap').innerHTML = '';
+  document.getElementById('autopickWrap').innerHTML = '';
 
   document.getElementById('squadFixtures').innerHTML = Array.from({length:4}).map(() => `
     <div class="fdr-row">
       <div class="skel skel-name" style="margin:0 12px 0 0;"></div>
       <div class="fdr-chips">${'<div class="skel" style="width:44px;height:24px;"></div>'.repeat(4)}</div>
     </div>`).join('');
+}
+
+// Fetches each squad player's own gameweek-by-gameweek history for this
+// season (element-summary's `history` array) — the raw material for the
+// Auto-Pick XI's recency-weighted per-90 rates. Run in parallel since it's
+// one request per squad player (15 max); any single failure just leaves
+// that player's entry `null`, which recencyWeightedPer90() treats as "fall
+// back to season-long stats" rather than failing the whole feature.
+async function loadSquadHistory(elementIds){
+  const entries = await Promise.all(elementIds.map(async id => {
+    try{
+      const summary = await apiFetch(`element-summary/${id}/`);
+      return [id, summary.history || []];
+    }catch(e){
+      return [id, null];
+    }
+  }));
+  const map = {};
+  entries.forEach(([id, hist]) => { map[id] = hist; });
+  return map;
 }
 
 async function loadTeam(){
@@ -958,7 +1055,14 @@ async function loadTeam(){
       }
     }
 
-    renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures);
+    // Per-player gameweek-by-gameweek history — feeds the Auto-Pick XI's
+    // recency-weighted projections. Non-fatal per player: a fetch failure
+    // for any one of the 15 just falls back to that player's season-long
+    // per-90 rates (see recencyWeightedPer90()).
+    setStatus('▌ LOADING RECENT FORM…');
+    const historyById = await loadSquadHistory(picks.picks.map(p => p.element));
+
+    renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures, historyById);
     setStatus('▌ LIVE — GW' + eventId + ' data loaded for "' + entry.name + '"');
   }catch(err){
     console.error(err);
@@ -1030,7 +1134,7 @@ function scoreColorClass(score){
   return 'tscore-bad';
 }
 
-function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
+function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures, historyById){
   const byId = {}; bs.elements.forEach(e => byId[e.id] = e);
   const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
   const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
@@ -1084,14 +1188,14 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
     <div class="cell">${ftHtml}${activeChipHtml}</div>
   `;
 
-  renderPitch(starters, bench, teamById, teamsFullById, fixtures);
+  renderPitch(starters, bench, teamById, teamsFullById, fixtures, bs);
 
   function row(s){
     const p = s;
     const capTag = s.pick.is_captain ? '<span class="cap">(C)</span>' : (s.pick.is_vice_captain ? '<span class="cap">(V)</span>' : '');
     return `<tr class="${s.pick.position>11?'bench':''}">
       <td><span class="pos-tag pos-${POS[p.element_type]}">${POS[p.element_type]}</span></td>
-      <td class="name">${p.web_name}${capTag}${statusBadge(p)}</td>
+      <td class="name">${p.web_name}${capTag}${statusBadge(p)}${minutesUncertaintyBadge(p, bs, 'table')}</td>
       <td class="sub">${teamById[p.team]}</td>
       <td>${money(p.now_cost)}</td>
       <td>${p.form}</td>
@@ -1105,11 +1209,13 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures){
 
   renderSquadFixtures(bs, squad, fixtures);
   renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfersCount);
+  renderAutoPick(bs, squad, fixtures, historyById || {}, teamById);
 }
 
-function pitchCard(p, teamById, teamsFullById, fixtures){
+function pitchCard(p, teamById, teamsFullById, fixtures, bs){
   const capTag = p.pick.is_captain ? '<div class="parmband">C</div>' : (p.pick.is_vice_captain ? '<div class="parmband">V</div>' : '');
   const injured = p.status !== 'a';
+  const uncertain = hasLimitedMinutesSample(p, bs);
 
   const nextFx = nextFixturesForTeam(p.team, teamsFullById, fixtures, 3);
   const fxHtml = nextFx.length ? `<div class="pcard-fixtures">${nextFx.map(f => `
@@ -1117,7 +1223,7 @@ function pitchCard(p, teamById, teamsFullById, fixtures){
     `).join('')}</div>` : '';
 
   return `
-    <div class="pitch-card${injured ? ' injured' : ''}">
+    <div class="pitch-card${injured ? ' injured' : ''}${uncertain ? ' uncertain' : ''}">
       ${capTag}
       <div class="pname-row">
         ${jerseyIcon(teamById[p.team])}
@@ -1125,22 +1231,23 @@ function pitchCard(p, teamById, teamsFullById, fixtures){
       </div>
       <div class="pmeta">${teamById[p.team]} · ${money(p.now_cost)}</div>
       ${injured ? `<div class="pflag">${p.status==='i'?'INJ':p.status==='s'?'SUSP':p.status.toUpperCase()}</div>` : ''}
+      ${minutesUncertaintyBadge(p, bs, 'pitch')}
       ${fxHtml}
     </div>`;
 }
 
-function renderPitch(starters, bench, teamById, teamsFullById, fixtures){
+function renderPitch(starters, bench, teamById, teamsFullById, fixtures, bs){
   const rows = {1:[],2:[],3:[],4:[]};
   starters.forEach(s => rows[s.element_type].push(s));
 
   const pitchHtml = [1,2,3,4].map(pos =>
-    rows[pos].length ? `<div class="pitch-row">${rows[pos].map(p=>pitchCard(p,teamById,teamsFullById,fixtures)).join('')}</div>` : ''
+    rows[pos].length ? `<div class="pitch-row">${rows[pos].map(p=>pitchCard(p,teamById,teamsFullById,fixtures,bs)).join('')}</div>` : ''
   ).join('');
 
   const benchHtml = `
     <div class="bench-strip">
       <div class="bench-label">Bench</div>
-      ${bench.map(p=>pitchCard(p,teamById,teamsFullById,fixtures)).join('')}
+      ${bench.map(p=>pitchCard(p,teamById,teamsFullById,fixtures,bs)).join('')}
     </div>`;
 
   document.getElementById('pitch').innerHTML = pitchHtml + benchHtml;
@@ -1230,6 +1337,81 @@ function isBenchEnabler(s){
   const cheap = s.now_cost <= 45; // £4.5m — typical enabler price ceiling
   const rarelyPlays = avgMinutesPerGame(s) < 30;
   return !!(isBenched && cheap && rarelyPlays);
+}
+
+// =====================================================================
+// "New signing / limited minutes at current club" — recently-transferred
+// risk factor.
+//
+// The problem: FPL's season-total stats (minutes, form, starts, xG...)
+// belong to the *player*, not the club — so when someone switches clubs
+// mid-season, their season line keeps carrying whatever they earned at
+// their OLD club, now paired with the NEW club's fixture list and
+// difficulty ratings. A player who was a bench option at a weak side can
+// suddenly look like a great pickup purely because we've bolted their old
+// numbers onto a easier run of fixtures, with zero real signal on whether
+// the new manager actually starts them.
+//
+// Two things can each independently mean "don't trust this season line at
+// face value":
+//   1. `team_join_date` shows they joined their current club only
+//      recently, and their season-total minutes exceed what they could
+//      plausibly have earned in the finished gameweeks since — a clear
+//      sign some (or all) of that total predates the move. This is the
+//      precise version, when FPL exposes team_join_date.
+//   2. Total minutes are well under ~90min/game pace for the gameweeks
+//      played so far, full stop — a blunter net that also catches
+//      long-term injury returns and out-of-favour rotation players, where
+//      season stats are thin for a different reason. We can't tell the
+//      cause apart from stats alone, and don't try to — same "reduced
+//      confidence" treatment applies either way.
+//
+// This is deliberately a blunt, best-effort heuristic: squad-role and
+// manager trust are not something stats can predict. It's meant to read
+// as "go check team news on this one," not a confident verdict.
+const MIN_MINUTES_PACE_RATIO = 0.45; // flag when under ~45% of "played every gameweek since" pace
+const CLUB_TENURE_GRACE_MINUTES = 45; // one part-match's grace before season minutes look pre-move
+const MINUTES_UNCERTAINTY_DISCOUNT = 0.75; // 25% haircut applied when ranking a flagged player as an IN candidate
+
+const MINUTES_UNCERTAINTY_LABEL = 'New Signing / Limited Minutes at Current Club — role uncertain';
+const MINUTES_UNCERTAINTY_EXPLAINER = "Season stats here may be inflated by minutes earned at a different club, or this player simply hasn't nailed down a role at their current one yet — stats alone can't tell us which, and squad-role/manager-trust isn't something a model can predict. Treat this as a cue to check team news yourself, not a verdict either way.";
+
+function gameweeksPlayedSoFar(bs){
+  return bs.events.filter(e => e.finished).length;
+}
+
+// How many *finished* gameweeks have happened since a player joined their
+// current club — i.e. how many real chances they've had to earn minutes
+// there. Falls back to "the whole season" when team_join_date is missing
+// or unparseable, which just disables the club-tenure check below and
+// leaves the general low-minutes-pace check doing the work.
+function gameweeksSinceJoiningCurrentClub(e, bs, gwPlayed){
+  if(!e.team_join_date) return gwPlayed;
+  const joinTime = new Date(e.team_join_date).getTime();
+  if(isNaN(joinTime)) return gwPlayed;
+  return bs.events.filter(ev => ev.finished && new Date(ev.deadline_time || 0).getTime() >= joinTime).length;
+}
+
+function hasLimitedMinutesSample(e, bs){
+  const gwPlayed = gameweeksPlayedSoFar(bs);
+  if(gwPlayed === 0) return false; // preseason — nothing to compare against yet
+  const minutes = e.minutes || 0;
+
+  const gwsAtClub = gameweeksSinceJoiningCurrentClub(e, bs, gwPlayed);
+  const predatesCurrentClub = minutes > gwsAtClub * 90 + CLUB_TENURE_GRACE_MINUTES;
+
+  const belowPace = minutes / (gwPlayed * 90) < MIN_MINUTES_PACE_RATIO;
+
+  return predatesCurrentClub || belowPace;
+}
+
+// `variant` picks which flag styling to render with — 'pitch' for the
+// compact pitch-card badge, 'table' for the stats-table row badge.
+function minutesUncertaintyBadge(e, bs, variant){
+  if(!hasLimitedMinutesSample(e, bs)) return '';
+  const cls = variant === 'table' ? 'flag uncertain' : 'pflag puncertain';
+  const text = variant === 'table' ? 'UNCERTAIN ROLE' : 'ROLE?';
+  return `<span class="${cls}" title="${MINUTES_UNCERTAINTY_EXPLAINER}">${text}</span>`;
 }
 
 // Season-aggregate proxies for "how good is this team defensively / going
@@ -1351,6 +1533,234 @@ function computePlayerProjection(p, windowEventIds, fixtures, bs){
   return { blendedScore: blended, weeks };
 }
 
+// =====================================================================
+// Auto-Pick XI — single-gameweek lineup optimizer
+//
+// A deliberately separate model from the multi-GW recommender above: it
+// projects ONE number per player for the *next* gameweek only (not a
+// blended multi-week score), then searches every legal formation for the
+// highest-scoring valid 11 the squad can field. See renderAutoPick() for
+// the formation search and renderTeam()'s call site for wiring.
+// =====================================================================
+
+// Most recent game first. A game-of-a-kind window (see recencyWeightedPer90)
+// slices off the front of this list, so index 0 always means "most recent."
+const RECENCY_WEIGHTS = [1.0, 0.85, 0.7, 0.55, 0.45, 0.35];
+
+// Recency-weighted per-90 rate for one raw per-match field (expected_goals,
+// expected_assists, defensive_contribution, saves — element-summary's
+// `history` gives these as raw per-match numbers, not per-90 rates) drawn
+// from a player's own last `windowSize` gameweeks, most-recent-weighted.
+// Falls back to the season-long per-90 figure (already itself shrunk
+// toward 0 for a small sample by reliablePer90/statReliability) whenever
+// history is missing (fetch failed) or the weighted-minutes sample is too
+// thin to trust — e.g. barely any minutes across the recent window.
+function recencyWeightedPer90(history, field, seasonFallback, windowSize){
+  if(!history || !history.length) return seasonFallback;
+  const n = windowSize || RECENCY_WEIGHTS.length;
+  const recent = history.slice(-n).reverse(); // most recent first
+  let statSum = 0, minSum = 0;
+  recent.forEach((gw, i) => {
+    const w = RECENCY_WEIGHTS[i] ?? RECENCY_WEIGHTS[RECENCY_WEIGHTS.length - 1];
+    statSum += (parseFloat(gw[field]) || 0) * w;
+    minSum += (gw.minutes || 0) * w;
+  });
+  if(minSum < 45) return seasonFallback;
+  return statSum / minSum * 90;
+}
+
+// A team that dominates the ball and creates a lot going forward denies
+// its opponent's players the broken-play transitions and regains that
+// defensive-contribution points are built on — so a stronger attacking
+// opponent means a *smaller* defensive-action opportunity for our player
+// this fixture, not a bigger one. Reuses the same season-aggregate
+// attacking proxy the multi-GW model's clean-sheet formula already
+// computes (teamAttackingFactor) — 0.45 is that formula's own "typical
+// opponent" baseline, so this just points the same number the other way.
+function defconOpportunityFactor(opponentTeamId, bs){
+  const oppAttack = teamAttackingFactor(opponentTeamId, bs);
+  return clamp(1 + (0.45 - oppAttack) * 0.5, 0.7, 1.3);
+}
+
+// How hard a low probability-of-starting should drag a player's score
+// down, mode-aware. EV mode applies it in full — and, per the brief,
+// FWD gets an extra squaring: a rotation-risk premium forward is exactly
+// the case where "nailed but modest" should win a single gameweek.
+// Ceiling mode explicitly wants the opposite lean (favor upside over
+// certainty), so it softens whatever the EV penalty would have been via
+// a square root — which, for FWD, roughly cancels the extra squaring
+// back out, i.e. ceiling mode treats forwards like every other position.
+function minutesReliabilityFactor(p, mode){
+  const raw = clamp(avgMinutesPerGame(p) / 90, 0.15, 1);
+  let factor = p.element_type === 4 ? raw * raw : raw;
+  if(mode === 'ceiling') factor = Math.sqrt(factor);
+  return clamp(factor, 0.05, 1);
+}
+
+// Doubt/injury penalty, mode-aware. Ceiling mode halves however much the
+// player was going to be marked down for doubt — "reduce the penalty for
+// lower play-probability" — without ever fully ignoring it.
+function projectedAvailability(p, mode){
+  const raw = availabilityMultiplier(p);
+  if(mode === 'ceiling') return clamp(0.5 + 0.5 * raw, 0.15, 1);
+  return raw;
+}
+
+// Single-fixture projected points for one player, position-specific —
+// the single-GW sibling of playerFixtureScore() above, built on
+// recency-weighted rates and mode-aware reliability instead of
+// season-long rates and a single fixed formula.
+function singleGwFixtureScore(p, fixture, bs, history, mode){
+  const isHome = fixture.team_h === p.team;
+  const oppId = isHome ? fixture.team_a : fixture.team_h;
+  const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
+  const csProb = cleanSheetProbability(p.team, oppId, difficulty, bs);
+  const attFactor = fixtureAttackFactor(difficulty);
+
+  const recencyWindow = mode === 'ceiling' ? 3 : 6; // shorter window = more reactive to a hot streak
+  const xg90 = recencyWeightedPer90(history, 'expected_goals', reliablePer90(p, 'expected_goals_per_90'), recencyWindow);
+  const xa90 = recencyWeightedPer90(history, 'expected_assists', reliablePer90(p, 'expected_assists_per_90'), recencyWindow);
+  const saves90 = recencyWeightedPer90(history, 'saves', reliablePer90(p, 'saves_per_90'), recencyWindow);
+  const defcon90raw = recencyWeightedPer90(history, 'defensive_contribution', reliablePer90(p, 'defensive_contribution_per_90'), recencyWindow);
+  const defcon90 = defcon90raw * defconOpportunityFactor(oppId, bs);
+
+  const minsFactor = minutesReliabilityFactor(p, mode);
+  const form = parseFloat(p.form) || 0;
+
+  let pts;
+  if(p.element_type === 1){
+    pts = 2*minsFactor + csProb*4 + (saves90*minsFactor)/3 + form*0.25;
+  } else if(p.element_type === 2){
+    const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[2]);
+    const attackPts = (xg90*6 + xa90*3) * minsFactor * attFactor;
+    pts = 2*minsFactor + csProb*4 + attackPts + defconProb*2 + form*0.2;
+  } else if(p.element_type === 3){
+    const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[3]);
+    const attackPts = (xg90*5 + xa90*3) * minsFactor * attFactor;
+    pts = 2*minsFactor + csProb*1 + attackPts + defconProb*2 + form*0.25;
+  } else {
+    const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[4]);
+    const attackPts = (xg90*4 + xa90*3) * minsFactor * attFactor;
+    pts = 2*minsFactor + attackPts + defconProb*2 + form*0.25;
+  }
+
+  return Math.max(0, pts) * projectedAvailability(p, mode);
+}
+
+// One player's full single-GW projection: sums same-week fixtures (a DGW's
+// boost falls out naturally, same as the multi-GW model), blends in FPL's
+// own ep_next as a sanity anchor for EV mode only (ceiling mode is
+// explicitly diverging from the "expected" consensus on purpose, so
+// anchoring it to ep_next would work against the point of having it), and
+// applies the recently-transferred/limited-minutes discount either way —
+// reduced confidence in the underlying data is a reason to trust the
+// score less regardless of which lens you're viewing it through.
+function projectSingleGw(p, targetEventId, fixtures, bs, historyById, mode){
+  const teamFixtures = targetEventId == null ? [] : fixtures.filter(f => f.event === targetEventId && (f.team_h === p.team || f.team_a === p.team));
+  const history = historyById[p.id];
+  let points = teamFixtures.reduce((sum, f) => sum + singleGwFixtureScore(p, f, bs, history, mode), 0);
+
+  if(mode === 'ev' && teamFixtures.length > 0){
+    const epNext = parseFloat(p.ep_next);
+    if(!isNaN(epNext)) points = points*0.8 + epNext*0.2;
+  }
+
+  const lowMinSample = hasLimitedMinutesSample(p, bs);
+  if(lowMinSample) points *= MINUTES_UNCERTAINTY_DISCOUNT;
+
+  return { points: Math.max(0, points), isBGW: teamFixtures.length === 0, isDGW: teamFixtures.length >= 2, lowMinSample };
+}
+
+// Every legal FPL formation: 1 GKP always, DEF 3-5, MID 2-5, FWD 1-3, 10
+// outfield total. This is the full, exhaustive set — nothing here is a
+// default or a preference, it's just every (d,m,f) that satisfies the
+// constraints, so the search below genuinely evaluates all of them.
+const VALID_FORMATIONS = [
+  {d:3,m:4,f:3}, {d:3,m:5,f:2},
+  {d:4,m:3,f:3}, {d:4,m:4,f:2}, {d:4,m:5,f:1},
+  {d:5,m:2,f:3}, {d:5,m:3,f:2}, {d:5,m:4,f:1},
+];
+
+// For a fixed formation, the highest-scoring valid XI is simply "the top
+// (d) defenders, top (m) mids, top (f) forwards, and the top goalkeeper by
+// score" — positions aren't fungible in FPL, so there's no cross-position
+// tradeoff to search within one formation, only which formation to pick.
+// Evaluating every formation this way (prefix sums over each position's
+// score-sorted list) is the exact optimum per formation, not an
+// approximation — genuinely "evaluate every legal formation."
+function optimizeXI(squad, scoreOf){
+  const byPos = {1:[], 2:[], 3:[], 4:[]};
+  squad.forEach(s => byPos[s.element_type].push(s));
+  [1,2,3,4].forEach(pos => byPos[pos].sort((a,b) => scoreOf(b) - scoreOf(a)));
+
+  function prefixSums(list){
+    const sums = [0]; let run = 0;
+    list.forEach(p => { run += scoreOf(p); sums.push(run); });
+    return sums;
+  }
+  const defPre = prefixSums(byPos[2]), midPre = prefixSums(byPos[3]), fwdPre = prefixSums(byPos[4]);
+  const gkp = byPos[1][0];
+  const gkpScore = gkp ? scoreOf(gkp) : 0;
+
+  let best = null;
+  VALID_FORMATIONS.forEach(f => {
+    if(f.d > byPos[2].length || f.m > byPos[3].length || f.f > byPos[4].length) return;
+    const total = gkpScore + defPre[f.d] + midPre[f.m] + fwdPre[f.f];
+    if(!best || total > best.total) best = { formation: f, total };
+  });
+  if(!best) return null;
+
+  const starters = [gkp, ...byPos[2].slice(0, best.formation.d), ...byPos[3].slice(0, best.formation.m), ...byPos[4].slice(0, best.formation.f)].filter(Boolean);
+  const starterIds = new Set(starters.map(s => s.id));
+  const bench = squad.filter(s => !starterIds.has(s.id));
+
+  return { formation: best.formation, totalPoints: best.total, starters, bench };
+}
+
+// starterReliability() blends FPL's own doubt signal with season minutes —
+// but season minutes can belong to an old club for a recent transfer (see
+// hasLimitedMinutesSample()), which would otherwise read as "nailed on"
+// off a strong pre-move record. Every "probability of starting" use in
+// this feature — bench order, the captain/vice pools, the displayed
+// start-probability% — goes through this instead of starterReliability()
+// directly, so that uncertainty is reflected everywhere reliability is
+// used to make a decision, not just in the points score.
+function autopickStartProbability(p, bs){
+  const rel = starterReliability(p);
+  return hasLimitedMinutesSample(p, bs) ? rel * MINUTES_UNCERTAINTY_DISCOUNT : rel;
+}
+
+// Bench sub-priority: probability of actually playing first, projected
+// points only as a tiebreaker between similarly-likely-to-play players.
+function orderBench(bench, scoreOf, bs){
+  return [...bench].sort((a, b) => {
+    const relDiff = autopickStartProbability(b, bs) - autopickStartProbability(a, bs);
+    if(Math.abs(relDiff) > 0.02) return relDiff;
+    return scoreOf(b) - scoreOf(a);
+  });
+}
+
+const NAILED_RELIABILITY_THRESHOLD = 0.7;
+
+// Captain: highest ceiling-weighted score among the Optimal XI's "nailed"
+// starters (falls back to the whole XI if — implausibly — nobody clears
+// the bar, so this never throws on a genuinely shaky squad).
+// Vice-Captain: the same ceiling score, but multiplied down further by
+// how likely the player is to start — a meaningfully stronger certainty
+// lean than the captain formula, since the vice's whole job is covering
+// for the captain not playing at all, not chasing the same upside.
+function pickCaptainAndVice(optimalStarters, ceilingScoreOf, bs){
+  const nailedPool = optimalStarters.filter(p => autopickStartProbability(p, bs) >= NAILED_RELIABILITY_THRESHOLD);
+  const captainPool = nailedPool.length ? nailedPool : optimalStarters;
+  const captain = captainPool.reduce((best, p) => ceilingScoreOf(p) > ceilingScoreOf(best) ? p : best, captainPool[0]);
+
+  const vicePool = optimalStarters.filter(p => p.id !== captain.id);
+  const viceScoreOf = p => ceilingScoreOf(p) * (0.4 + 0.6 * autopickStartProbability(p, bs));
+  const vice = vicePool.reduce((best, p) => viceScoreOf(p) > viceScoreOf(best) ? p : best, vicePool[0]);
+
+  return { captain, vice };
+}
+
 function diffQualifier(avgDiff){
   if(avgDiff >= 3.7) return 'tough fixture run';
   if(avgDiff <= 2.3) return 'strong fixture run';
@@ -1424,7 +1834,13 @@ function findPuntPicks(bs, ownedIds, windowEventIds, fixtures, teamsFullById, ex
       const proj = computePlayerProjection(e, windowEventIds, fixtures, bs);
       const week1 = proj.weeks[0];
       const week1Difficulty = week1 && week1.fixtures[0] ? week1.fixtures[0].difficulty : null;
-      return { e, proj, week1Points: week1 ? week1.weekPoints : 0, week1Difficulty };
+      const lowMinSample = hasLimitedMinutesSample(e, bs);
+      const rawWeek1Points = week1 ? week1.weekPoints : 0;
+      // Same down-weighting as findCandidates() — a punt pick is still an
+      // IN suggestion, so a new-signing/short-on-minutes player shouldn't
+      // win a punt slot purely off a season line that may not be theirs.
+      const week1Points = lowMinSample ? rawWeek1Points * MINUTES_UNCERTAINTY_DISCOUNT : rawWeek1Points;
+      return { e, proj, week1Points, rawWeek1Points, week1Difficulty, lowMinSample };
     });
     const sortedVals = scored.map(s => s.week1Points).sort((a,b) => a-b);
     const median = sortedVals[Math.floor(sortedVals.length/2)] || 0;
@@ -1460,9 +1876,216 @@ function findCandidates(pos, ownedIds, excludeIds, budget, outgoingTeamId, teamI
       counts[e.team] = (counts[e.team]||0) + 1;
       return counts[e.team] <= 3; // 3-per-club limit against the resultant squad
     })
-    .map(e => ({ ...e, _proj: computePlayerProjection(e, windowEventIds, fixtures, bs), _avgDiff: avgFixtureDifficulty(e.team, teamsFullById, fixtures, NUM_GWS) }))
-    .sort((a,b) => b._proj.blendedScore - a._proj.blendedScore)
+    .map(e => {
+      const proj = computePlayerProjection(e, windowEventIds, fixtures, bs);
+      const lowMinSample = hasLimitedMinutesSample(e, bs);
+      // Rank on a down-weighted score when the season line looks
+      // unreliable (new signing / short on minutes at this club) — we
+      // still show the player if they clear the bar on a discounted
+      // basis, just don't let a stale/borrowed season line win the slot
+      // outright. See hasLimitedMinutesSample() for the full rationale.
+      const rankScore = lowMinSample ? proj.blendedScore * MINUTES_UNCERTAINTY_DISCOUNT : proj.blendedScore;
+      return { ...e, _proj: proj, _avgDiff: avgFixtureDifficulty(e.team, teamsFullById, fixtures, NUM_GWS), _lowMinSample: lowMinSample, _rankScore: rankScore };
+    })
+    .sort((a,b) => b._rankScore - a._rankScore)
     .slice(0, limit || 3);
+}
+
+// One Auto-Pick pitch-card: same visual language as the main squad pitch
+// (jerseyIcon, .pmeta, armbands) plus this feature's own additions — the
+// single-GW projected score, start-probability, a sub-order badge for
+// bench cards, and a diff tag when this card differs from the user's
+// actual current lineup.
+function autopickCardHtml(p, teamById, bs, opts){
+  opts = opts || {};
+  const armband = opts.isCaptain ? '<div class="parmband">C</div>' : (opts.isVice ? '<div class="parmband">V</div>' : '');
+  const subBadge = opts.subOrder ? `<div class="sub-order">${opts.subOrder}</div>` : '';
+  const diffClass = opts.diff === 'in' ? ' diff-in' : opts.diff === 'out' ? ' diff-out' : '';
+  const diffTag = opts.diff === 'in' ? '<div class="diff-tag in">+ New to XI</div>'
+    : opts.diff === 'out' ? '<div class="diff-tag out">− Was starting</div>' : '';
+  const bgwTag = opts.isBGW ? '<div class="diff-tag out">Blank GW</div>' : '';
+
+  return `
+    <div class="pitch-card${diffClass}">
+      ${armband}${subBadge}
+      <div class="pname-row">
+        ${jerseyIcon(teamById[p.team])}
+        <div class="pname">${p.web_name}</div>
+      </div>
+      <div class="pmeta">${teamById[p.team]} · ${money(p.now_cost)}</div>
+      <div class="pscore">${(opts.score||0).toFixed(1)}pts</div>
+      <div class="prel">${Math.round(autopickStartProbability(p, bs)*100)}% start prob</div>
+      ${minutesUncertaintyBadge(p, bs, 'pitch')}
+      ${diffTag}${bgwTag}
+    </div>`;
+}
+
+// Renders one Auto-Pick variant (Optimal or Ceiling) as a full pitch —
+// formation-grouped starting rows plus a sub-order-labeled bench strip —
+// diffed against the user's actual current starting XI.
+function renderAutopickPitch(xi, benchOrdered, teamById, bs, scoreById, projById, actualStarterIds, captainId, viceId){
+  const rows = {1:[], 2:[], 3:[], 4:[]};
+  xi.starters.forEach(s => rows[s.element_type].push(s));
+
+  const pitchHtml = [1,2,3,4].map(pos => rows[pos].length ? `<div class="pitch-row">${rows[pos].map(p => autopickCardHtml(p, teamById, bs, {
+    score: scoreById[p.id],
+    isCaptain: p.id === captainId,
+    isVice: p.id === viceId,
+    diff: actualStarterIds.has(p.id) ? null : 'in',
+    isBGW: projById[p.id] && projById[p.id].isBGW,
+  })).join('')}</div>` : '').join('');
+
+  const benchHtml = `<div class="bench-strip"><div class="bench-label">Bench (sub-in priority)</div>${benchOrdered.map((p, i) => autopickCardHtml(p, teamById, bs, {
+    score: scoreById[p.id],
+    subOrder: i + 1,
+    diff: actualStarterIds.has(p.id) ? 'out' : null,
+    isBGW: projById[p.id] && projById[p.id].isBGW,
+  })).join('')}</div>`;
+
+  return `<div class="pitch">${pitchHtml}${benchHtml}</div>`;
+}
+
+// Plain-language "here's what changed" block: paired swaps where a change
+// count lines up (X benched, Y promoted, shown as X → Y), otherwise a
+// lone +/− entry, plus captain/vice changes if either differs from the
+// user's actual current picks.
+function autopickDiffSummaryHtml(xi, actualStarterIds, actualCaptain, actualVice, captain, vice){
+  const promoted = xi.starters.filter(s => !actualStarterIds.has(s.id));
+  const demoted = xi.bench.filter(s => actualStarterIds.has(s.id));
+  const lines = [];
+
+  if(promoted.length === 0 && demoted.length === 0){
+    lines.push('Same starting 11 as your current lineup.');
+  } else {
+    const pairs = [];
+    const n = Math.max(promoted.length, demoted.length);
+    for(let i = 0; i < n; i++){
+      const out = demoted[i], into = promoted[i];
+      if(out && into) pairs.push(`<strong>${out.web_name}</strong> → <strong>${into.web_name}</strong>`);
+      else if(into) pairs.push(`+<strong>${into.web_name}</strong>`);
+      else if(out) pairs.push(`−<strong>${out.web_name}</strong>`);
+    }
+    lines.push(`${promoted.length} change${promoted.length === 1 ? '' : 's'} vs your current XI: ${pairs.join(', ')}`);
+  }
+
+  if(captain && actualCaptain && captain.id !== actualCaptain.id){
+    lines.push(`Captain: <strong>${actualCaptain.web_name}</strong> → <strong>${captain.web_name}</strong>`);
+  }
+  if(vice && actualVice && vice.id !== actualVice.id){
+    lines.push(`Vice-Captain: <strong>${actualVice.web_name}</strong> → <strong>${vice.web_name}</strong>`);
+  }
+
+  return `<div class="diff-summary">${lines.map(l => `<p class="diff-line">${l}</p>`).join('')}</div>`;
+}
+
+// Auto-pick XI, captain/vice-captain, and bench order for the Squad tab.
+// Builds two independently-optimized lineups (Optimal = as-is expected
+// value, Ceiling = upside-weighted) via optimizeXI(), picks captain/vice
+// from the Optimal XI via pickCaptainAndVice(), and diffs each against the
+// user's actual current starting 11 (from `squad`'s own pick.position).
+function renderAutoPick(bs, squad, fixtures, historyById, teamById){
+  const wrap = document.getElementById('autopickWrap');
+  wrap.innerHTML = '';
+
+  if(!fixtures){
+    wrap.innerHTML = '<div class="empty-note">Could not load fixtures — Auto-Pick needs them to project the next gameweek.</div>';
+    return;
+  }
+  const targetEventId = buildScoringWindow(bs, 1)[0];
+  if(targetEventId == null){
+    wrap.innerHTML = '<div class="empty-note">No upcoming gameweek to auto-pick for — season may be over.</div>';
+    return;
+  }
+  if(squad.length < 15){
+    wrap.innerHTML = '<div class="empty-note">Auto-Pick needs a full 15-man squad to search formations.</div>';
+    return;
+  }
+
+  const evProj = {}, ceilingProj = {};
+  squad.forEach(s => {
+    evProj[s.id] = projectSingleGw(s, targetEventId, fixtures, bs, historyById, 'ev');
+    ceilingProj[s.id] = projectSingleGw(s, targetEventId, fixtures, bs, historyById, 'ceiling');
+  });
+  const evScoreById = {}, ceilingScoreById = {};
+  squad.forEach(s => { evScoreById[s.id] = evProj[s.id].points; ceilingScoreById[s.id] = ceilingProj[s.id].points; });
+  const evScoreOf = p => evScoreById[p.id] || 0;
+  const ceilingScoreOf = p => ceilingScoreById[p.id] || 0;
+
+  const optimal = optimizeXI(squad, evScoreOf);
+  const ceiling = optimizeXI(squad, ceilingScoreOf);
+  if(!optimal || !ceiling){
+    wrap.innerHTML = '<div class="empty-note">Not enough eligible players to auto-pick an XI.</div>';
+    return;
+  }
+
+  const { captain, vice } = pickCaptainAndVice(optimal.starters, ceilingScoreOf, bs);
+
+  const actualStarters = squad.filter(s => s.pick.position <= 11);
+  const actualStarterIds = new Set(actualStarters.map(s => s.id));
+  const actualCaptain = squad.find(s => s.pick.is_captain);
+  const actualVice = squad.find(s => s.pick.is_vice_captain);
+
+  const optimalBench = orderBench(optimal.bench, evScoreOf, bs);
+  const ceilingBench = orderBench(ceiling.bench, ceilingScoreOf, bs);
+
+  const fmt = f => `${f.d}-${f.m}-${f.f}`;
+
+  const captainRowHtml = `
+    <div class="captain-row">
+      <div class="captain-card">
+        <div class="role">Captain</div>
+        <div class="who">${captain.web_name}</div>
+        <div class="why">Highest ceiling-weighted projection (${ceilingScoreOf(captain).toFixed(1)}pts) among nailed starters (${Math.round(autopickStartProbability(captain, bs)*100)}% start probability).</div>
+      </div>
+      <div class="captain-card vice">
+        <div class="role">Vice-Captain</div>
+        <div class="who">${vice.web_name}</div>
+        <div class="why">Same ceiling lens, weighted further toward certainty (${Math.round(autopickStartProbability(vice, bs)*100)}% start probability) — the safety net if Captain doesn't play at all.</div>
+      </div>
+    </div>`;
+
+  const optimalHtml = `
+    <div class="formation-line">
+      <span class="tag">${fmt(optimal.formation)}</span>
+      <span>Optimal XI</span>
+      <span class="pts">${optimal.totalPoints.toFixed(1)}pts projected (GW${targetEventId})</span>
+    </div>
+    <div class="variant-note">Expected-value lineup — each player's blended, as-is projection (recency-weighted underlying stats, fixture, clean-sheet odds, and minutes reliability), no thumb on the scale either way.</div>
+    ${captainRowHtml}
+    ${renderAutopickPitch(optimal, optimalBench, teamById, bs, evScoreById, evProj, actualStarterIds, captain.id, vice.id)}
+    ${autopickDiffSummaryHtml(optimal, actualStarterIds, actualCaptain, actualVice, captain, vice)}
+  `;
+
+  const ceilingHtml = `
+    <div class="formation-line ceiling">
+      <span class="tag">${fmt(ceiling.formation)}</span>
+      <span>Ceiling XI</span>
+      <span class="pts">${ceiling.totalPoints.toFixed(1)}pts projected (GW${targetEventId})</span>
+    </div>
+    <div class="variant-note">Upside lineup — re-weighted to chase a big week over a safe one: shorter recency window (reacts to a hot streak faster) and softened doubt/rotation penalties. Captaincy above is still decided from the Optimal XI, not this view.</div>
+    ${renderAutopickPitch(ceiling, ceilingBench, teamById, bs, ceilingScoreById, ceilingProj, actualStarterIds, null, null)}
+    ${autopickDiffSummaryHtml(ceiling, actualStarterIds, actualCaptain, actualVice, null, null)}
+  `;
+
+  wrap.innerHTML = `
+    <div class="autopick-block">
+      <div class="variant-toggle">
+        <button type="button" class="variant-btn active" data-variant="optimal">Optimal XI</button>
+        <button type="button" class="variant-btn ceiling" data-variant="ceiling">Ceiling XI</button>
+      </div>
+      <div data-variant-panel="optimal">${optimalHtml}</div>
+      <div data-variant-panel="ceiling" hidden>${ceilingHtml}</div>
+    </div>`;
+
+  wrap.querySelectorAll('.variant-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const variant = btn.dataset.variant;
+      wrap.querySelectorAll('.variant-btn').forEach(b => b.classList.toggle('active', b === btn));
+      wrap.querySelectorAll('[data-variant-panel]').forEach(panel => {
+        panel.hidden = panel.dataset.variantPanel !== variant;
+      });
+    });
+  });
 }
 
 const DEFAULT_VISIBLE_SUGGESTIONS = 3;
@@ -1525,6 +2148,10 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
     const hasBgwInWindow = proj.weeks.some(w => w.isBGW);
     const reliability = starterReliability(s);
     const benchEnabler = isBenchEnabler(s);
+    // Caution-only, not an OUT trigger — see the eligible-filter below and
+    // hasLimitedMinutesSample()'s comment for why this deliberately does
+    // NOT push a player toward being recommended out.
+    const lowMinSample = hasLimitedMinutesSample(s, bs);
 
     let candidates, best;
     if(benchEnabler){
@@ -1545,8 +2172,19 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
     }
     const gain = best ? best._proj.blendedScore - proj.blendedScore : -Infinity;
 
-    return { s, pos: s.element_type, proj, avgDiff, isInjured, toughFixtures, hasBgwInWindow, reliability, benchEnabler, candidates, best, gain };
+    return { s, pos: s.element_type, proj, avgDiff, isInjured, toughFixtures, hasBgwInWindow, reliability, benchEnabler, lowMinSample, candidates, best, gain };
   });
+
+  // ---- Uncertainty banner: recently-transferred / short-on-minutes squad
+  // players. Deliberately separate from the OUT-flag machinery below — we
+  // are NOT confident enough in this signal to suggest selling anyone off
+  // the back of it, only confident enough to flag it as something worth
+  // the manager's own research.
+  const uncertainSquad = evaluations.filter(ev => ev.lowMinSample);
+  if(uncertainSquad.length){
+    const names = uncertainSquad.map(ev => ev.s.web_name).join(', ');
+    wrap.innerHTML += `<div class="squad-risk-banner uncertainty">▲ ${MINUTES_UNCERTAINTY_LABEL.toUpperCase()} — ${names}. ${MINUTES_UNCERTAINTY_EXPLAINER}</div>`;
+  }
 
   const eligible = evaluations.filter(ev => {
     if(!ev.best) return false;
@@ -1641,9 +2279,9 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
           <div class="rec-list">
             ${candidates.map(c => `
               <div class="rec-opt">
-                <div><span class="arrow">→</span><span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span></div>
+                <div><span class="arrow">→</span><span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span>${c._lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
                 <div class="stats">
-                  ${money(c.now_cost)} · blended ${c._proj.blendedScore.toFixed(1)}pts (${NUM_GWS}GW)
+                  ${money(c.now_cost)} · blended ${c._proj.blendedScore.toFixed(1)}pts (${NUM_GWS}GW)${c._lowMinSample ? ` <span class="sub">(score down-weighted — see flag)</span>` : ''}
                   <div class="rec-why">${incomingReason(c, weakest, c._proj, outProj, c._avgDiff, outAvgDiff)}</div>
                 </div>
               </div>
@@ -1672,13 +2310,13 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
       punts.map(p => `
         <div class="rec-card punt-card">
           <div class="rec-head">
-            <div class="out">${p.e.web_name} <span class="sub">(${POS[p.e.element_type]}, ${teamById[p.e.team]}, ${money(p.e.now_cost)})</span></div>
+            <div class="out">${p.e.web_name} <span class="sub">(${POS[p.e.element_type]}, ${teamById[p.e.team]}, ${money(p.e.now_cost)})</span>${p.lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
             <div class="why">Weak next opponent — ${positionBreakdown(p.e, p.avgDiff)}</div>
           </div>
           <div class="rec-list">
             <div class="rec-opt">
               <div><span class="n">GW${windowEventIds[0]} only</span></div>
-              <div class="stats">${p.week1Points.toFixed(1)}pts this GW · ${p.proj.blendedScore.toFixed(1)}pts blended (${NUM_GWS}GW)
+              <div class="stats">${p.week1Points.toFixed(1)}pts this GW${p.lowMinSample ? ' (down-weighted — see flag)' : ''} · ${p.proj.blendedScore.toFixed(1)}pts blended (${NUM_GWS}GW)
                 <div class="rec-why">Standout single-gameweek opportunity, not a top multi-GW hold — worth a punt for this week alone.</div>
               </div>
             </div>
