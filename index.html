@@ -544,7 +544,7 @@
     <div class="tab-panel" id="tabPanel-squad" data-tab-panel="squad">
       <div class="summary" id="summary"></div>
 
-      <h2 class="section">// Current Squad</h2>
+      <h2 class="section">// Current Squad<span class="live-tag" id="squadSourceTag" style="display:none;"></span></h2>
       <div class="pitch" id="pitch"></div>
       <details class="table-toggle">
         <summary>▸ Show full stats table</summary>
@@ -921,6 +921,24 @@ function startDeadlineClock(bs){
   deadlineTimer = setInterval(tick, 30000);
 }
 
+// Which pick-list is the squad's source of truth.
+//
+// entry/{id}/event/{eventId}/picks/ (the public endpoint, `picks` below)
+// only reflects the squad LOCKED at the last deadline — it has no idea
+// about transfers made since then in preparation for the next gameweek.
+// When authenticated, my-team/{id}/ (`myTeam` below) reflects the
+// manager's true current squad, pending transfers included, in the same
+// pick-object shape (element, position, multiplier, is_captain,
+// is_vice_captain — it just doesn't carry the locked-gameweek-only fields
+// like entry_history/automatic_subs, which still come from the public
+// endpoint and are read separately). Prefer it whenever present and
+// well-formed; fall back to the public snapshot otherwise (not
+// authenticated, or the authenticated call failed/came back empty).
+function resolveSquadPicks(picks, myTeam){
+  if(myTeam && Array.isArray(myTeam.picks) && myTeam.picks.length > 0) return myTeam.picks;
+  return picks.picks;
+}
+
 // Reconstructs an estimate of banked free transfers from gameweek history.
 // FPL doesn't expose this number directly via the public API.
 function estimateFreeTransfers(historyCurrent, chips){
@@ -1056,11 +1074,16 @@ async function loadTeam(){
     }
 
     // Per-player gameweek-by-gameweek history — feeds the Auto-Pick XI's
-    // recency-weighted projections. Non-fatal per player: a fetch failure
-    // for any one of the 15 just falls back to that player's season-long
-    // per-90 rates (see recencyWeightedPer90()).
+    // recency-weighted projections. Fetched for whichever squad will
+    // actually be rendered (myTeam's live picks when authenticated, the
+    // locked public snapshot otherwise — see resolveSquadPicks()), so a
+    // player brought in by a post-deadline transfer still gets their own
+    // history rather than silently falling back to season-only stats.
+    // Non-fatal per player: a fetch failure for any one of the 15 just
+    // falls back to that player's season-long per-90 rates (see
+    // recencyWeightedPer90()).
     setStatus('▌ LOADING RECENT FORM…');
-    const historyById = await loadSquadHistory(picks.picks.map(p => p.element));
+    const historyById = await loadSquadHistory(resolveSquadPicks(picks, myTeam).map(p => p.element));
 
     renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures, historyById);
     setStatus('▌ LIVE — GW' + eventId + ' data loaded for "' + entry.name + '"');
@@ -1139,10 +1162,22 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures, histor
   const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
   const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
 
-  const squad = picks.picks.map(p => ({...byId[p.element], pick:p}));
+  const usingLiveSquad = !!(myTeam && Array.isArray(myTeam.picks) && myTeam.picks.length > 0);
+  const squad = resolveSquadPicks(picks, myTeam).map(p => ({...byId[p.element], pick:p}));
   const starters = squad.filter(s => s.pick.position <= 11);
   const bench = squad.filter(s => s.pick.position > 11);
+  // entry_history/automatic_subs are locked-gameweek-snapshot fields that
+  // only exist on the public picks/ endpoint — still fine to read even
+  // when the squad list itself came from myTeam, since bank/value below
+  // get overridden by myTeam.transfers a few lines down whenever it's
+  // available (myTeam.transfers, not myTeam.picks, is what carries those).
   const eh = picks.entry_history || {};
+
+  const squadSourceTagEl = document.getElementById('squadSourceTag');
+  if(squadSourceTagEl){
+    squadSourceTagEl.style.display = usingLiveSquad ? '' : 'none';
+    squadSourceTagEl.textContent = usingLiveSquad ? '●LIVE — includes transfers since last deadline' : '';
+  }
   let totalValue = eh.value ?? squad.reduce((sum,s)=>sum+s.now_cost,0);
   let bank = eh.bank ?? entry.last_deadline_bank ?? 0;
 
