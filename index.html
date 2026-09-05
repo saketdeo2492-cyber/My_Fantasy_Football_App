@@ -478,12 +478,22 @@
   }
   .pos-filter-btn:hover{ color:var(--ink); }
   .pos-filter-btn.active{ border-color:var(--green); color:var(--green); }
-  #projTable{ min-width:640px; }
-  #projTable th[data-sort]{ cursor:pointer; user-select:none; white-space:nowrap; }
-  #projTable th[data-sort]:hover{ color:var(--ink); }
-  #projTable th.sort-asc::after{ content:' ▲'; color:var(--green); }
-  #projTable th.sort-desc::after{ content:' ▼'; color:var(--green); }
+  #projCsTable, #projGaTable, #projPtsTable{ min-width:640px; }
+  #projCsTable th[data-sort], #projGaTable th[data-sort], #projPtsTable th[data-sort]{
+    cursor:pointer; user-select:none; white-space:nowrap;
+  }
+  #projCsTable th[data-sort]:hover, #projGaTable th[data-sort]:hover, #projPtsTable th[data-sort]:hover{ color:var(--ink); }
+  #projCsTable th.sort-asc::after, #projGaTable th.sort-asc::after, #projPtsTable th.sort-asc::after{ content:' ▲'; color:var(--green); }
+  #projCsTable th.sort-desc::after, #projGaTable th.sort-desc::after, #projPtsTable th.sort-desc::after{ content:' ▼'; color:var(--green); }
   .proj-pct{ font-family:'Space Mono',monospace; font-weight:700; text-align:right; }
+  .proj-gw-cell{
+    text-align:center; min-width:76px;
+  }
+  .proj-gw-cell .proj-gw-val{
+    font-family:'Space Mono',monospace; font-weight:700; font-size:13px; display:block;
+  }
+  .proj-gw-cell .fdr-chip{ margin:3px auto 0; }
+  .proj-gw-cell .sub{ display:block; }
 
   /* ---- Mobile ---- */
   @media (max-width:600px){
@@ -609,43 +619,76 @@
 
     <div class="tab-panel" id="tabPanel-projections" data-tab-panel="projections" hidden>
       <h2 class="section">// Player Projections</h2>
-      <div class="empty-note">Fixture-adjusted probabilities for any player in the game — not just your squad. Same underlying model as the Recommender and Auto-Pick XI, one gameweek at a time.</div>
+      <div class="empty-note">Fixture-adjusted probabilities and point projections for any team or player in the game — not just your squad. Same underlying model as the Recommender and Auto-Pick XI.</div>
 
-      <div class="gw-nav">
-        <button class="btn-ghost" id="projGwPrevBtn">‹ PREV</button>
-        <div class="gw-nav-label" id="projGwNavLabel">GW —</div>
-        <button class="btn-ghost" id="projGwNextBtn">NEXT ›</button>
+      <div class="variant-toggle" id="projSubNav">
+        <button class="variant-btn active" type="button" data-projview="cs">Clean Sheets</button>
+        <button class="variant-btn" type="button" data-projview="goalassist">Goal &amp; Assist</button>
+        <button class="variant-btn" type="button" data-projview="points">Point Projection</button>
       </div>
 
-      <div class="proj-filters">
-        <input type="text" id="projSearch" placeholder="Search player…" autocomplete="off">
-        <div class="proj-pos-filter" id="projPosFilter">
-          <button class="pos-filter-btn active" type="button" data-pos="all">ALL</button>
-          <button class="pos-filter-btn" type="button" data-pos="1">GKP</button>
-          <button class="pos-filter-btn" type="button" data-pos="2">DEF</button>
-          <button class="pos-filter-btn" type="button" data-pos="3">MID</button>
-          <button class="pos-filter-btn" type="button" data-pos="4">FWD</button>
+      <!-- Table 1: team-level Clean Sheet %, GW+1..GW+4 -->
+      <div data-proj-view="cs">
+        <div class="table-scroll">
+          <table id="projCsTable">
+            <thead><tr id="projCsHead"></tr></thead>
+            <tbody id="projCsBody"></tbody>
+          </table>
         </div>
       </div>
 
-      <div class="table-scroll">
-        <table id="projTable">
-          <thead>
-            <tr>
-              <th data-sort="pos">Pos</th>
-              <th data-sort="name">Player</th>
-              <th data-sort="team">Team</th>
-              <th data-sort="price">£</th>
-              <th data-sort="opp">Opponent</th>
-              <th data-sort="cs">Clean Sheet %</th>
-              <th data-sort="goal">Goal %</th>
-              <th data-sort="assist">Assist %</th>
-            </tr>
-          </thead>
-          <tbody id="projBody"></tbody>
-        </table>
+      <!-- Table 2: player-level Goal %/Assist %, next single GW only -->
+      <div data-proj-view="goalassist" hidden>
+        <div class="proj-filters">
+          <input type="text" id="projGaSearch" placeholder="Search player…" autocomplete="off">
+          <div class="proj-pos-filter" id="projGaPosFilter">
+            <button class="pos-filter-btn active" type="button" data-pos="all">ALL</button>
+            <button class="pos-filter-btn" type="button" data-pos="1">GKP</button>
+            <button class="pos-filter-btn" type="button" data-pos="2">DEF</button>
+            <button class="pos-filter-btn" type="button" data-pos="3">MID</button>
+            <button class="pos-filter-btn" type="button" data-pos="4">FWD</button>
+          </div>
+        </div>
+        <div class="gw-nav-label" id="projGaGwLabel" style="text-align:left; margin-bottom:10px;">GW —</div>
+        <div class="table-scroll">
+          <table id="projGaTable">
+            <thead>
+              <tr>
+                <th data-sort="pos">Pos</th>
+                <th data-sort="name">Player</th>
+                <th data-sort="team">Team</th>
+                <th data-sort="price">£</th>
+                <th data-sort="opp">Opponent</th>
+                <th data-sort="goal">Goal %</th>
+                <th data-sort="assist">Assist %</th>
+              </tr>
+            </thead>
+            <tbody id="projGaBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-note" id="projGaEmptyNote" style="display:none;">No players match your filters.</div>
       </div>
-      <div class="empty-note" id="projEmptyNote" style="display:none;">No players match your filters.</div>
+
+      <!-- Table 3: player-level total point projection, GW+1..GW+4 -->
+      <div data-proj-view="points" hidden>
+        <div class="proj-filters">
+          <input type="text" id="projPtsSearch" placeholder="Search player…" autocomplete="off">
+          <div class="proj-pos-filter" id="projPtsPosFilter">
+            <button class="pos-filter-btn active" type="button" data-pos="all">ALL</button>
+            <button class="pos-filter-btn" type="button" data-pos="1">GKP</button>
+            <button class="pos-filter-btn" type="button" data-pos="2">DEF</button>
+            <button class="pos-filter-btn" type="button" data-pos="3">MID</button>
+            <button class="pos-filter-btn" type="button" data-pos="4">FWD</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table id="projPtsTable">
+            <thead><tr id="projPtsHead"></tr></thead>
+            <tbody id="projPtsBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-note" id="projPtsEmptyNote" style="display:none;">No players match your filters.</div>
+      </div>
     </div>
   </div>
 </main>
@@ -1649,6 +1692,29 @@ function projectionsRowForGw(p, eventId, fixtures, bs, teamsFullById){
   };
 }
 
+// Team-level counterpart to projectionsRowForGw() above, for the Clean
+// Sheets table — same adjustedGoalsConceded()/Poisson combination, just
+// keyed by team instead of by player (every player on a team shares the
+// same clean sheet probability for a given fixture, so this is the
+// number projectionsRowForGw() would compute anyway, isolated here to
+// avoid iterating every player just to list 20 teams).
+function teamCleanSheetRowForGw(teamId, eventId, fixtures, bs, teamsFullById){
+  const teamFixtures = fixtures.filter(f => f.event === eventId && (f.team_h === teamId || f.team_a === teamId));
+  if(teamFixtures.length === 0){
+    return { isBGW: true, opponents: [], csProb: null };
+  }
+  let sumXGC = 0;
+  const opponents = teamFixtures.map(f => {
+    const isHome = f.team_h === teamId;
+    const oppId = isHome ? f.team_a : f.team_h;
+    const difficulty = isHome ? f.team_h_difficulty : f.team_a_difficulty;
+    sumXGC += adjustedGoalsConceded(teamId, oppId, difficulty, bs);
+    const oppTeam = teamsFullById[oppId];
+    return { short: oppTeam ? oppTeam.short_name : '?', isHome, difficulty };
+  });
+  return { isBGW: false, isDGW: teamFixtures.length >= 2, opponents, csProb: poissonZeroProb(sumXGC) };
+}
+
 // Probability of clearing the defensive-contribution points threshold in a
 // single match, from a player's season per-90 CBIT(+recoveries) rate.
 // Modeled as a logistic curve centered on the threshold itself (50% right
@@ -2522,68 +2588,162 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
   }
 }
 
-// ---- Projections tab: standalone browsing/sorting UI over
-// projectionsRowForGw() above. Works for every player in the game,
-// independent of whether a squad has been pulled — see the bottom IIFE,
-// which initializes this from bootstrap+fixtures directly rather than
-// from loadTeam().
+// ---- Projections tab: three standalone tables over the same
+// fixture-adjusted model (projectionsRowForGw / teamCleanSheetRowForGw /
+// projectSingleGw). Works for every team/player in the game, independent
+// of whether a squad has been pulled — see the bottom IIFE, which
+// initializes this from bootstrap+fixtures directly rather than from
+// loadTeam(). Table 3 (Point Projection) reuses projectSingleGw() with an
+// empty historyById for every player rather than fetching each of the
+// ~700 in-game players' own gameweek history the way Auto-Pick XI does
+// for the user's 15 — it falls back to season-long per-90 rates instead
+// of recency-weighted ones (see recencyWeightedPer90()'s own fallback),
+// the same underlying scoring model minus that one refinement, which
+// isn't worth ~700 extra network requests just to browse projections.
 let projBs = null, projFixtures = null;
 let projWindowEventIds = [];
-let projGwIndex = 0;
-let projSortKey = 'goal';
-let projSortDir = 'desc';
-let projPosFilter = 'all';
-let projSearchTerm = '';
 
 function initProjections(bs, fixtures){
   projBs = bs;
   projFixtures = fixtures;
   projWindowEventIds = buildScoringWindow(bs, NUM_GWS);
-  projGwIndex = 0;
-  renderProjectionsTable();
+  renderProjCsTable();
+  renderProjGaTable();
+  renderProjPtsTable();
 }
 
-function renderProjectionsTable(){
+function pctCellHtml(v){
+  return v == null ? '<span class="sub">—</span>' : `${Math.round(v * 100)}%`;
+}
+
+// One <td> for a GW column shared by the Clean Sheets and (indirectly,
+// via oppChipsHtml below) Goal & Assist tables — the percentage stacked
+// over its opponent chip(s), or a plain BGW marker.
+function gwCellHtml(pctValue, isBGW, opponents){
+  if(isBGW) return `<div class="proj-gw-cell"><span class="proj-gw-val sub">—</span><span class="sub">BGW</span></div>`;
+  return `<div class="proj-gw-cell"><span class="proj-gw-val">${pctCellHtml(pctValue)}</span>${oppChipsHtml(opponents)}</div>`;
+}
+
+function oppChipsHtml(opponents){
+  return opponents.map(o => `
+    <span class="fdr-chip ${fdrClass(o.difficulty)}" style="display:inline-flex;">
+      <span class="fdr-opp">${o.short}</span><span class="fdr-loc">${o.isHome ? 'H' : 'A'}</span>
+    </span>`).join(' ');
+}
+
+// Wires click-to-sort on every <th data-sort> under `theadRow`, marking
+// whichever one matches `sortKey` with the current direction's arrow and
+// clearing that mark from every other header. Called at the end of every
+// render (Clean Sheets / Point Projection rebuild their header row each
+// time anyway for the dynamic GW columns; Goal & Assist's header is
+// static HTML, so this re-wires the *same* nodes on every render instead
+// — `onclick` assignment rather than addEventListener makes that safe to
+// repeat without stacking duplicate handlers).
+function wireSortableHeaders(theadRow, sortKey, sortDir, onSort){
+  theadRow.querySelectorAll('th[data-sort]').forEach(th => {
+    const key = th.dataset.sort;
+    th.classList.remove('sort-asc', 'sort-desc');
+    if(key === sortKey) th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    th.onclick = () => onSort(key);
+  });
+}
+
+function filterPlayerPool(bs, posFilter, searchTerm){
+  let pool = bs.elements;
+  if(posFilter !== 'all') pool = pool.filter(e => String(e.element_type) === posFilter);
+  if(searchTerm){
+    const term = searchTerm.toLowerCase();
+    pool = pool.filter(e => e.web_name.toLowerCase().includes(term) || `${e.first_name} ${e.second_name}`.toLowerCase().includes(term));
+  }
+  return pool;
+}
+
+function sortRows(rows, sortKey, sortDir, valueFn){
+  const sorted = [...rows];
+  sorted.sort((a, b) => {
+    const av = valueFn(a, sortKey), bv = valueFn(b, sortKey);
+    const cmp = typeof av === 'string' ? av.localeCompare(bv) : av - bv;
+    return sortDir === 'asc' ? cmp : -cmp;
+  });
+  return sorted;
+}
+
+// ---- Table 1: Clean Sheets — one row per team, GW+1..GW+4 ----
+let projCsSortKey = 'gw0';
+let projCsSortDir = 'desc';
+
+function renderProjCsTable(){
+  if(!projBs || !projWindowEventIds.length) return;
+  const bs = projBs;
+  const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
+
+  let rows = bs.teams.map(team => ({
+    team,
+    gws: projWindowEventIds.map(eventId => teamCleanSheetRowForGw(team.id, eventId, projFixtures, bs, teamsFullById)),
+  }));
+
+  const valueFn = ({ team, gws }, key) => {
+    if(key === 'team') return team.name.toLowerCase();
+    return gws[Number(key.slice(2))].csProb ?? -1;
+  };
+  rows = sortRows(rows, projCsSortKey, projCsSortDir, valueFn);
+
+  const headEl = document.getElementById('projCsHead');
+  headEl.innerHTML = '<th data-sort="team">Team</th>' +
+    projWindowEventIds.map((id, i) => `<th data-sort="gw${i}">GW${id}</th>`).join('');
+  wireSortableHeaders(headEl, projCsSortKey, projCsSortDir, key => {
+    projCsSortDir = (projCsSortKey === key) ? (projCsSortDir === 'asc' ? 'desc' : 'asc') : 'desc';
+    projCsSortKey = key;
+    renderProjCsTable();
+  });
+
+  document.getElementById('projCsBody').innerHTML = rows.map(({ team, gws }) => `
+    <tr>
+      <td class="name">${jerseyIcon(team.short_name)} ${team.name}</td>
+      ${gws.map(g => `<td>${gwCellHtml(g.csProb, g.isBGW, g.opponents)}</td>`).join('')}
+    </tr>
+  `).join('');
+}
+
+// ---- Table 2: Goal % / Assist % — one row per player, next GW only ----
+let projGaSortKey = 'goal';
+let projGaSortDir = 'desc';
+let projGaPosFilter = 'all';
+let projGaSearchTerm = '';
+
+function renderProjGaTable(){
   if(!projBs || !projWindowEventIds.length) return;
   const bs = projBs;
   const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
   const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
-  const eventId = projWindowEventIds[projGwIndex];
+  const eventId = projWindowEventIds[0]; // deliberately just the next GW — "who's likely to return this week"
   const ev = bs.events.find(e => e.id === eventId);
+  document.getElementById('projGaGwLabel').textContent = `GW${eventId}${ev && ev.is_next ? ' (NEXT)' : ''}`;
 
-  document.getElementById('projGwNavLabel').textContent = `GW${eventId}${ev && ev.is_next ? ' (NEXT)' : ''}`;
-  document.getElementById('projGwPrevBtn').disabled = projGwIndex <= 0;
-  document.getElementById('projGwNextBtn').disabled = projGwIndex >= projWindowEventIds.length - 1;
+  const pool = filterPlayerPool(bs, projGaPosFilter, projGaSearchTerm);
+  let rows = pool.map(p => ({ p, row: projectionsRowForGw(p, eventId, projFixtures, bs, teamsFullById) }));
 
-  let pool = bs.elements;
-  if(projPosFilter !== 'all') pool = pool.filter(e => String(e.element_type) === projPosFilter);
-  if(projSearchTerm){
-    const term = projSearchTerm.toLowerCase();
-    pool = pool.filter(e => e.web_name.toLowerCase().includes(term) || `${e.first_name} ${e.second_name}`.toLowerCase().includes(term));
-  }
-
-  const rows = pool.map(p => ({ p, row: projectionsRowForGw(p, eventId, projFixtures, bs, teamsFullById) }));
-
-  const sortVal = ({ p, row }) => {
-    switch(projSortKey){
+  const valueFn = ({ p, row }, key) => {
+    switch(key){
       case 'name': return p.web_name.toLowerCase();
       case 'team': return teamById[p.team] || '';
       case 'pos': return p.element_type;
       case 'price': return p.now_cost;
-      case 'cs': return row.csProb ?? -1;
       case 'goal': return row.goalProb ?? -1;
       case 'assist': return row.assistProb ?? -1;
       default: return 0;
     }
   };
-  rows.sort((a, b) => {
-    const av = sortVal(a), bv = sortVal(b);
-    const cmp = typeof av === 'string' ? av.localeCompare(bv) : av - bv;
-    return projSortDir === 'asc' ? cmp : -cmp;
+  rows = sortRows(rows, projGaSortKey, projGaSortDir, valueFn);
+
+  wireSortableHeaders(document.querySelector('#projGaTable thead tr'), projGaSortKey, projGaSortDir, key => {
+    projGaSortDir = (projGaSortKey === key) ? (projGaSortDir === 'asc' ? 'desc' : 'asc') : 'desc';
+    projGaSortKey = key;
+    renderProjGaTable();
   });
 
-  const tbody = document.getElementById('projBody');
-  const emptyNote = document.getElementById('projEmptyNote');
+  const tbody = document.getElementById('projGaBody');
+  const emptyNote = document.getElementById('projGaEmptyNote');
   if(rows.length === 0){
     tbody.innerHTML = '';
     emptyNote.style.display = '';
@@ -2591,53 +2751,100 @@ function renderProjectionsTable(){
   }
   emptyNote.style.display = 'none';
 
-  const pct = v => v == null ? '<span class="sub">—</span>' : `${Math.round(v * 100)}%`;
-
-  tbody.innerHTML = rows.map(({ p, row }) => {
-    const oppHtml = row.isBGW
-      ? '<span class="sub">BGW</span>'
-      : row.opponents.map(o => `
-          <span class="fdr-chip ${fdrClass(o.difficulty)}" style="display:inline-flex;">
-            <span class="fdr-opp">${o.short}</span><span class="fdr-loc">${o.isHome ? 'H' : 'A'}</span>
-          </span>`).join(' ');
-    return `<tr>
+  tbody.innerHTML = rows.map(({ p, row }) => `
+    <tr>
       <td><span class="pos-tag pos-${POS[p.element_type]}">${POS[p.element_type]}</span></td>
       <td class="name">${p.web_name}</td>
       <td class="sub">${teamById[p.team]}</td>
       <td>${money(p.now_cost)}</td>
-      <td>${oppHtml}</td>
-      <td class="proj-pct">${pct(row.csProb)}</td>
-      <td class="proj-pct">${pct(row.goalProb)}</td>
-      <td class="proj-pct">${pct(row.assistProb)}</td>
-    </tr>`;
-  }).join('');
+      <td>${row.isBGW ? '<span class="sub">BGW</span>' : oppChipsHtml(row.opponents)}</td>
+      <td class="proj-pct">${pctCellHtml(row.goalProb)}</td>
+      <td class="proj-pct">${pctCellHtml(row.assistProb)}</td>
+    </tr>
+  `).join('');
 }
 
-document.getElementById('projGwPrevBtn').addEventListener('click', () => {
-  if(projGwIndex > 0){ projGwIndex--; renderProjectionsTable(); }
-});
-document.getElementById('projGwNextBtn').addEventListener('click', () => {
-  if(projGwIndex < projWindowEventIds.length - 1){ projGwIndex++; renderProjectionsTable(); }
-});
-document.getElementById('projSearch').addEventListener('input', e => {
-  projSearchTerm = e.target.value;
-  renderProjectionsTable();
-});
-document.querySelectorAll('#projPosFilter .pos-filter-btn').forEach(btn => {
+// ---- Table 3: Point Projection — one row per player, GW+1..GW+4 ----
+let projPtsSortKey = 'gw0';
+let projPtsSortDir = 'desc';
+let projPtsPosFilter = 'all';
+let projPtsSearchTerm = '';
+
+function renderProjPtsTable(){
+  if(!projBs || !projWindowEventIds.length) return;
+  const bs = projBs;
+  const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
+
+  const pool = filterPlayerPool(bs, projPtsPosFilter, projPtsSearchTerm);
+  let rows = pool.map(p => ({
+    p,
+    gws: projWindowEventIds.map(eventId => projectSingleGw(p, eventId, projFixtures, bs, {}, 'ev')),
+  }));
+
+  const valueFn = ({ p, gws }, key) => {
+    switch(key){
+      case 'name': return p.web_name.toLowerCase();
+      case 'team': return teamById[p.team] || '';
+      case 'pos': return p.element_type;
+      case 'price': return p.now_cost;
+      default: return gws[Number(key.slice(2))].points ?? -1;
+    }
+  };
+  rows = sortRows(rows, projPtsSortKey, projPtsSortDir, valueFn);
+
+  const headEl = document.getElementById('projPtsHead');
+  headEl.innerHTML = '<th data-sort="pos">Pos</th><th data-sort="name">Player</th><th data-sort="team">Team</th><th data-sort="price">£</th>' +
+    projWindowEventIds.map((id, i) => `<th data-sort="gw${i}">GW${id}</th>`).join('');
+  wireSortableHeaders(headEl, projPtsSortKey, projPtsSortDir, key => {
+    projPtsSortDir = (projPtsSortKey === key) ? (projPtsSortDir === 'asc' ? 'desc' : 'asc') : 'desc';
+    projPtsSortKey = key;
+    renderProjPtsTable();
+  });
+
+  const tbody = document.getElementById('projPtsBody');
+  const emptyNote = document.getElementById('projPtsEmptyNote');
+  if(rows.length === 0){
+    tbody.innerHTML = '';
+    emptyNote.style.display = '';
+    return;
+  }
+  emptyNote.style.display = 'none';
+
+  tbody.innerHTML = rows.map(({ p, gws }) => `
+    <tr>
+      <td><span class="pos-tag pos-${POS[p.element_type]}">${POS[p.element_type]}</span></td>
+      <td class="name">${p.web_name}</td>
+      <td class="sub">${teamById[p.team]}</td>
+      <td>${money(p.now_cost)}</td>
+      ${gws.map(g => `<td class="proj-pct">${g.isBGW ? '<span class="sub">—</span>' : g.points.toFixed(1)}</td>`).join('')}
+    </tr>
+  `).join('');
+}
+
+// ---- Sub-nav + static filter/search/sort wiring ----
+document.querySelectorAll('#projSubNav .variant-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    projPosFilter = btn.dataset.pos;
-    document.querySelectorAll('#projPosFilter .pos-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
-    renderProjectionsTable();
+    const view = btn.dataset.projview;
+    document.querySelectorAll('#projSubNav .variant-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('[data-proj-view]').forEach(panel => { panel.hidden = panel.dataset.projView !== view; });
   });
 });
-document.querySelectorAll('#projTable thead th[data-sort]').forEach(th => {
-  th.addEventListener('click', () => {
-    const key = th.dataset.sort;
-    projSortDir = (projSortKey === key) ? (projSortDir === 'asc' ? 'desc' : 'asc') : 'desc';
-    projSortKey = key;
-    document.querySelectorAll('#projTable thead th').forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
-    th.classList.add(projSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
-    renderProjectionsTable();
+
+document.getElementById('projGaSearch').addEventListener('input', e => { projGaSearchTerm = e.target.value; renderProjGaTable(); });
+document.querySelectorAll('#projGaPosFilter .pos-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    projGaPosFilter = btn.dataset.pos;
+    document.querySelectorAll('#projGaPosFilter .pos-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+    renderProjGaTable();
+  });
+});
+
+document.getElementById('projPtsSearch').addEventListener('input', e => { projPtsSearchTerm = e.target.value; renderProjPtsTable(); });
+document.querySelectorAll('#projPtsPosFilter .pos-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    projPtsPosFilter = btn.dataset.pos;
+    document.querySelectorAll('#projPtsPosFilter .pos-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+    renderProjPtsTable();
   });
 });
 
