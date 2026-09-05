@@ -461,6 +461,30 @@
     white-space:nowrap; text-align:center;
   }
 
+  /* ---- Projections tab ---- */
+  .proj-filters{
+    display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; align-items:center;
+  }
+  .proj-filters input{
+    flex:1; min-width:180px; background:#1A001E; border:1px solid var(--line); color:var(--ink);
+    font-family:'IBM Plex Mono', monospace; font-size:13px; padding:9px 12px; outline:none;
+  }
+  .proj-filters input:focus{ border-color:var(--cyan); }
+  .proj-pos-filter{ display:flex; gap:6px; flex-wrap:wrap; }
+  .pos-filter-btn{
+    background:transparent; border:1px solid var(--line); color:var(--dim);
+    font-family:'Space Mono',monospace; font-weight:700; font-size:11px; letter-spacing:1px;
+    text-transform:uppercase; padding:8px 12px; cursor:pointer;
+  }
+  .pos-filter-btn:hover{ color:var(--ink); }
+  .pos-filter-btn.active{ border-color:var(--green); color:var(--green); }
+  #projTable{ min-width:640px; }
+  #projTable th[data-sort]{ cursor:pointer; user-select:none; white-space:nowrap; }
+  #projTable th[data-sort]:hover{ color:var(--ink); }
+  #projTable th.sort-asc::after{ content:' ▲'; color:var(--green); }
+  #projTable th.sort-desc::after{ content:' ▼'; color:var(--green); }
+  .proj-pct{ font-family:'Space Mono',monospace; font-weight:700; text-align:right; }
+
   /* ---- Mobile ---- */
   @media (max-width:600px){
     main{ padding:18px 14px 60px; }
@@ -489,6 +513,8 @@
     .tab-btn{ padding:10px 4px; font-size:10px; letter-spacing:1px; }
     .variant-toggle{ flex-direction:column; }
     .captain-row{ flex-direction:column; }
+    .proj-filters input{ flex:1 1 100%; }
+    .pos-filter-btn{ padding:7px 9px; font-size:10px; }
   }
 </style>
 </head>
@@ -539,6 +565,7 @@
       <button class="tab-btn active" type="button" data-tab="squad">Squad</button>
       <button class="tab-btn" type="button" data-tab="fixtures">Fixtures</button>
       <button class="tab-btn" type="button" data-tab="recommender">Recommender</button>
+      <button class="tab-btn" type="button" data-tab="projections">Projections</button>
     </nav>
 
     <div class="tab-panel" id="tabPanel-squad" data-tab-panel="squad">
@@ -572,12 +599,53 @@
       <div id="fixtureCalendar" class="fixture-calendar"></div>
 
       <h2 class="section">// Upcoming Fixtures</h2>
-      <div id="squadFixtures" class="fdr-panel"></div>
+      <div id="squadFixtures" class="fdr-panel"><div class="empty-note">Pull your team above to see fixtures for your specific squad.</div></div>
     </div>
 
     <div class="tab-panel" id="tabPanel-recommender" data-tab-panel="recommender" hidden>
       <h2 class="section">// Transfer Recommender</h2>
       <div id="recWrap"></div>
+    </div>
+
+    <div class="tab-panel" id="tabPanel-projections" data-tab-panel="projections" hidden>
+      <h2 class="section">// Player Projections</h2>
+      <div class="empty-note">Fixture-adjusted probabilities for any player in the game — not just your squad. Same underlying model as the Recommender and Auto-Pick XI, one gameweek at a time.</div>
+
+      <div class="gw-nav">
+        <button class="btn-ghost" id="projGwPrevBtn">‹ PREV</button>
+        <div class="gw-nav-label" id="projGwNavLabel">GW —</div>
+        <button class="btn-ghost" id="projGwNextBtn">NEXT ›</button>
+      </div>
+
+      <div class="proj-filters">
+        <input type="text" id="projSearch" placeholder="Search player…" autocomplete="off">
+        <div class="proj-pos-filter" id="projPosFilter">
+          <button class="pos-filter-btn active" type="button" data-pos="all">ALL</button>
+          <button class="pos-filter-btn" type="button" data-pos="1">GKP</button>
+          <button class="pos-filter-btn" type="button" data-pos="2">DEF</button>
+          <button class="pos-filter-btn" type="button" data-pos="3">MID</button>
+          <button class="pos-filter-btn" type="button" data-pos="4">FWD</button>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table id="projTable">
+          <thead>
+            <tr>
+              <th data-sort="pos">Pos</th>
+              <th data-sort="name">Player</th>
+              <th data-sort="team">Team</th>
+              <th data-sort="price">£</th>
+              <th data-sort="opp">Opponent</th>
+              <th data-sort="cs">Clean Sheet %</th>
+              <th data-sort="goal">Goal %</th>
+              <th data-sort="assist">Assist %</th>
+            </tr>
+          </thead>
+          <tbody id="projBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-note" id="projEmptyNote" style="display:none;">No players match your filters.</div>
     </div>
   </div>
 </main>
@@ -1488,6 +1556,99 @@ function fixtureAttackFactor(difficulty){
   return 1 + (3 - difficulty) * 0.08; // diff1→1.16 diff3→1.00 diff5→0.84
 }
 
+// =====================================================================
+// Projections tab — per-gameweek Poisson probabilities
+//
+// Deliberately NOT a new model: every ingredient here (reliablePer90,
+// fixtureAttackFactor, teamDefensiveFactor, teamAttackingFactor) is the
+// exact same fixture-adjusted signal already computed above for the
+// multi-GW recommender and single-GW auto-pick scores. This section just
+// isolates those signals as standalone expected-goals/assists/conceded
+// figures for ONE specific gameweek (rather than folding them into a
+// blended points formula or an ad hoc probability heuristic), and runs
+// them through an actual Poisson model as requested — P(0) = e^-λ,
+// P(≥1) = 1 - e^-λ — so the numbers mean something statistically
+// specific, not just "a bigger score is better."
+// =====================================================================
+
+function poissonZeroProb(lambda){ return Math.exp(-Math.max(0, lambda)); }
+function poissonAtLeastOneProb(lambda){ return 1 - Math.exp(-Math.max(0, lambda)); }
+
+// Fixture difficulty's pull on expected goals CONCEDED is the mirror
+// image of its pull on expected goals scored (fixtureAttackFactor above)
+// — a tougher fixture should scale a team's expected-goals-conceded UP,
+// not down. Same coefficient, opposite sign, for the same reason
+// fixtureAttackFactor uses 0.08: a mild scaler on top of the season-long
+// baseline, not the primary signal.
+function fixtureConcedeFactor(difficulty){
+  return 1 + (difficulty - 3) * 0.08; // diff1→0.84 diff3→1.00 diff5→1.16
+}
+
+// Fixture-adjusted expected goals conceded for `teamId` in one specific
+// matchup — built from the exact same team-strength signals
+// cleanSheetProbability() above already computes (teamDefensiveFactor,
+// teamAttackingFactor), just recombined into an actual goals-conceded
+// figure instead of folded into that function's own additive probability
+// heuristic, so it can be run through Poisson here instead. 0.45 is the
+// same "typical opponent" baseline cleanSheetProbability's attAdj term
+// already uses, so an opponent exactly at that baseline leaves the
+// team's own season xGC/90 unscaled.
+function adjustedGoalsConceded(teamId, opponentTeamId, difficulty, bs){
+  const baseline = teamDefensiveFactor(teamId, bs);
+  const oppFactor = clamp(teamAttackingFactor(opponentTeamId, bs) / 0.45, 0.5, 2.2);
+  return baseline * fixtureConcedeFactor(difficulty) * oppFactor;
+}
+
+// One player's fixture-adjusted expected goals / assists for a single
+// fixture, as raw rates (not yet run through Poisson) — same per-90 ×
+// fixture-factor × minutes-reliability combination playerFixtureScore()
+// above already applies inside its attackPts term, just isolated here
+// instead of weighted together into a points blend.
+function fixtureAdjustedAttack(p, fixture){
+  const isHome = fixture.team_h === p.team;
+  const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
+  const attFactor = fixtureAttackFactor(difficulty);
+  const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
+  return {
+    isHome, difficulty,
+    oppId: isHome ? fixture.team_a : fixture.team_h,
+    adjXG: reliablePer90(p, 'expected_goals_per_90') * attFactor * minsFactor,
+    adjXA: reliablePer90(p, 'expected_assists_per_90') * attFactor * minsFactor,
+  };
+}
+
+// One player's full Projections row for a single specific gameweek — all
+// of that team's fixtures that week (DGW sums, BGW is null/blank), turned
+// into the three Poisson probabilities. Clean sheet % is shown for
+// GKP/DEF/MID (a MID's clean sheet still earns FPL points, and the
+// team-level number is trivial to include once computed for GKP/DEF) and
+// blanked for FWD, per the brief's "your judgment" allowance.
+function projectionsRowForGw(p, eventId, fixtures, bs, teamsFullById){
+  const teamFixtures = fixtures.filter(f => f.event === eventId && (f.team_h === p.team || f.team_a === p.team));
+  if(teamFixtures.length === 0){
+    return { isBGW: true, opponents: [], goalProb: null, assistProb: null, csProb: null };
+  }
+
+  let sumXG = 0, sumXA = 0, sumXGC = 0;
+  const opponents = teamFixtures.map(f => {
+    const { isHome, difficulty, oppId, adjXG, adjXA } = fixtureAdjustedAttack(p, f);
+    sumXG += adjXG;
+    sumXA += adjXA;
+    sumXGC += adjustedGoalsConceded(p.team, oppId, difficulty, bs);
+    const oppTeam = teamsFullById[oppId];
+    return { short: oppTeam ? oppTeam.short_name : '?', isHome, difficulty };
+  });
+
+  return {
+    isBGW: false,
+    isDGW: teamFixtures.length >= 2,
+    opponents,
+    goalProb: poissonAtLeastOneProb(sumXG),
+    assistProb: poissonAtLeastOneProb(sumXA),
+    csProb: p.element_type <= 3 ? poissonZeroProb(sumXGC) : null,
+  };
+}
+
 // Probability of clearing the defensive-contribution points threshold in a
 // single match, from a player's season per-90 CBIT(+recoveries) rate.
 // Modeled as a logistic curve centered on the threshold itself (50% right
@@ -2361,6 +2522,125 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
   }
 }
 
+// ---- Projections tab: standalone browsing/sorting UI over
+// projectionsRowForGw() above. Works for every player in the game,
+// independent of whether a squad has been pulled — see the bottom IIFE,
+// which initializes this from bootstrap+fixtures directly rather than
+// from loadTeam().
+let projBs = null, projFixtures = null;
+let projWindowEventIds = [];
+let projGwIndex = 0;
+let projSortKey = 'goal';
+let projSortDir = 'desc';
+let projPosFilter = 'all';
+let projSearchTerm = '';
+
+function initProjections(bs, fixtures){
+  projBs = bs;
+  projFixtures = fixtures;
+  projWindowEventIds = buildScoringWindow(bs, NUM_GWS);
+  projGwIndex = 0;
+  renderProjectionsTable();
+}
+
+function renderProjectionsTable(){
+  if(!projBs || !projWindowEventIds.length) return;
+  const bs = projBs;
+  const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
+  const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
+  const eventId = projWindowEventIds[projGwIndex];
+  const ev = bs.events.find(e => e.id === eventId);
+
+  document.getElementById('projGwNavLabel').textContent = `GW${eventId}${ev && ev.is_next ? ' (NEXT)' : ''}`;
+  document.getElementById('projGwPrevBtn').disabled = projGwIndex <= 0;
+  document.getElementById('projGwNextBtn').disabled = projGwIndex >= projWindowEventIds.length - 1;
+
+  let pool = bs.elements;
+  if(projPosFilter !== 'all') pool = pool.filter(e => String(e.element_type) === projPosFilter);
+  if(projSearchTerm){
+    const term = projSearchTerm.toLowerCase();
+    pool = pool.filter(e => e.web_name.toLowerCase().includes(term) || `${e.first_name} ${e.second_name}`.toLowerCase().includes(term));
+  }
+
+  const rows = pool.map(p => ({ p, row: projectionsRowForGw(p, eventId, projFixtures, bs, teamsFullById) }));
+
+  const sortVal = ({ p, row }) => {
+    switch(projSortKey){
+      case 'name': return p.web_name.toLowerCase();
+      case 'team': return teamById[p.team] || '';
+      case 'pos': return p.element_type;
+      case 'price': return p.now_cost;
+      case 'cs': return row.csProb ?? -1;
+      case 'goal': return row.goalProb ?? -1;
+      case 'assist': return row.assistProb ?? -1;
+      default: return 0;
+    }
+  };
+  rows.sort((a, b) => {
+    const av = sortVal(a), bv = sortVal(b);
+    const cmp = typeof av === 'string' ? av.localeCompare(bv) : av - bv;
+    return projSortDir === 'asc' ? cmp : -cmp;
+  });
+
+  const tbody = document.getElementById('projBody');
+  const emptyNote = document.getElementById('projEmptyNote');
+  if(rows.length === 0){
+    tbody.innerHTML = '';
+    emptyNote.style.display = '';
+    return;
+  }
+  emptyNote.style.display = 'none';
+
+  const pct = v => v == null ? '<span class="sub">—</span>' : `${Math.round(v * 100)}%`;
+
+  tbody.innerHTML = rows.map(({ p, row }) => {
+    const oppHtml = row.isBGW
+      ? '<span class="sub">BGW</span>'
+      : row.opponents.map(o => `
+          <span class="fdr-chip ${fdrClass(o.difficulty)}" style="display:inline-flex;">
+            <span class="fdr-opp">${o.short}</span><span class="fdr-loc">${o.isHome ? 'H' : 'A'}</span>
+          </span>`).join(' ');
+    return `<tr>
+      <td><span class="pos-tag pos-${POS[p.element_type]}">${POS[p.element_type]}</span></td>
+      <td class="name">${p.web_name}</td>
+      <td class="sub">${teamById[p.team]}</td>
+      <td>${money(p.now_cost)}</td>
+      <td>${oppHtml}</td>
+      <td class="proj-pct">${pct(row.csProb)}</td>
+      <td class="proj-pct">${pct(row.goalProb)}</td>
+      <td class="proj-pct">${pct(row.assistProb)}</td>
+    </tr>`;
+  }).join('');
+}
+
+document.getElementById('projGwPrevBtn').addEventListener('click', () => {
+  if(projGwIndex > 0){ projGwIndex--; renderProjectionsTable(); }
+});
+document.getElementById('projGwNextBtn').addEventListener('click', () => {
+  if(projGwIndex < projWindowEventIds.length - 1){ projGwIndex++; renderProjectionsTable(); }
+});
+document.getElementById('projSearch').addEventListener('input', e => {
+  projSearchTerm = e.target.value;
+  renderProjectionsTable();
+});
+document.querySelectorAll('#projPosFilter .pos-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    projPosFilter = btn.dataset.pos;
+    document.querySelectorAll('#projPosFilter .pos-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+    renderProjectionsTable();
+  });
+});
+document.querySelectorAll('#projTable thead th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    projSortDir = (projSortKey === key) ? (projSortDir === 'asc' ? 'desc' : 'asc') : 'desc';
+    projSortKey = key;
+    document.querySelectorAll('#projTable thead th').forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
+    th.classList.add(projSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    renderProjectionsTable();
+  });
+});
+
 loadBtn.addEventListener('click', loadTeam);
 teamInput.addEventListener('keydown', e => { if(e.key === 'Enter') loadTeam(); });
 
@@ -2390,14 +2670,28 @@ teamInput.addEventListener('keydown', e => { if(e.key === 'Enter') loadTeam(); }
 
   showGameweek(0); // independent of squad pull — loads its own bootstrap/fixtures data
 
+  // Projections is a standalone browsing tool — every player in the game,
+  // not just the user's squad — so it populates and becomes reachable
+  // regardless of whether a team ID has ever been pulled.
+  let projectionsReady = false;
+  try{
+    const [bsForProj, fixturesForProj] = await Promise.all([loadBootstrap(), loadFixtures()]);
+    initProjections(bsForProj, fixturesForProj);
+    projectionsReady = true;
+  }catch(e){ /* Projections tab just stays empty; loadTeam()/the catch below still report the wire error */ }
+
   if(teamInput.value){
     loadTeam();
   }else{
+    if(projectionsReady){
+      showResults();
+      switchTab('projections'); // Squad/Recommender have nothing to show without a pulled team yet
+    }
     try{
       const bs = await loadBootstrap();
       buildTicker(bs);
       startDeadlineClock(bs);
-      setStatus('Enter your Team ID above to pull your squad.');
+      setStatus('Enter your Team ID above to pull your squad — or browse Projections below.');
     }catch(e){
       setStatus('Could not reach the live FPL wire yet — enter your Team ID and try "Pull My Team".', true);
     }
