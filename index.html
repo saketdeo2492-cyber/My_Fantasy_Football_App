@@ -621,74 +621,65 @@
       <h2 class="section">// Player Projections</h2>
       <div class="empty-note">Fixture-adjusted probabilities and point projections for any team or player in the game — not just your squad. Same underlying model as the Recommender and Auto-Pick XI.</div>
 
-      <div class="variant-toggle" id="projSubNav">
-        <button class="variant-btn active" type="button" data-projview="cs">Clean Sheets</button>
-        <button class="variant-btn" type="button" data-projview="goalassist">Goal &amp; Assist</button>
-        <button class="variant-btn" type="button" data-projview="points">Point Projection</button>
-      </div>
-
       <!-- Table 1: team-level Clean Sheet %, GW+1..GW+4 -->
-      <div data-proj-view="cs">
-        <div class="table-scroll">
-          <table id="projCsTable">
-            <thead><tr id="projCsHead"></tr></thead>
-            <tbody id="projCsBody"></tbody>
-          </table>
-        </div>
+      <h2 class="section">// Clean Sheet %</h2>
+      <div class="table-scroll">
+        <table id="projCsTable">
+          <thead><tr id="projCsHead"></tr></thead>
+          <tbody id="projCsBody"></tbody>
+        </table>
       </div>
 
       <!-- Table 2: player-level Goal %/Assist %, next single GW only -->
-      <div data-proj-view="goalassist" hidden>
-        <div class="proj-filters">
-          <input type="text" id="projGaSearch" placeholder="Search player…" autocomplete="off">
-          <div class="proj-pos-filter" id="projGaPosFilter">
-            <button class="pos-filter-btn active" type="button" data-pos="all">ALL</button>
-            <button class="pos-filter-btn" type="button" data-pos="1">GKP</button>
-            <button class="pos-filter-btn" type="button" data-pos="2">DEF</button>
-            <button class="pos-filter-btn" type="button" data-pos="3">MID</button>
-            <button class="pos-filter-btn" type="button" data-pos="4">FWD</button>
-          </div>
+      <h2 class="section">// Goals &amp; Assists</h2>
+      <div class="proj-filters">
+        <input type="text" id="projGaSearch" placeholder="Search player…" autocomplete="off">
+        <div class="proj-pos-filter" id="projGaPosFilter">
+          <button class="pos-filter-btn active" type="button" data-pos="all">ALL</button>
+          <button class="pos-filter-btn" type="button" data-pos="1">GKP</button>
+          <button class="pos-filter-btn" type="button" data-pos="2">DEF</button>
+          <button class="pos-filter-btn" type="button" data-pos="3">MID</button>
+          <button class="pos-filter-btn" type="button" data-pos="4">FWD</button>
         </div>
-        <div class="gw-nav-label" id="projGaGwLabel" style="text-align:left; margin-bottom:10px;">GW —</div>
-        <div class="table-scroll">
-          <table id="projGaTable">
-            <thead>
-              <tr>
-                <th data-sort="pos">Pos</th>
-                <th data-sort="name">Player</th>
-                <th data-sort="team">Team</th>
-                <th data-sort="price">£</th>
-                <th data-sort="opp">Opponent</th>
-                <th data-sort="goal">Goal %</th>
-                <th data-sort="assist">Assist %</th>
-              </tr>
-            </thead>
-            <tbody id="projGaBody"></tbody>
-          </table>
-        </div>
-        <div class="empty-note" id="projGaEmptyNote" style="display:none;">No players match your filters.</div>
       </div>
+      <div class="gw-nav-label" id="projGaGwLabel" style="text-align:left; margin-bottom:10px;">GW —</div>
+      <div class="table-scroll">
+        <table id="projGaTable">
+          <thead>
+            <tr>
+              <th data-sort="pos">Pos</th>
+              <th data-sort="name">Player</th>
+              <th data-sort="team">Team</th>
+              <th data-sort="price">£</th>
+              <th data-sort="opp">Opponent</th>
+              <th data-sort="goal">Goal %</th>
+              <th data-sort="assist">Assist %</th>
+            </tr>
+          </thead>
+          <tbody id="projGaBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-note" id="projGaEmptyNote" style="display:none;">No players match your filters.</div>
 
       <!-- Table 3: player-level total point projection, GW+1..GW+4 -->
-      <div data-proj-view="points" hidden>
-        <div class="proj-filters">
-          <input type="text" id="projPtsSearch" placeholder="Search player…" autocomplete="off">
-          <div class="proj-pos-filter" id="projPtsPosFilter">
-            <button class="pos-filter-btn active" type="button" data-pos="all">ALL</button>
-            <button class="pos-filter-btn" type="button" data-pos="1">GKP</button>
-            <button class="pos-filter-btn" type="button" data-pos="2">DEF</button>
-            <button class="pos-filter-btn" type="button" data-pos="3">MID</button>
-            <button class="pos-filter-btn" type="button" data-pos="4">FWD</button>
-          </div>
+      <h2 class="section">// Point Projections</h2>
+      <div class="proj-filters">
+        <input type="text" id="projPtsSearch" placeholder="Search player…" autocomplete="off">
+        <div class="proj-pos-filter" id="projPtsPosFilter">
+          <button class="pos-filter-btn active" type="button" data-pos="all">ALL</button>
+          <button class="pos-filter-btn" type="button" data-pos="1">GKP</button>
+          <button class="pos-filter-btn" type="button" data-pos="2">DEF</button>
+          <button class="pos-filter-btn" type="button" data-pos="3">MID</button>
+          <button class="pos-filter-btn" type="button" data-pos="4">FWD</button>
         </div>
-        <div class="table-scroll">
-          <table id="projPtsTable">
-            <thead><tr id="projPtsHead"></tr></thead>
-            <tbody id="projPtsBody"></tbody>
-          </table>
-        </div>
-        <div class="empty-note" id="projPtsEmptyNote" style="display:none;">No players match your filters.</div>
       </div>
+      <div class="table-scroll">
+        <table id="projPtsTable">
+          <thead><tr id="projPtsHead"></tr></thead>
+          <tbody id="projPtsBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-note" id="projPtsEmptyNote" style="display:none;">No players match your filters.</div>
     </div>
   </div>
 </main>
@@ -2821,15 +2812,8 @@ function renderProjPtsTable(){
   `).join('');
 }
 
-// ---- Sub-nav + static filter/search/sort wiring ----
-document.querySelectorAll('#projSubNav .variant-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const view = btn.dataset.projview;
-    document.querySelectorAll('#projSubNav .variant-btn').forEach(b => b.classList.toggle('active', b === btn));
-    document.querySelectorAll('[data-proj-view]').forEach(panel => { panel.hidden = panel.dataset.projView !== view; });
-  });
-});
-
+// ---- Filter/search wiring (all three tables stay stacked and visible
+// at once — no toggle between them) ----
 document.getElementById('projGaSearch').addEventListener('input', e => { projGaSearchTerm = e.target.value; renderProjGaTable(); });
 document.querySelectorAll('#projGaPosFilter .pos-filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
