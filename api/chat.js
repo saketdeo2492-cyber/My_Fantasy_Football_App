@@ -16,10 +16,7 @@
 
 const Anthropic = require('@anthropic-ai/sdk');
 
-const MODEL = 'claude-haiku-4-5'; // current model ID — the app asked for
-  // claude-haiku-4-5-20251001, which is a dated snapshot suffix Anthropic no
-  // longer issues IDs with; claude-haiku-4-5 is the current, undated ID for
-  // that same model.
+const MODEL = 'claude-haiku-4-5-20251001'; // current model ID for Claude Haiku 4.5
 const MAX_HISTORY_MESSAGES = 10; // mirrors the client-side cap — enforced
   // again here since the client is not a trust boundary.
 const MAX_MESSAGE_CHARS = 4000; // guards against a pathological single message
