@@ -54,6 +54,19 @@ no public documentation for it from FPL), so it could in theory break if
 FPL changes that flow. It's the same technique several open-source FPL
 tools use.
 
+## Chat assistant (floating chat bubble)
+
+- `api/chat.js` — takes `{ messages, squadContext }` (both assembled
+  client-side — `squadContext` is a compact summary of the app's own
+  already-computed data: squad, bank/free transfers, Team Score, top
+  Recommender flags, Captain/Vice suggestion, next-GW point projections),
+  calls Claude (`claude-haiku-4-5-20251001`) via the Anthropic SDK, and returns the
+  reply text. Requires an `ANTHROPIC_API_KEY` environment variable set in
+  the Vercel project (Settings → Environment Variables) — the chat bubble
+  shows a clear error if it's missing, and the key itself is never sent to
+  the browser. Conversation history is capped to the last 10 messages per
+  request (client- and server-side) to bound cost.
+
 ## Extending it
 
 Some ideas for next passes:
