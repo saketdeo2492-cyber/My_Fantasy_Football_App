@@ -460,6 +460,18 @@
     font-family:'Space Mono',monospace; font-size:11px; color:var(--dim);
     white-space:nowrap; text-align:center;
   }
+  .gw-match-live{ border-left:3px solid var(--green); }
+
+  /* ---- Full fixture ticker (all teams) ---- */
+  #fixtureTickerTable{ min-width:640px; }
+  #fixtureTickerTable th{ text-align:center; white-space:nowrap; }
+  #fixtureTickerTable th:first-child{ text-align:left; }
+  #fixtureTickerTable td{ text-align:center; }
+  .ticker-team{
+    display:flex; align-items:center; gap:6px; font-weight:700;
+    font-family:'Space Mono',monospace; font-size:12px; white-space:nowrap;
+  }
+  .ticker-cell{ display:flex; gap:4px; justify-content:center; flex-wrap:wrap; }
 
   /* ---- Projections tab ---- */
   .proj-filters{
@@ -675,6 +687,12 @@
 
       <h2 class="section">// Upcoming Fixtures</h2>
       <div id="squadFixtures" class="fdr-panel"><div class="empty-note">Pull your team above to see fixtures for your specific squad.</div></div>
+
+      <h2 class="section">// Fixture Ticker</h2>
+      <div class="empty-note">Every Premier League team's next few gameweeks, independent of your own squad — for planning transfers or a wildcard around good or bad fixture runs.</div>
+      <div class="table-scroll">
+        <table id="fixtureTickerTable"></table>
+      </div>
     </div>
 
     <div class="tab-panel" id="tabPanel-recommender" data-tab-panel="recommender" hidden>
@@ -1017,12 +1035,69 @@ function renderSquadFixtures(bs, squad, fixtures){
   }).join('');
 }
 
+// Standard "fixture difficulty ticker" — every PL team, next few
+// gameweeks, independent of the user's own squad (unlike
+// renderSquadFixtures() above, which is scoped to just their 15). Reuses
+// buildScoringWindow() (defined further down, in the projections/
+// recommender model section — function declarations are hoisted, so the
+// call site here doesn't care about file order) purely for its "next N
+// unplayed gameweek ids" logic, not for any scoring.
+const FIXTURE_TICKER_GWS = 6;
+
+function renderFixtureTicker(bs, fixtures){
+  const table = document.getElementById('fixtureTickerTable');
+  if(!fixtures){ table.innerHTML = '<tr><td class="empty-note">Could not load fixtures.</td></tr>'; return; }
+
+  const windowIds = buildScoringWindow(bs, FIXTURE_TICKER_GWS);
+  if(windowIds.length === 0){ table.innerHTML = '<tr><td class="empty-note">No upcoming gameweeks to show.</td></tr>'; return; }
+
+  const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
+  const teams = [...bs.teams].sort((a,b) => a.short_name.localeCompare(b.short_name));
+
+  const headHtml = `<tr><th>Team</th>${windowIds.map(id => `<th>GW${id}</th>`).join('')}</tr>`;
+
+  const bodyHtml = teams.map(team => {
+    const cells = windowIds.map(eventId => {
+      const teamFixtures = fixtures.filter(f => f.event === eventId && (f.team_h === team.id || f.team_a === team.id));
+      if(teamFixtures.length === 0) return '<td><span class="sub">—</span></td>';
+      const chips = teamFixtures.map(f => {
+        const isHome = f.team_h === team.id;
+        const opp = teamsFullById[isHome ? f.team_a : f.team_h];
+        const difficulty = isHome ? f.team_h_difficulty : f.team_a_difficulty;
+        return `<span class="fdr-chip ${fdrClass(difficulty)}">
+          <span class="fdr-opp">${opp ? opp.short_name : '?'}</span>
+          <span class="fdr-loc">${isHome ? 'H' : 'A'}</span>
+        </span>`;
+      }).join('');
+      return `<td><div class="ticker-cell">${chips}</div></td>`;
+    }).join('');
+    return `<tr><td><div class="ticker-team">${jerseyIcon(team.short_name)}${team.short_name}</div></td>${cells}</tr>`;
+  }).join('');
+
+  table.innerHTML = `<thead>${headHtml}</thead><tbody>${bodyHtml}</tbody>`;
+}
+
 // ---- Gameweek-by-gameweek fixture calendar (standalone, not squad-specific) ----
 let calendarEventId = null;
 
 function defaultEventId(bs){
   const ev = bs.events.find(e => e.is_next) || bs.events.find(e => e.is_current) || bs.events.find(e => !e.finished) || bs.events[0];
   return ev.id;
+}
+
+// Scheduled fixtures show a kickoff time (unchanged); a fixture that's
+// `started` but not yet `finished` shows its current live score plus a
+// LIVE tag; a `finished` one shows the final score. team_h_score/
+// team_a_score are null until kickoff, then update live, then freeze —
+// same fields, three different things to show depending on started/
+// finished.
+function fixtureStatusDisplay(f){
+  const kickoff = f.kickoff_time
+    ? new Date(f.kickoff_time).toLocaleString(undefined, {weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
+    : 'TBD';
+  if(f.finished) return { text: `${f.team_h_score}–${f.team_a_score}`, isLive: false };
+  if(f.started) return { text: `${f.team_h_score ?? 0}–${f.team_a_score ?? 0}`, isLive: true };
+  return { text: kickoff, isLive: false };
 }
 
 function renderFixtureCalendar(bs, fixtures, eventId){
@@ -1038,13 +1113,10 @@ function renderFixtureCalendar(bs, fixtures, eventId){
 
   document.getElementById('fixtureCalendar').innerHTML = matches.map(f => {
     const home = teamById[f.team_h], away = teamById[f.team_a];
-    const kickoff = f.kickoff_time
-      ? new Date(f.kickoff_time).toLocaleString(undefined, {weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
-      : 'TBD';
-    const score = f.finished ? `${f.team_h_score}–${f.team_a_score}` : kickoff;
-    return `<div class="gw-match">
+    const { text, isLive } = fixtureStatusDisplay(f);
+    return `<div class="gw-match${isLive ? ' gw-match-live' : ''}">
       <div class="gw-team home"><span class="fdr-dot ${fdrClass(f.team_h_difficulty)}"></span>${home ? home.name : f.team_h}</div>
-      <div class="gw-kickoff">${score}</div>
+      <div class="gw-kickoff">${text}${isLive ? ' <span class="live-tag">●LIVE</span>' : ''}</div>
       <div class="gw-team away">${away ? away.name : f.team_a}<span class="fdr-dot ${fdrClass(f.team_a_difficulty)}"></span></div>
     </div>`;
   }).join('') || '<div class="empty-note" style="padding:14px;">No fixtures scheduled for this gameweek.</div>';
@@ -3110,6 +3182,15 @@ teamInput.addEventListener('keydown', e => { if(e.key === 'Enter') loadTeam(); }
   }
 
   showGameweek(0); // independent of squad pull — loads its own bootstrap/fixtures data
+
+  // The full fixture ticker is independent of squad pull too — every PL
+  // team, not just the user's — so it reuses whatever bootstrap/fixtures
+  // showGameweek(0) just triggered (loadBootstrap()/loadFixtures() cache
+  // their result, so this doesn't re-fetch).
+  try{
+    const [bsForTicker, fixturesForTicker] = await Promise.all([loadBootstrap(), loadFixtures()]);
+    renderFixtureTicker(bsForTicker, fixturesForTicker);
+  }catch(e){ /* ticker just stays empty */ }
 
   // Projections is a standalone browsing tool — every player in the game,
   // not just the user's squad — so it populates and becomes reachable
