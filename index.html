@@ -1633,19 +1633,42 @@ function adjustedGoalsConceded(teamId, opponentTeamId, difficulty, bs){
   return baseline * fixtureConcedeFactor(difficulty) * oppFactor;
 }
 
+// Opponent-aware mirror of adjustedGoalsConceded() above, for the
+// ATTACKING side. Previously the attacking-side adjustment relied only
+// on FPL's generic 1-5 difficulty digit (fixtureAttackFactor, a mild
+// ±8% swing) — which can't tell an elite defense from a merely average
+// one inside the same difficulty tier (checked directly: this
+// gameweek's difficulty-4 opponents range from teamDefensiveFactor 0.28
+// [Arsenal] to 2.43 [Aston Villa], a ~9x spread the difficulty digit
+// alone doesn't capture). This scales a player's own per-90 rate by the
+// *specific* opponent's defensive strength instead — the same
+// teamDefensiveFactor the Clean Sheet % table already computes for that
+// opponent — while still keeping the mild difficulty-based scaler as a
+// secondary factor, same two-factor structure as adjustedGoalsConceded.
+// 1.4 is the same "typical defense" baseline cleanSheetProbability's own
+// defAdj term uses for teamDefensiveFactor, so an opponent exactly at
+// that baseline leaves the difficulty-only scaling unchanged. Lower
+// teamDefensiveFactor (stingier opponent) pulls this below 1; higher
+// (leakier opponent) pushes it above 1.
+function opponentAttackFactor(opponentTeamId, difficulty, bs){
+  const fplFactor = fixtureAttackFactor(difficulty);
+  const oppFactor = clamp(teamDefensiveFactor(opponentTeamId, bs) / 1.4, 0.5, 2.2);
+  return fplFactor * oppFactor;
+}
+
 // One player's fixture-adjusted expected goals / assists for a single
 // fixture, as raw rates (not yet run through Poisson) — same per-90 ×
 // fixture-factor × minutes-reliability combination playerFixtureScore()
 // above already applies inside its attackPts term, just isolated here
 // instead of weighted together into a points blend.
-function fixtureAdjustedAttack(p, fixture){
+function fixtureAdjustedAttack(p, fixture, bs){
   const isHome = fixture.team_h === p.team;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
-  const attFactor = fixtureAttackFactor(difficulty);
+  const oppId = isHome ? fixture.team_a : fixture.team_h;
+  const attFactor = opponentAttackFactor(oppId, difficulty, bs);
   const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
   return {
-    isHome, difficulty,
-    oppId: isHome ? fixture.team_a : fixture.team_h,
+    isHome, difficulty, oppId,
     adjXG: reliablePer90(p, 'expected_goals_per_90') * attFactor * minsFactor,
     adjXA: reliablePer90(p, 'expected_assists_per_90') * attFactor * minsFactor,
   };
@@ -1665,7 +1688,7 @@ function projectionsRowForGw(p, eventId, fixtures, bs, teamsFullById){
 
   let sumXG = 0, sumXA = 0, sumXGC = 0;
   const opponents = teamFixtures.map(f => {
-    const { isHome, difficulty, oppId, adjXG, adjXA } = fixtureAdjustedAttack(p, f);
+    const { isHome, difficulty, oppId, adjXG, adjXA } = fixtureAdjustedAttack(p, f, bs);
     sumXG += adjXG;
     sumXA += adjXA;
     sumXGC += adjustedGoalsConceded(p.team, oppId, difficulty, bs);
@@ -1723,7 +1746,7 @@ function playerFixtureScore(p, fixture, bs){
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
   const csProb = cleanSheetProbability(p.team, oppId, difficulty, bs);
-  const attFactor = fixtureAttackFactor(difficulty);
+  const attFactor = opponentAttackFactor(oppId, difficulty, bs);
   const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
   const form = parseFloat(p.form) || 0;
   const xg90 = reliablePer90(p, 'expected_goals_per_90');
@@ -1868,7 +1891,7 @@ function singleGwFixtureScore(p, fixture, bs, history, mode){
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
   const csProb = cleanSheetProbability(p.team, oppId, difficulty, bs);
-  const attFactor = fixtureAttackFactor(difficulty);
+  const attFactor = opponentAttackFactor(oppId, difficulty, bs);
 
   const recencyWindow = mode === 'ceiling' ? 3 : 6; // shorter window = more reactive to a hot streak
   const xg90 = recencyWeightedPer90(history, 'expected_goals', reliablePer90(p, 'expected_goals_per_90'), recencyWindow);
