@@ -53,6 +53,8 @@
   header{
     padding:24px 20px 16px;
     border-bottom:2px solid var(--line);
+    background:radial-gradient(ellipse 900px 260px at 15% -40%, rgba(233,0,82,.25), transparent 60%),
+      radial-gradient(ellipse 700px 240px at 100% -60%, rgba(4,245,255,.15), transparent 60%);
     display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px;
   }
   .wordmark{
@@ -132,12 +134,13 @@
   .live-tag{ color:var(--green); font-size:9px; margin-left:4px; }
 
   .summary{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:1px;
-    background:var(--line); border:1px solid var(--line); margin-bottom:30px;
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px;
+    margin-bottom:30px;
   }
   .summary .cell{
     background:var(--purple-dark); padding:14px 10px; min-height:66px;
     display:flex; flex-direction:column; justify-content:center;
+    border-radius:8px; border:1px solid var(--line); box-shadow:0 2px 8px rgba(0,0,0,.2);
   }
   .summary .cell .num{ font-family:'Space Mono', monospace; font-size:20px; color:var(--green); font-weight:700; line-height:1.15; }
   .summary .cell .num.pink{ color:var(--pink); }
@@ -187,34 +190,63 @@
     margin-bottom:18px; position:relative; z-index:1;
   }
   .pitch-card{
-    background:var(--purple-dark);
+    background:linear-gradient(160deg, var(--purple-dark) 0%, #1c0021 100%);
     border:1px solid var(--pitch-line);
-    border-radius:4px;
-    padding:6px 8px;
-    min-width:78px;
+    border-top:3px solid var(--pos-color, var(--pitch-line));
+    border-radius:10px;
+    padding:8px 8px 7px;
+    min-width:88px;
     min-height:52px;
     text-align:center;
     position:relative;
     display:flex;
     flex-direction:column;
-    justify-content:center;
+    justify-content:flex-start;
+    align-items:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.28);
+    transition:transform .12s ease, box-shadow .12s ease;
   }
-  .pname-row{ display:flex; align-items:center; justify-content:center; gap:3px; }
+  .pitch-card:hover{ transform:translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,.4); }
+  .pname-row{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
   .jersey-icon{ flex-shrink:0; }
+
+  /* ---- Player photo (real FPL CDN image, jersey-icon fallback) ---- */
+  .player-photo-wrap{
+    position:relative; display:flex; align-items:center; justify-content:center;
+    border-radius:50%; overflow:hidden; flex-shrink:0;
+    background:var(--panel); border:1px solid var(--pitch-line);
+  }
+  .player-photo-wrap.photo-md{ width:44px; height:44px; }
+  .player-photo-wrap.photo-sm{ width:26px; height:26px; }
+  .player-photo-wrap.photo-lg{ width:64px; height:64px; }
+  .player-photo{ width:100%; height:100%; object-fit:cover; object-position:top center; display:block; }
+  .photo-fallback{ display:none; align-items:center; justify-content:center; width:100%; height:100%; }
+  .photo-fallback .jersey-icon{ width:60%; height:60%; }
+
+  /* ---- Team crest (real FPL CDN badge, jersey-icon fallback) ---- */
+  .team-crest-wrap{ position:relative; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .team-crest-wrap.crest-sm{ width:16px; height:16px; }
+  .team-crest-wrap.crest-md{ width:22px; height:22px; }
+  .team-crest{ width:100%; height:100%; object-fit:contain; display:block; }
+  .crest-fallback{ display:none; align-items:center; justify-content:center; width:100%; height:100%; }
+
   .pitch-card .pname{
     font-family:'Space Mono', monospace; font-weight:700; font-size:11px;
-    color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:74px;
+    color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:86px;
   }
-  .pitch-card .pmeta{ font-size:9px; color:var(--dim); margin-top:2px; }
+  .pitch-card .pmeta{ font-size:9px; color:var(--dim); margin-top:2px; display:flex; align-items:center; justify-content:center; gap:4px; }
   .pitch-card .parmband{
-    position:absolute; top:-8px; right:-6px;
+    position:absolute; top:-8px; right:-6px; z-index:2;
     background:var(--green); color:var(--purple);
     font-family:'Space Mono',monospace; font-weight:700; font-size:9px;
     width:16px; height:16px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 2px var(--purple-dark);
   }
-  .pitch-card.injured{ border-color:var(--pink); }
-  .pitch-card.uncertain{ border-color:var(--cyan); }
+  /* box-shadow rings rather than border-color overrides — border-color
+     would clobber border-top's --pos-color position accent above */
+  .pitch-card.injured{ box-shadow:0 0 0 1px var(--pink), 0 3px 10px rgba(0,0,0,.28); }
+  .pitch-card.uncertain{ box-shadow:0 0 0 1px var(--cyan), 0 3px 10px rgba(0,0,0,.28); }
   .pitch-card .pflag{ color:var(--pink); font-size:9px; margin-top:2px; }
   .pitch-card .pflag.puncertain{ color:var(--cyan); }
   .pcard-fixtures{ display:flex; gap:2px; justify-content:center; flex-wrap:wrap; margin-top:4px; }
@@ -258,7 +290,8 @@
   .captain-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
   .captain-card{
     flex:1; min-width:230px; background:var(--purple-dark); border:1px solid var(--line);
-    border-left:4px solid var(--green); padding:10px 12px;
+    border-left:4px solid var(--green); padding:10px 12px; border-radius:0 8px 8px 0;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
   }
   .captain-card.vice{ border-left-color:var(--cyan); }
   .captain-card .role{
@@ -278,6 +311,24 @@
   }
   .diff-tag.in{ color:var(--green); }
   .diff-tag.out{ color:var(--pink); }
+  /* ---- Optimal-vs-Ceiling XI diff (distinct from diff-in/diff-out above,
+     which mark a difference against the user's ACTUAL current lineup) ---- */
+  .pitch-card.variant-differs{ outline:2px dashed var(--pink); outline-offset:2px; }
+  .variant-diff-tag{
+    font-family:'Space Mono',monospace; font-size:8px; font-weight:700;
+    letter-spacing:.4px; text-transform:uppercase; margin-top:3px; color:var(--pink);
+  }
+  .variant-compare{
+    background:var(--purple-dark); border:1px solid var(--pink); border-left:4px solid var(--pink);
+    padding:12px 16px; margin-bottom:16px;
+  }
+  .variant-compare .vc-title{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--pink); margin-bottom:8px;
+  }
+  .variant-compare .vc-swaps{ display:flex; flex-direction:column; gap:6px; }
+  .variant-compare .vc-swap{ font-size:12px; color:var(--ink); display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .variant-compare .vc-swap .vc-side{ font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--dim); }
   .sub-order{
     position:absolute; top:-8px; left:-6px; background:var(--dim); color:var(--purple-dark);
     font-family:'Space Mono',monospace; font-weight:700; font-size:9px; width:16px; height:16px;
@@ -312,7 +363,8 @@
 
   .rec-card{
     background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--pink);
-    padding:14px 16px; margin-bottom:14px;
+    padding:14px 16px; margin-bottom:14px; border-radius:0 8px 8px 0;
+    box-shadow:0 2px 10px rgba(0,0,0,.22);
   }
   .rec-head{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
   .rec-head .out{ font-family:'Space Mono', monospace; font-weight:700; font-size:15px; }
@@ -385,21 +437,7 @@
   .skel-meta{ width:36px; height:8px; margin:0 auto; }
   .pitch-card.skeleton{ border-style:dashed; }
 
-  /* ---- Fixture difficulty (squad-specific list + gameweek calendar) ---- */
-  .fdr-panel{
-    background:var(--panel); border:1px solid var(--line);
-    padding:4px 16px; margin-bottom:10px;
-  }
-  .fdr-row{
-    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
-    padding:10px 0; border-bottom:1px solid rgba(90,46,96,.4);
-  }
-  .fdr-row:last-child{ border-bottom:none; }
-  .fdr-team{
-    font-family:'Space Mono',monospace; font-weight:700; font-size:12px;
-    letter-spacing:.5px; min-width:40px; color:var(--ink);
-  }
-  .fdr-chips{ display:flex; gap:6px; flex-wrap:wrap; flex:1; }
+  /* ---- Fixture difficulty chips (ticker, projections tables, pitch cards) ---- */
   .fdr-chip{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     min-width:44px; padding:4px 6px; border-radius:3px;
@@ -463,13 +501,23 @@
   .gw-match-live{ border-left:3px solid var(--green); }
 
   /* ---- Full fixture ticker (all teams) ---- */
-  #fixtureTickerTable{ min-width:640px; }
+  .ticker-controls{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .ticker-controls .gw-nav{ margin-bottom:0; flex:1; min-width:220px; }
+  #tickerSquadOnlyBtn.active{ border-color:var(--green); color:var(--green); }
+  #tickerSquadOnlyBtn:disabled{ opacity:.4; cursor:not-allowed; }
+  #fixtureTickerTable{ min-width:640px; border-collapse:separate; border-spacing:0 6px; }
   #fixtureTickerTable th{ text-align:center; white-space:nowrap; }
   #fixtureTickerTable th:first-child{ text-align:left; }
-  #fixtureTickerTable td{ text-align:center; }
+  #fixtureTickerTable td{ text-align:center; border-bottom:none; background:var(--purple-dark); }
+  #fixtureTickerTable td:first-child{ border-radius:6px 0 0 6px; }
+  #fixtureTickerTable td:last-child{ border-radius:0 6px 6px 0; }
+  #fixtureTickerTable tr.ticker-row-squad td{ background:#3a0a42; box-shadow:inset 3px 0 0 var(--green); }
   .ticker-team{
-    display:flex; align-items:center; gap:6px; font-weight:700;
-    font-family:'Space Mono',monospace; font-size:12px; white-space:nowrap;
+    display:flex; align-items:center; gap:7px; font-weight:700;
+    font-family:'Space Mono',monospace; font-size:12px; white-space:nowrap; padding-left:4px;
   }
   .ticker-cell{ display:flex; gap:4px; justify-content:center; flex-wrap:wrap; }
 
@@ -506,6 +554,22 @@
   }
   .proj-gw-cell .fdr-chip{ margin:3px auto 0; }
   .proj-gw-cell .sub{ display:block; }
+  .row-player{ display:flex; align-items:center; gap:8px; }
+  .row-team{ display:flex; align-items:center; gap:5px; }
+
+  /* ---- Pagination (Goals & Assists / Point Projections tables) ---- */
+  .pagination{
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    margin:16px 0 8px;
+  }
+  .pagination[hidden], .pagination:empty{ display:none; }
+  .pagination .btn-ghost{ height:32px; font-size:11px; padding:0 14px; }
+  .pagination .btn-ghost:disabled{ border-color:var(--line); color:var(--line); cursor:default; }
+  .pagination .btn-ghost:disabled:hover{ background:transparent; color:var(--line); }
+  .pagination-label{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1px;
+    color:var(--dim); text-transform:uppercase;
+  }
 
   /* ---- Floating chat assistant ---- */
   .chat-fab{
@@ -587,8 +651,9 @@
     .rec-head{ flex-direction:column; align-items:flex-start; }
     .rec-opt{ flex-direction:column; align-items:flex-start; gap:3px; }
     .rec-opt .stats{ font-size:10px; text-align:left; }
-    .fdr-team{ min-width:34px; font-size:11px; }
     .fdr-chip{ min-width:38px; padding:3px 4px; }
+    .ticker-controls{ flex-direction:column; align-items:stretch; }
+    #tickerSquadOnlyBtn{ width:100%; }
     .gw-match{ grid-template-columns:1fr; gap:4px; text-align:center; padding:10px; }
     .gw-team, .gw-team.away{ justify-content:center; flex-direction:row; }
     .gw-kickoff{ order:3; }
@@ -685,11 +750,16 @@
       </div>
       <div id="fixtureCalendar" class="fixture-calendar"></div>
 
-      <h2 class="section">// Upcoming Fixtures</h2>
-      <div id="squadFixtures" class="fdr-panel"><div class="empty-note">Pull your team above to see fixtures for your specific squad.</div></div>
-
       <h2 class="section">// Fixture Ticker</h2>
-      <div class="empty-note">Every Premier League team's next few gameweeks, independent of your own squad — for planning transfers or a wildcard around good or bad fixture runs.</div>
+      <div class="empty-note">Every Premier League team's fixture-difficulty run, several gameweeks out — jump the window forward/back, or narrow it to just your own squad's clubs.</div>
+      <div class="ticker-controls">
+        <div class="gw-nav">
+          <button class="btn-ghost" id="tickerPrevBtn">‹ PREV</button>
+          <div class="gw-nav-label" id="tickerNavLabel">GW —</div>
+          <button class="btn-ghost" id="tickerNextBtn">NEXT ›</button>
+        </div>
+        <button class="btn-ghost" id="tickerSquadOnlyBtn" type="button" disabled title="Pull your team to filter to just its clubs">MY SQUAD ONLY</button>
+      </div>
       <div class="table-scroll">
         <table id="fixtureTickerTable"></table>
       </div>
@@ -713,7 +783,7 @@
         </table>
       </div>
 
-      <!-- Table 2: player-level Goal %/Assist %, next single GW only -->
+      <!-- Table 2: player-level Goal %/Assist %, GW+1..GW+4 -->
       <h2 class="section">// Goals &amp; Assists</h2>
       <div class="proj-filters">
         <input type="text" id="projGaSearch" placeholder="Search player…" autocomplete="off">
@@ -724,25 +794,19 @@
           <button class="pos-filter-btn" type="button" data-pos="3">MID</button>
           <button class="pos-filter-btn" type="button" data-pos="4">FWD</button>
         </div>
+        <div class="proj-pos-filter" id="projGaStatFilter">
+          <button class="pos-filter-btn active" type="button" data-stat="goal">GOAL %</button>
+          <button class="pos-filter-btn" type="button" data-stat="assist">ASSIST %</button>
+        </div>
       </div>
-      <div class="gw-nav-label" id="projGaGwLabel" style="text-align:left; margin-bottom:10px;">GW —</div>
       <div class="table-scroll">
         <table id="projGaTable">
-          <thead>
-            <tr>
-              <th data-sort="pos">Pos</th>
-              <th data-sort="name">Player</th>
-              <th data-sort="team">Team</th>
-              <th data-sort="price">£</th>
-              <th data-sort="opp">Opponent</th>
-              <th data-sort="goal">Goal %</th>
-              <th data-sort="assist">Assist %</th>
-            </tr>
-          </thead>
+          <thead><tr id="projGaHead"></tr></thead>
           <tbody id="projGaBody"></tbody>
         </table>
       </div>
       <div class="empty-note" id="projGaEmptyNote" style="display:none;">No players match your filters.</div>
+      <div class="pagination" id="projGaPagination"></div>
 
       <!-- Table 3: player-level total point projection, GW+1..GW+4 -->
       <h2 class="section">// Point Projections</h2>
@@ -763,6 +827,7 @@
         </table>
       </div>
       <div class="empty-note" id="projPtsEmptyNote" style="display:none;">No players match your filters.</div>
+      <div class="pagination" id="projPtsPagination"></div>
     </div>
   </div>
 </main>
@@ -948,6 +1013,60 @@ function jerseyIcon(shortName){
   </svg>`;
 }
 
+// Position accent color for pitch-card top borders — same palette as the
+// .pos-GKP/.pos-DEF/.pos-MID/.pos-FWD table badges, just referenced from JS
+// too so a card can set --pos-color inline per player.
+const POS_COLOR = { 1: '#FFD34D', 2: 'var(--cyan)', 3: 'var(--green)', 4: 'var(--pink)' };
+
+// Official FPL CDN photo URL for a player, built from bootstrap-static's
+// own `photo` field (e.g. "154561.jpg" → code 154561). Not every player
+// has a shot on file — playerPhotoHtml() below always pairs this with a
+// same-size jerseyIcon() fallback so a missing/broken photo never leaves a
+// blank space.
+function playerPhotoUrl(p){
+  const code = String(p && p.photo || '').replace(/\.[a-z0-9]+$/i, '');
+  return code ? `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png` : null;
+}
+
+// Official FPL CDN crest URL for a team, from bootstrap-static's `code`
+// field (distinct from `id` — id is Squad Wire/FPL's internal team index,
+// code is the stable numeric id the CDN's badge images are keyed on).
+function teamCrestUrl(team){
+  return team && team.code ? `https://resources.premierleague.com/premierleague/badges/70/t${team.code}.png` : null;
+}
+
+// A player's photo, sized via `size` ('photo-sm'/'photo-md'/'photo-lg').
+// Renders the <img> and a same-size jerseyIcon() fallback together in one
+// wrapper; the fallback stays hidden until the photo's own onerror fires
+// (a 403/404 from the CDN, or no photo on file at all) — never a broken-
+// image icon or empty gap. `sizePx`/`sizePx` on the <img> itself
+// (width/height attributes, not just CSS) avoid layout shift while the
+// image is still loading.
+function playerPhotoHtml(p, teamShortName, size){
+  size = size || 'photo-md';
+  const url = playerPhotoUrl(p);
+  if(!url) return `<span class="player-photo-wrap ${size}"><span class="photo-fallback" style="display:flex;">${jerseyIcon(teamShortName)}</span></span>`;
+  return `<span class="player-photo-wrap ${size}">
+    <img class="player-photo" src="${url}" alt="" loading="lazy" width="64" height="64"
+      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <span class="photo-fallback" style="display:none;">${jerseyIcon(teamShortName)}</span>
+  </span>`;
+}
+
+// A team's crest, sized via `size` ('crest-sm'/'crest-md'), same
+// onerror-swap-to-jerseyIcon fallback pattern as playerPhotoHtml above.
+function teamCrestHtml(team, size){
+  size = size || 'crest-sm';
+  const shortName = team ? team.short_name : '';
+  const url = teamCrestUrl(team);
+  if(!url) return `<span class="team-crest-wrap ${size}">${jerseyIcon(shortName)}</span>`;
+  return `<span class="team-crest-wrap ${size}">
+    <img class="team-crest" src="${url}" alt="" loading="lazy" width="28" height="28"
+      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <span class="crest-fallback" style="display:none;">${jerseyIcon(shortName)}</span>
+  </span>`;
+}
+
 function statusBadge(el){
   if(el.status === 'i') return '<span class="flag">INJ</span>';
   if(el.status === 'd') return '<span class="flag">' + (el.chance_of_playing_next_round ?? '?') + '%</span>';
@@ -1000,67 +1119,88 @@ function nextFixturesForTeam(teamId, teamsFullById, fixtures, limit){
     });
 }
 
-// Next few fixtures for every team currently in the squad, difficulty
-// color-coded from each fixture's team_h_difficulty/team_a_difficulty (1-5).
-function renderSquadFixtures(bs, squad, fixtures){
-  const wrap = document.getElementById('squadFixtures');
-  if(!fixtures){ wrap.innerHTML = '<div class="empty-note">Could not load fixtures.</div>'; return; }
-
-  const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t);
-  const squadTeamIds = [...new Set(squad.map(s => s.team))]
-    .sort((a,b) => (teamById[a]?.short_name || '').localeCompare(teamById[b]?.short_name || ''));
-
-  const upcoming = fixtures
-    .filter(f => !f.finished)
-    .sort((a,b) => {
-      if(a.event !== b.event) return (a.event ?? 999) - (b.event ?? 999);
-      return new Date(a.kickoff_time || 0) - new Date(b.kickoff_time || 0);
-    });
-
-  wrap.innerHTML = squadTeamIds.map(tid => {
-    const team = teamById[tid];
-    const teamFixtures = upcoming.filter(f => f.team_h === tid || f.team_a === tid).slice(0, 5);
-
-    const chips = teamFixtures.map(f => {
-      const isHome = f.team_h === tid;
-      const opp = teamById[isHome ? f.team_a : f.team_h];
-      const difficulty = isHome ? f.team_h_difficulty : f.team_a_difficulty;
-      return `<div class="fdr-chip ${fdrClass(difficulty)}">
-        <span class="fdr-opp">${opp ? opp.short_name : '?'}</span>
-        <span class="fdr-loc">${isHome ? 'H' : 'A'}</span>
-      </div>`;
-    }).join('') || '<span class="sub">No upcoming fixtures scheduled.</span>';
-
-    return `<div class="fdr-row">
-      <div class="fdr-team">${team ? team.short_name : tid}</div>
-      <div class="fdr-chips">${chips}</div>
-    </div>`;
-  }).join('');
-}
-
-// Standard "fixture difficulty ticker" — every PL team, next few
-// gameweeks, independent of the user's own squad (unlike
-// renderSquadFixtures() above, which is scoped to just their 15). Reuses
+// Standard "fixture difficulty ticker" — every PL team, several gameweeks
+// out, with a squad-specific highlight layered on top instead of a
+// separate "your team's fixtures" list (the two used to be redundant,
+// overlapping views of the same underlying difficulty data). Reuses
 // buildScoringWindow() (defined further down, in the projections/
 // recommender model section — function declarations are hoisted, so the
 // call site here doesn't care about file order) purely for its "next N
 // unplayed gameweek ids" logic, not for any scoring.
-const FIXTURE_TICKER_GWS = 6;
+const FIXTURE_TICKER_GWS = 8; // window size shown at once (up from the old fixed 6)
+
+// The next `numGws` event ids starting at `startEventId` specifically —
+// buildScoringWindow() itself always starts from the next unplayed
+// gameweek, which the ticker's own GW-window navigation needs to override.
+function buildWindowFrom(bs, numGws, startEventId){
+  const minId = bs.events[0].id, maxId = bs.events[bs.events.length - 1].id;
+  const start = clamp(startEventId, minId, maxId);
+  const ids = [];
+  for(let i = 0; i < numGws; i++){
+    const id = start + i;
+    if(id <= maxId) ids.push(id);
+  }
+  return ids;
+}
+
+let tickerBs = null, tickerFixtures = null;
+let tickerStartEventId = null;
+let tickerSquadOnly = false;
+let tickerSquadTeamIds = new Set();
 
 function renderFixtureTicker(bs, fixtures){
-  const table = document.getElementById('fixtureTickerTable');
-  if(!fixtures){ table.innerHTML = '<tr><td class="empty-note">Could not load fixtures.</td></tr>'; chatFixtureTicker = []; return; }
+  tickerBs = bs; tickerFixtures = fixtures;
+  if(tickerStartEventId == null) tickerStartEventId = defaultEventId(bs);
 
-  const windowIds = buildScoringWindow(bs, FIXTURE_TICKER_GWS);
-  if(windowIds.length === 0){ table.innerHTML = '<tr><td class="empty-note">No upcoming gameweeks to show.</td></tr>'; chatFixtureTicker = []; return; }
+  // Compact copy for the chat assistant — always the default forward-
+  // looking window and all 20 teams, regardless of whatever GW range or
+  // squad-only filter the user has the visible table set to right now.
+  // Opponent/H-A/difficulty only, not the full per-player stats the chips
+  // are ultimately derived from, to keep squadContext's size reasonable.
+  if(fixtures){
+    const chatWindowIds = buildScoringWindow(bs, FIXTURE_TICKER_GWS);
+    const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
+    chatFixtureTicker = bs.teams.map(team => ({
+      team: team.short_name,
+      gws: chatWindowIds.map(eventId => ({
+        gw: eventId,
+        fixtures: fixtures
+          .filter(f => f.event === eventId && (f.team_h === team.id || f.team_a === team.id))
+          .map(f => {
+            const isHome = f.team_h === team.id;
+            const opp = teamsFullById[isHome ? f.team_a : f.team_h];
+            const difficulty = isHome ? f.team_h_difficulty : f.team_a_difficulty;
+            return { opp: opp ? opp.short_name : '?', isHome, difficulty };
+          }),
+      })),
+    }));
+  } else {
+    chatFixtureTicker = [];
+  }
+
+  renderFixtureTickerTable();
+}
+
+function renderFixtureTickerTable(){
+  const table = document.getElementById('fixtureTickerTable');
+  const bs = tickerBs, fixtures = tickerFixtures;
+  if(!fixtures){ table.innerHTML = '<tr><td class="empty-note">Could not load fixtures.</td></tr>'; return; }
+
+  const windowIds = buildWindowFrom(bs, FIXTURE_TICKER_GWS, tickerStartEventId);
+  if(windowIds.length === 0){ table.innerHTML = '<tr><td class="empty-note">No upcoming gameweeks to show.</td></tr>'; return; }
+
+  const minId = bs.events[0].id, maxId = bs.events[bs.events.length - 1].id;
+  document.getElementById('tickerNavLabel').textContent = `GW${windowIds[0]}–${windowIds[windowIds.length-1]}`;
+  document.getElementById('tickerPrevBtn').disabled = tickerStartEventId <= minId;
+  document.getElementById('tickerNextBtn').disabled = tickerStartEventId >= maxId;
+  const squadBtn = document.getElementById('tickerSquadOnlyBtn');
+  squadBtn.disabled = tickerSquadTeamIds.size === 0;
+  squadBtn.classList.toggle('active', tickerSquadOnly);
 
   const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
-  const teams = [...bs.teams].sort((a,b) => a.short_name.localeCompare(b.short_name));
+  let teams = [...bs.teams].sort((a,b) => a.short_name.localeCompare(b.short_name));
+  if(tickerSquadOnly && tickerSquadTeamIds.size) teams = teams.filter(t => tickerSquadTeamIds.has(t.id));
 
-  // One shared per-team/per-GW pass, feeding both the rendered table and
-  // the compact copy captured below for the chat assistant's
-  // squadContext (see assembleSquadContext()) — computed once, not
-  // recomputed separately for the chat feature.
   const tickerData = teams.map(team => ({
     team,
     gws: windowIds.map(eventId => fixtures
@@ -1084,19 +1224,26 @@ function renderFixtureTicker(bs, fixtures){
         </span>`).join('');
       return `<td><div class="ticker-cell">${chips}</div></td>`;
     }).join('');
-    return `<tr><td><div class="ticker-team">${jerseyIcon(team.short_name)}${team.short_name}</div></td>${cells}</tr>`;
+    const squadRowClass = tickerSquadTeamIds.has(team.id) ? ' ticker-row-squad' : '';
+    return `<tr class="${squadRowClass}"><td><div class="ticker-team">${teamCrestHtml(team, 'crest-sm')}${team.short_name}</div></td>${cells}</tr>`;
   }).join('');
 
-  table.innerHTML = `<thead>${headHtml}</thead><tbody>${bodyHtml}</tbody>`;
-
-  // Compact copy for the chat assistant — opponent/H-A/difficulty only,
-  // not the full per-player stats the chips are ultimately derived from,
-  // to keep squadContext's size reasonable across all 20 teams.
-  chatFixtureTicker = tickerData.map(({ team, gws }) => ({
-    team: team.short_name,
-    gws: windowIds.map((eventId, i) => ({ gw: eventId, fixtures: gws[i] })),
-  }));
+  table.innerHTML = `<thead>${headHtml}</thead><tbody>${bodyHtml || `<tr><td class="empty-note" colspan="${windowIds.length+1}">No teams match.</td></tr>`}</tbody>`;
 }
+
+function shiftTickerWindow(delta){
+  if(!tickerBs) return;
+  const minId = tickerBs.events[0].id, maxId = tickerBs.events[tickerBs.events.length - 1].id;
+  tickerStartEventId = clamp((tickerStartEventId ?? defaultEventId(tickerBs)) + delta, minId, maxId);
+  renderFixtureTickerTable();
+}
+document.getElementById('tickerPrevBtn').addEventListener('click', () => shiftTickerWindow(-1));
+document.getElementById('tickerNextBtn').addEventListener('click', () => shiftTickerWindow(1));
+document.getElementById('tickerSquadOnlyBtn').addEventListener('click', () => {
+  if(tickerSquadTeamIds.size === 0) return;
+  tickerSquadOnly = !tickerSquadOnly;
+  renderFixtureTickerTable();
+});
 
 // ---- Gameweek-by-gameweek fixture calendar (standalone, not squad-specific) ----
 let calendarEventId = null;
@@ -1289,12 +1436,6 @@ function renderSkeleton(){
   document.getElementById('squadBody').innerHTML = '';
   document.getElementById('recWrap').innerHTML = '';
   document.getElementById('autopickWrap').innerHTML = '';
-
-  document.getElementById('squadFixtures').innerHTML = Array.from({length:4}).map(() => `
-    <div class="fdr-row">
-      <div class="skel skel-name" style="margin:0 12px 0 0;"></div>
-      <div class="fdr-chips">${'<div class="skel" style="width:44px;height:24px;"></div>'.repeat(4)}</div>
-    </div>`).join('');
 }
 
 // Fetches each squad player's own gameweek-by-gameweek history for this
@@ -1533,8 +1674,8 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures, histor
     const capTag = s.pick.is_captain ? '<span class="cap">(C)</span>' : (s.pick.is_vice_captain ? '<span class="cap">(V)</span>' : '');
     return `<tr class="${s.pick.position>11?'bench':''}">
       <td><span class="pos-tag pos-${POS[p.element_type]}">${POS[p.element_type]}</span></td>
-      <td class="name">${p.web_name}${capTag}${statusBadge(p)}${minutesUncertaintyBadge(p, bs, 'table')}</td>
-      <td class="sub">${teamById[p.team]}</td>
+      <td class="name"><span class="row-player">${playerPhotoHtml(p, teamById[p.team], 'photo-sm')}${p.web_name}${capTag}${statusBadge(p)}${minutesUncertaintyBadge(p, bs, 'table')}</span></td>
+      <td class="sub"><span class="row-team">${teamCrestHtml(teamsFullById[p.team], 'crest-sm')}${teamById[p.team]}</span></td>
       <td>${money(p.now_cost)}</td>
       <td>${p.form}</td>
       <td>${p.total_points}</td>
@@ -1545,7 +1686,14 @@ function renderTeam(bs, entry, picks, eventId, history, myTeam, fixtures, histor
   document.getElementById('squadBody').innerHTML =
     starters.map(row).join('') + bench.map(row).join('');
 
-  renderSquadFixtures(bs, squad, fixtures);
+  // Feeds the "MY SQUAD ONLY" filter/highlight on the consolidated Fixture
+  // Ticker (Fixtures tab) — the ticker itself may already be rendered
+  // (it's independent of a squad pull), so re-render its table now that
+  // there's a squad to highlight, rather than waiting for the user to
+  // switch away from and back to that tab.
+  tickerSquadTeamIds = new Set(squad.map(s => s.team));
+  if(tickerBs) renderFixtureTickerTable();
+
   renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfersCount);
   renderAutoPick(bs, squad, fixtures, historyById || {}, teamById);
 }
@@ -1561,13 +1709,13 @@ function pitchCard(p, teamById, teamsFullById, fixtures, bs){
     `).join('')}</div>` : '';
 
   return `
-    <div class="pitch-card${injured ? ' injured' : ''}${uncertain ? ' uncertain' : ''}">
+    <div class="pitch-card${injured ? ' injured' : ''}${uncertain ? ' uncertain' : ''}" style="--pos-color:${POS_COLOR[p.element_type]}">
       ${capTag}
       <div class="pname-row">
-        ${jerseyIcon(teamById[p.team])}
+        ${playerPhotoHtml(p, teamById[p.team], 'photo-md')}
         <div class="pname">${p.web_name}</div>
       </div>
-      <div class="pmeta">${teamById[p.team]} · ${money(p.now_cost)}</div>
+      <div class="pmeta">${teamCrestHtml(teamsFullById[p.team], 'crest-sm')}${teamById[p.team]} · ${money(p.now_cost)}</div>
       ${injured ? `<div class="pflag">${p.status==='i'?'INJ':p.status==='s'?'SUSP':p.status.toUpperCase()}</div>` : ''}
       ${minutesUncertaintyBadge(p, bs, 'pitch')}
       ${fxHtml}
@@ -2494,32 +2642,35 @@ function autopickCardHtml(p, teamById, bs, opts){
   opts = opts || {};
   const armband = opts.isCaptain ? '<div class="parmband">C</div>' : (opts.isVice ? '<div class="parmband">V</div>' : '');
   const subBadge = opts.subOrder ? `<div class="sub-order">${opts.subOrder}</div>` : '';
-  const diffClass = opts.diff === 'in' ? ' diff-in' : opts.diff === 'out' ? ' diff-out' : '';
+  const diffClass = (opts.diff === 'in' ? ' diff-in' : opts.diff === 'out' ? ' diff-out' : '') + (opts.variantDiffers ? ' variant-differs' : '');
   const diffTag = opts.diff === 'in' ? '<div class="diff-tag in">+ New to XI</div>'
     : opts.diff === 'out' ? '<div class="diff-tag out">− Was starting</div>' : '';
   const bgwTag = opts.isBGW ? '<div class="diff-tag out">Blank GW</div>' : '';
+  const variantTag = opts.variantDiffers ? `<div class="variant-diff-tag">⇄ ${opts.variantDiffLabel || 'Differs'}</div>` : '';
+  const team = bs.teams.find(t => t.id === p.team);
 
   return `
-    <div class="pitch-card${diffClass}">
+    <div class="pitch-card${diffClass}" style="--pos-color:${POS_COLOR[p.element_type]}">
       ${armband}${subBadge}
       <div class="pname-row">
-        ${jerseyIcon(teamById[p.team])}
+        ${playerPhotoHtml(p, teamById[p.team], 'photo-md')}
         <div class="pname">${p.web_name}</div>
       </div>
-      <div class="pmeta">${teamById[p.team]} · ${money(p.now_cost)}</div>
+      <div class="pmeta">${teamCrestHtml(team, 'crest-sm')}${teamById[p.team]} · ${money(p.now_cost)}</div>
       <div class="pscore">${(opts.score||0).toFixed(1)}pts</div>
       <div class="prel">${Math.round(autopickStartProbability(p, bs)*100)}% start prob</div>
       ${minutesUncertaintyBadge(p, bs, 'pitch')}
-      ${diffTag}${bgwTag}
+      ${diffTag}${bgwTag}${variantTag}
     </div>`;
 }
 
 // Renders one Auto-Pick variant (Optimal or Ceiling) as a full pitch —
 // formation-grouped starting rows plus a sub-order-labeled bench strip —
 // diffed against the user's actual current starting XI.
-function renderAutopickPitch(xi, benchOrdered, teamById, bs, scoreById, projById, actualStarterIds, captainId, viceId){
+function renderAutopickPitch(xi, benchOrdered, teamById, bs, scoreById, projById, actualStarterIds, captainId, viceId, otherVariantStarterIds){
   const rows = {1:[], 2:[], 3:[], 4:[]};
   xi.starters.forEach(s => rows[s.element_type].push(s));
+  otherVariantStarterIds = otherVariantStarterIds || null;
 
   const pitchHtml = [1,2,3,4].map(pos => rows[pos].length ? `<div class="pitch-row">${rows[pos].map(p => autopickCardHtml(p, teamById, bs, {
     score: scoreById[p.id],
@@ -2527,6 +2678,7 @@ function renderAutopickPitch(xi, benchOrdered, teamById, bs, scoreById, projById
     isVice: p.id === viceId,
     diff: actualStarterIds.has(p.id) ? null : 'in',
     isBGW: projById[p.id] && projById[p.id].isBGW,
+    variantDiffers: otherVariantStarterIds ? !otherVariantStarterIds.has(p.id) : false,
   })).join('')}</div>` : '').join('');
 
   const benchHtml = `<div class="bench-strip"><div class="bench-label">Bench (sub-in priority)</div>${benchOrdered.map((p, i) => autopickCardHtml(p, teamById, bs, {
@@ -2645,6 +2797,38 @@ function renderAutoPick(bs, squad, fixtures, historyById, teamById){
   const optimalBench = orderBench(optimal.bench, evScoreOf, bs);
   const ceilingBench = orderBench(ceiling.bench, ceilingScoreOf, bs);
 
+  // Optimal-vs-Ceiling comparison — distinct from autopickDiffSummaryHtml()
+  // below (which diffs each variant against the user's ACTUAL current
+  // lineup). This is the comparison the redesign asked to make genuinely
+  // scannable: a dedicated banner, visible regardless of which panel the
+  // toggle currently shows, plus a dashed-outline "variant-differs" marker
+  // on the pitch cards themselves (see autopickCardHtml/renderAutopickPitch).
+  const optimalStarterIds = new Set(optimal.starters.map(s => s.id));
+  const ceilingStarterIds = new Set(ceiling.starters.map(s => s.id));
+  const onlyOptimal = optimal.starters.filter(s => !ceilingStarterIds.has(s.id));
+  const onlyCeiling = ceiling.starters.filter(s => !optimalStarterIds.has(s.id));
+
+  const variantCompareHtml = (() => {
+    if(onlyOptimal.length === 0 && onlyCeiling.length === 0){
+      return `<div class="variant-compare">
+        <div class="vc-title">// Optimal vs Ceiling XI</div>
+        <div class="vc-swaps">Identical starting 11 either way — the upside lens doesn't change who starts this gameweek, only captaincy weighting.</div>
+      </div>`;
+    }
+    const n = Math.max(onlyOptimal.length, onlyCeiling.length);
+    const pairs = [];
+    for(let i = 0; i < n; i++){
+      const opt = onlyOptimal[i], ceil = onlyCeiling[i];
+      if(opt && ceil) pairs.push(`<div class="vc-swap"><span class="vc-side">Optimal</span><strong>${opt.web_name}</strong> ⇄ <strong>${ceil.web_name}</strong><span class="vc-side">Ceiling</span></div>`);
+      else if(opt) pairs.push(`<div class="vc-swap"><span class="vc-side">Optimal only</span><strong>${opt.web_name}</strong></div>`);
+      else if(ceil) pairs.push(`<div class="vc-swap"><span class="vc-side">Ceiling only</span><strong>${ceil.web_name}</strong></div>`);
+    }
+    return `<div class="variant-compare">
+      <div class="vc-title">// Optimal vs Ceiling XI — ${onlyOptimal.length} swap${onlyOptimal.length===1?'':'s'}</div>
+      <div class="vc-swaps">${pairs.join('')}</div>
+    </div>`;
+  })();
+
   const fmt = f => `${f.d}-${f.m}-${f.f}`;
 
   const captainRowHtml = `
@@ -2669,7 +2853,7 @@ function renderAutoPick(bs, squad, fixtures, historyById, teamById){
     </div>
     <div class="variant-note">Expected-value lineup — each player's blended, as-is projection (recency-weighted underlying stats, fixture, clean-sheet odds, and minutes reliability), no thumb on the scale either way.</div>
     ${captainRowHtml}
-    ${renderAutopickPitch(optimal, optimalBench, teamById, bs, evScoreById, evProj, actualStarterIds, captain.id, vice.id)}
+    ${renderAutopickPitch(optimal, optimalBench, teamById, bs, evScoreById, evProj, actualStarterIds, captain.id, vice.id, ceilingStarterIds)}
     ${autopickDiffSummaryHtml(optimal, actualStarterIds, actualCaptain, actualVice, captain, vice)}
   `;
 
@@ -2680,12 +2864,13 @@ function renderAutoPick(bs, squad, fixtures, historyById, teamById){
       <span class="pts">${ceiling.totalPoints.toFixed(1)}pts projected (GW${targetEventId})</span>
     </div>
     <div class="variant-note">Upside lineup — re-weighted to chase a big week over a safe one: shorter recency window (reacts to a hot streak faster) and softened doubt/rotation penalties. Captaincy above is still decided from the Optimal XI, not this view.</div>
-    ${renderAutopickPitch(ceiling, ceilingBench, teamById, bs, ceilingScoreById, ceilingProj, actualStarterIds, null, null)}
+    ${renderAutopickPitch(ceiling, ceilingBench, teamById, bs, ceilingScoreById, ceilingProj, actualStarterIds, null, null, optimalStarterIds)}
     ${autopickDiffSummaryHtml(ceiling, actualStarterIds, actualCaptain, actualVice, null, null)}
   `;
 
   wrap.innerHTML = `
     <div class="autopick-block">
+      ${variantCompareHtml}
       <div class="variant-toggle">
         <button type="button" class="variant-btn active" data-variant="optimal">Optimal XI</button>
         <button type="button" class="variant-btn ceiling" data-variant="ceiling">Ceiling XI</button>
@@ -2956,13 +3141,13 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
       const cardHtml = `
         <div class="rec-card${ev.benchEnabler ? ' bench-card' : ''}">
           <div class="rec-head">
-            <div class="out">OUT: ${weakest.web_name} <span class="sub">(${POS[pos]}, ${money(weakest.now_cost)})</span> ${benchBadge}${hitBadge}</div>
+            <div class="out row-player">${playerPhotoHtml(weakest, teamById[weakest.team], 'photo-sm')}OUT: ${weakest.web_name} <span class="sub">(${POS[pos]}, ${money(weakest.now_cost)})</span> ${benchBadge}${hitBadge}</div>
             <div class="why">${reasonParts.join(' · ')}</div>
           </div>
           <div class="rec-list">
             ${candidates.map(c => `
               <div class="rec-opt">
-                <div><span class="arrow">→</span><span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span>${c._lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
+                <div class="row-player"><span class="arrow">→</span>${playerPhotoHtml(c, teamById[c.team], 'photo-sm')}<span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span>${c._lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
                 <div class="stats">
                   ${money(c.now_cost)} · blended ${c._proj.blendedScore.toFixed(1)}pts (${NUM_GWS}GW)${c._lowMinSample ? ` <span class="sub">(score down-weighted — see flag)</span>` : ''}
                   <div class="rec-why">${incomingReason(c, weakest, c._proj, outProj, c._avgDiff, outAvgDiff, bs)}</div>
@@ -2993,7 +3178,7 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
       punts.map(p => `
         <div class="rec-card punt-card">
           <div class="rec-head">
-            <div class="out">${p.e.web_name} <span class="sub">(${POS[p.e.element_type]}, ${teamById[p.e.team]}, ${money(p.e.now_cost)})</span>${p.lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
+            <div class="out row-player">${playerPhotoHtml(p.e, teamById[p.e.team], 'photo-sm')}${p.e.web_name} <span class="sub">(${POS[p.e.element_type]}, ${teamById[p.e.team]}, ${money(p.e.now_cost)})</span>${p.lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
             <div class="why">Weak next opponent — ${positionBreakdown(p.e, p.avgDiff, bs)}</div>
           </div>
           <div class="rec-list">
@@ -3089,6 +3274,32 @@ function sortRows(rows, sortKey, sortDir, valueFn){
   return sorted;
 }
 
+// Shared pagination for the Goals & Assists / Point Projections tables —
+// both list the full ~700-player pool, which used to render in one go;
+// this slices to one page's worth and renders a PREV/NEXT control under
+// the table. Returns the current page's slice of `rows`; also updates
+// `panelEl`'s pagination markup and wires its buttons to `onPageChange`.
+const PROJ_PAGE_SIZE = 25;
+function paginateRows(rows, page, panelEl, onPageChange){
+  const totalPages = Math.max(1, Math.ceil(rows.length / PROJ_PAGE_SIZE));
+  const clampedPage = clamp(page, 1, totalPages);
+  const start = (clampedPage - 1) * PROJ_PAGE_SIZE;
+  const pageRows = rows.slice(start, start + PROJ_PAGE_SIZE);
+
+  if(totalPages <= 1){
+    panelEl.innerHTML = '';
+  } else {
+    panelEl.innerHTML = `
+      <button class="btn-ghost" type="button" data-page-action="prev" ${clampedPage <= 1 ? 'disabled' : ''}>‹ PREV</button>
+      <span class="pagination-label">Page ${clampedPage} of ${totalPages} · ${rows.length} players</span>
+      <button class="btn-ghost" type="button" data-page-action="next" ${clampedPage >= totalPages ? 'disabled' : ''}>NEXT ›</button>
+    `;
+    panelEl.querySelector('[data-page-action="prev"]').addEventListener('click', () => onPageChange(clampedPage - 1));
+    panelEl.querySelector('[data-page-action="next"]').addEventListener('click', () => onPageChange(clampedPage + 1));
+  }
+  return { pageRows, clampedPage, totalPages };
+}
+
 // ---- Table 1: Clean Sheets — one row per team, GW+1..GW+4 ----
 let projCsSortKey = 'gw0';
 let projCsSortDir = 'desc';
@@ -3120,44 +3331,51 @@ function renderProjCsTable(){
 
   document.getElementById('projCsBody').innerHTML = rows.map(({ team, gws }) => `
     <tr>
-      <td class="name">${jerseyIcon(team.short_name)} ${team.name}</td>
+      <td class="name"><span class="row-team">${teamCrestHtml(team, 'crest-md')}${team.name}</span></td>
       ${gws.map(g => `<td>${gwCellHtml(g.csProb, g.isBGW, g.opponents)}</td>`).join('')}
     </tr>
   `).join('');
 }
 
-// ---- Table 2: Goal % / Assist % — one row per player, next GW only ----
-let projGaSortKey = 'goal';
+// ---- Table 2: Goal % / Assist % — one row per player, GW+1..GW+4 (a
+// STAT toggle picks which of the two the GW columns show, same
+// multi-GW-column-per-week layout Table 1/3 use, rather than doubling the
+// column count to show both at once) ----
+let projGaSortKey = 'gw0';
 let projGaSortDir = 'desc';
 let projGaPosFilter = 'all';
 let projGaSearchTerm = '';
+let projGaStat = 'goal'; // 'goal' | 'assist'
+let projGaPage = 1;
 
 function renderProjGaTable(){
   if(!projBs || !projWindowEventIds.length) return;
   const bs = projBs;
   const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
   const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
-  const eventId = projWindowEventIds[0]; // deliberately just the next GW — "who's likely to return this week"
-  const ev = bs.events.find(e => e.id === eventId);
-  document.getElementById('projGaGwLabel').textContent = `GW${eventId}${ev && ev.is_next ? ' (NEXT)' : ''}`;
 
   const pool = filterPlayerPool(bs, projGaPosFilter, projGaSearchTerm);
-  let rows = pool.map(p => ({ p, row: projectionsRowForGw(p, eventId, projFixtures, bs, teamsFullById) }));
+  let rows = pool.map(p => ({
+    p,
+    gws: projWindowEventIds.map(eventId => projectionsRowForGw(p, eventId, projFixtures, bs, teamsFullById)),
+  }));
 
-  const valueFn = ({ p, row }, key) => {
+  const statKey = projGaStat === 'assist' ? 'assistProb' : 'goalProb';
+  const valueFn = ({ p, gws }, key) => {
     switch(key){
       case 'name': return p.web_name.toLowerCase();
       case 'team': return teamById[p.team] || '';
       case 'pos': return p.element_type;
       case 'price': return p.now_cost;
-      case 'goal': return row.goalProb ?? -1;
-      case 'assist': return row.assistProb ?? -1;
-      default: return 0;
+      default: return gws[Number(key.slice(2))][statKey] ?? -1;
     }
   };
   rows = sortRows(rows, projGaSortKey, projGaSortDir, valueFn);
 
-  wireSortableHeaders(document.querySelector('#projGaTable thead tr'), projGaSortKey, projGaSortDir, key => {
+  const headEl = document.getElementById('projGaHead');
+  headEl.innerHTML = '<th data-sort="pos">Pos</th><th data-sort="name">Player</th><th data-sort="team">Team</th><th data-sort="price">£</th>' +
+    projWindowEventIds.map((id, i) => `<th data-sort="gw${i}">GW${id}</th>`).join('');
+  wireSortableHeaders(headEl, projGaSortKey, projGaSortDir, key => {
     projGaSortDir = (projGaSortKey === key) ? (projGaSortDir === 'asc' ? 'desc' : 'asc') : 'desc';
     projGaSortKey = key;
     renderProjGaTable();
@@ -3165,22 +3383,25 @@ function renderProjGaTable(){
 
   const tbody = document.getElementById('projGaBody');
   const emptyNote = document.getElementById('projGaEmptyNote');
+  const paginationEl = document.getElementById('projGaPagination');
   if(rows.length === 0){
     tbody.innerHTML = '';
     emptyNote.style.display = '';
+    paginationEl.innerHTML = '';
     return;
   }
   emptyNote.style.display = 'none';
 
-  tbody.innerHTML = rows.map(({ p, row }) => `
+  const { pageRows, clampedPage } = paginateRows(rows, projGaPage, paginationEl, (newPage) => { projGaPage = newPage; renderProjGaTable(); });
+  projGaPage = clampedPage;
+
+  tbody.innerHTML = pageRows.map(({ p, gws }) => `
     <tr>
       <td><span class="pos-tag pos-${POS[p.element_type]}">${POS[p.element_type]}</span></td>
-      <td class="name">${p.web_name}</td>
-      <td class="sub">${teamById[p.team]}</td>
+      <td class="name"><span class="row-player">${playerPhotoHtml(p, teamById[p.team], 'photo-sm')}${p.web_name}</span></td>
+      <td class="sub"><span class="row-team">${teamCrestHtml(teamsFullById[p.team], 'crest-sm')}${teamById[p.team]}</span></td>
       <td>${money(p.now_cost)}</td>
-      <td>${row.isBGW ? '<span class="sub">BGW</span>' : oppChipsHtml(row.opponents)}</td>
-      <td class="proj-pct">${pctCellHtml(row.goalProb)}</td>
-      <td class="proj-pct">${pctCellHtml(row.assistProb)}</td>
+      ${gws.map(g => `<td>${gwCellHtml(g[statKey], g.isBGW, g.opponents)}</td>`).join('')}
     </tr>
   `).join('');
 }
@@ -3190,11 +3411,13 @@ let projPtsSortKey = 'gw0';
 let projPtsSortDir = 'desc';
 let projPtsPosFilter = 'all';
 let projPtsSearchTerm = '';
+let projPtsPage = 1;
 
 function renderProjPtsTable(){
   if(!projBs || !projWindowEventIds.length) return;
   const bs = projBs;
   const teamById = {}; bs.teams.forEach(t => teamById[t.id] = t.short_name);
+  const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
 
   const pool = filterPlayerPool(bs, projPtsPosFilter, projPtsSearchTerm);
   let rows = pool.map(p => ({
@@ -3224,18 +3447,23 @@ function renderProjPtsTable(){
 
   const tbody = document.getElementById('projPtsBody');
   const emptyNote = document.getElementById('projPtsEmptyNote');
+  const paginationEl = document.getElementById('projPtsPagination');
   if(rows.length === 0){
     tbody.innerHTML = '';
     emptyNote.style.display = '';
+    paginationEl.innerHTML = '';
     return;
   }
   emptyNote.style.display = 'none';
 
-  tbody.innerHTML = rows.map(({ p, gws }) => `
+  const { pageRows, clampedPage } = paginateRows(rows, projPtsPage, paginationEl, (newPage) => { projPtsPage = newPage; renderProjPtsTable(); });
+  projPtsPage = clampedPage;
+
+  tbody.innerHTML = pageRows.map(({ p, gws }) => `
     <tr>
       <td><span class="pos-tag pos-${POS[p.element_type]}">${POS[p.element_type]}</span></td>
-      <td class="name">${p.web_name}</td>
-      <td class="sub">${teamById[p.team]}</td>
+      <td class="name"><span class="row-player">${playerPhotoHtml(p, teamById[p.team], 'photo-sm')}${p.web_name}</span></td>
+      <td class="sub"><span class="row-team">${teamCrestHtml(teamsFullById[p.team], 'crest-sm')}${teamById[p.team]}</span></td>
       <td>${money(p.now_cost)}</td>
       ${gws.map(g => `<td class="proj-pct">${g.isBGW ? '<span class="sub">—</span>' : g.points.toFixed(1)}</td>`).join('')}
     </tr>
@@ -3243,20 +3471,31 @@ function renderProjPtsTable(){
 }
 
 // ---- Filter/search wiring (all three tables stay stacked and visible
-// at once — no toggle between them) ----
-document.getElementById('projGaSearch').addEventListener('input', e => { projGaSearchTerm = e.target.value; renderProjGaTable(); });
+// at once — no toggle between them). Any filter/sort/stat change resets
+// pagination back to page 1 — otherwise a narrower result set could leave
+// the user stranded on a now-nonexistent page. ----
+document.getElementById('projGaSearch').addEventListener('input', e => { projGaSearchTerm = e.target.value; projGaPage = 1; renderProjGaTable(); });
 document.querySelectorAll('#projGaPosFilter .pos-filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     projGaPosFilter = btn.dataset.pos;
+    projGaPage = 1;
     document.querySelectorAll('#projGaPosFilter .pos-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
     renderProjGaTable();
   });
 });
+document.querySelectorAll('#projGaStatFilter .pos-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    projGaStat = btn.dataset.stat;
+    document.querySelectorAll('#projGaStatFilter .pos-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+    renderProjGaTable();
+  });
+});
 
-document.getElementById('projPtsSearch').addEventListener('input', e => { projPtsSearchTerm = e.target.value; renderProjPtsTable(); });
+document.getElementById('projPtsSearch').addEventListener('input', e => { projPtsSearchTerm = e.target.value; projPtsPage = 1; renderProjPtsTable(); });
 document.querySelectorAll('#projPtsPosFilter .pos-filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     projPtsPosFilter = btn.dataset.pos;
+    projPtsPage = 1;
     document.querySelectorAll('#projPtsPosFilter .pos-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
     renderProjPtsTable();
   });
