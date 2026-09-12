@@ -820,14 +820,17 @@ const CHIP_LABEL = {wildcard:'WILDCARD', freehit:'FREE HIT', bboost:'BENCH BOOST
 let isLoggedIn = false;
 let lastLoadedTeamId = null;
 
-// Populated by renderTeam()/renderRecommender()/renderAutoPick() as they
-// compute this data anyway — read by assembleSquadContext() for the chat
-// assistant (see the chat widget code near the bottom of this script).
-// Stay null/[] until a team has actually been pulled.
+// Populated by renderTeam()/renderRecommender()/renderAutoPick()/
+// renderFixtureTicker() as they compute this data anyway — read by
+// assembleSquadContext() for the chat assistant (see the chat widget code
+// near the bottom of this script). Squad-derived ones stay null/[] until
+// a team has actually been pulled; chatFixtureTicker populates independently
+// of squad pull, same as the Fixture Ticker table itself.
 let chatSquadSummary = null;
 let chatRecommenderFlags = [];
 let chatCaptainSuggestion = null;
-let chatNextGwProjections = [];
+let chatSquadMultiGwProjections = []; // GW+1..GW+4 points per squad player — see renderAutoPick()
+let chatFixtureTicker = []; // opponent/H-A/difficulty per team per GW, all 20 teams — see renderFixtureTicker()
 
 const authStatusEl = document.getElementById('authStatus');
 const authRowEl = document.getElementById('authRow');
@@ -1046,35 +1049,53 @@ const FIXTURE_TICKER_GWS = 6;
 
 function renderFixtureTicker(bs, fixtures){
   const table = document.getElementById('fixtureTickerTable');
-  if(!fixtures){ table.innerHTML = '<tr><td class="empty-note">Could not load fixtures.</td></tr>'; return; }
+  if(!fixtures){ table.innerHTML = '<tr><td class="empty-note">Could not load fixtures.</td></tr>'; chatFixtureTicker = []; return; }
 
   const windowIds = buildScoringWindow(bs, FIXTURE_TICKER_GWS);
-  if(windowIds.length === 0){ table.innerHTML = '<tr><td class="empty-note">No upcoming gameweeks to show.</td></tr>'; return; }
+  if(windowIds.length === 0){ table.innerHTML = '<tr><td class="empty-note">No upcoming gameweeks to show.</td></tr>'; chatFixtureTicker = []; return; }
 
   const teamsFullById = {}; bs.teams.forEach(t => teamsFullById[t.id] = t);
   const teams = [...bs.teams].sort((a,b) => a.short_name.localeCompare(b.short_name));
 
-  const headHtml = `<tr><th>Team</th>${windowIds.map(id => `<th>GW${id}</th>`).join('')}</tr>`;
-
-  const bodyHtml = teams.map(team => {
-    const cells = windowIds.map(eventId => {
-      const teamFixtures = fixtures.filter(f => f.event === eventId && (f.team_h === team.id || f.team_a === team.id));
-      if(teamFixtures.length === 0) return '<td><span class="sub">—</span></td>';
-      const chips = teamFixtures.map(f => {
+  // One shared per-team/per-GW pass, feeding both the rendered table and
+  // the compact copy captured below for the chat assistant's
+  // squadContext (see assembleSquadContext()) — computed once, not
+  // recomputed separately for the chat feature.
+  const tickerData = teams.map(team => ({
+    team,
+    gws: windowIds.map(eventId => fixtures
+      .filter(f => f.event === eventId && (f.team_h === team.id || f.team_a === team.id))
+      .map(f => {
         const isHome = f.team_h === team.id;
         const opp = teamsFullById[isHome ? f.team_a : f.team_h];
         const difficulty = isHome ? f.team_h_difficulty : f.team_a_difficulty;
-        return `<span class="fdr-chip ${fdrClass(difficulty)}">
-          <span class="fdr-opp">${opp ? opp.short_name : '?'}</span>
-          <span class="fdr-loc">${isHome ? 'H' : 'A'}</span>
-        </span>`;
-      }).join('');
+        return { opp: opp ? opp.short_name : '?', isHome, difficulty };
+      })),
+  }));
+
+  const headHtml = `<tr><th>Team</th>${windowIds.map(id => `<th>GW${id}</th>`).join('')}</tr>`;
+
+  const bodyHtml = tickerData.map(({ team, gws }) => {
+    const cells = gws.map(fxList => {
+      if(fxList.length === 0) return '<td><span class="sub">—</span></td>';
+      const chips = fxList.map(f => `<span class="fdr-chip ${fdrClass(f.difficulty)}">
+          <span class="fdr-opp">${f.opp}</span>
+          <span class="fdr-loc">${f.isHome ? 'H' : 'A'}</span>
+        </span>`).join('');
       return `<td><div class="ticker-cell">${chips}</div></td>`;
     }).join('');
     return `<tr><td><div class="ticker-team">${jerseyIcon(team.short_name)}${team.short_name}</div></td>${cells}</tr>`;
   }).join('');
 
   table.innerHTML = `<thead>${headHtml}</thead><tbody>${bodyHtml}</tbody>`;
+
+  // Compact copy for the chat assistant — opponent/H-A/difficulty only,
+  // not the full per-player stats the chips are ultimately derived from,
+  // to keep squadContext's size reasonable across all 20 teams.
+  chatFixtureTicker = tickerData.map(({ team, gws }) => ({
+    team: team.short_name,
+    gws: windowIds.map((eventId, i) => ({ gw: eventId, fixtures: gws[i] })),
+  }));
 }
 
 // ---- Gameweek-by-gameweek fixture calendar (standalone, not squad-specific) ----
@@ -2476,11 +2497,28 @@ function renderAutoPick(bs, squad, fixtures, historyById, teamById){
 
   const { captain, vice } = pickCaptainAndVice(optimal.starters, ceilingScoreOf, bs);
 
-  // Captain/Vice suggestion + next-GW point projections for the user's own
-  // 15, for the chat assistant (see assembleSquadContext()) — reuses evProj,
-  // already computed above, rather than recomputing anything.
+  // Captain/Vice suggestion for the chat assistant (see
+  // assembleSquadContext()) — reuses evProj, already computed above.
   chatCaptainSuggestion = { captain: captain.web_name, vice: vice.web_name };
-  chatNextGwProjections = squad.map(s => ({ name: s.web_name, points: Math.round(evProj[s.id].points * 10) / 10 }));
+
+  // Multi-GW (GW+1..GW+4) point projections for the user's own 15, for
+  // fixture-run/rotation-planning chat questions a single-week snapshot
+  // can't answer. Same projectSingleGw() + same GW window
+  // (buildScoringWindow(bs, NUM_GWS)) the Point Projections table uses —
+  // reuses evProj for targetEventId (already computed above) rather than
+  // recomputing that one week, and computes the remaining weeks in the
+  // window fresh, since that data doesn't exist anywhere yet. Scoped to
+  // exactly these 15 players (not whatever's currently filtered on the
+  // Projections tab) so it's always complete regardless of unrelated UI
+  // state there.
+  const chatProjectionWindow = buildScoringWindow(bs, NUM_GWS);
+  chatSquadMultiGwProjections = squad.map(s => ({
+    name: s.web_name,
+    projections: chatProjectionWindow.map(eventId => ({
+      gw: eventId,
+      points: Math.round((eventId === targetEventId ? evProj[s.id] : projectSingleGw(s, eventId, fixtures, bs, historyById, 'ev')).points * 10) / 10,
+    })),
+  }));
 
   const actualStarters = squad.filter(s => s.pick.position <= 11);
   const actualStarterIds = new Set(actualStarters.map(s => s.id));
@@ -3065,11 +3103,16 @@ let chatMessages = []; // full session history: { role: 'user'|'assistant', cont
 let chatBusy = false;
 
 // Compact summary of the app's own already-computed data, assembled from
-// whatever renderTeam()/renderRecommender()/renderAutoPick() last
-// populated (see those functions' chat* hooks) — never the full
-// bootstrap-static/fixtures payload, and never recomputed here. Returns
-// null until a team has actually been pulled, in which case the backend
-// just tells the model there's no squad loaded yet.
+// whatever renderTeam()/renderRecommender()/renderAutoPick()/
+// renderFixtureTicker() last populated (see those functions' chat* hooks)
+// — never the full bootstrap-static/fixtures payload, and never
+// recomputed here. Returns null until a team has actually been pulled, in
+// which case the backend just tells the model there's no squad loaded
+// yet. Deliberately scoped to keep this bounded even with the multi-GW
+// additions: squadMultiGwProjections covers only the user's own 15 (not
+// the whole player pool), and fixtureTicker is opponent/H-A/difficulty
+// only (not full per-player stats) across all 20 teams — enough for
+// fixture-run/rotation questions without ballooning request size.
 function assembleSquadContext(){
   if(!chatSquadSummary) return null;
   return {
@@ -3080,7 +3123,8 @@ function assembleSquadContext(){
     teamScoreGrade: chatSquadSummary.teamScoreGrade,
     recommenderFlags: chatRecommenderFlags,
     captainSuggestion: chatCaptainSuggestion,
-    nextGwProjections: chatNextGwProjections,
+    squadMultiGwProjections: chatSquadMultiGwProjections,
+    fixtureTicker: chatFixtureTicker,
   };
 }
 
