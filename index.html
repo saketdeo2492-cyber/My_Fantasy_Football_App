@@ -2592,6 +2592,50 @@ const DEFAULT_VISIBLE_SUGGESTIONS = 3;
 const MAX_TOTAL_SUGGESTIONS = 6;
 const MIN_GAIN_TO_FLAG = 2; // a swap has to be worth at least this many blended pts to be worth mentioning at all
 
+// Compact per-candidate scoring breakdown for the chat assistant — lets it
+// answer "why is X rated higher than Y" follow-ups about a suggested IN
+// candidate, not just the user's own squad. Built entirely from fields
+// findCandidates()/computePlayerProjection() already computed for that
+// candidate (proj.weeks[].fixtures[] already carries per-fixture points/
+// csProb/difficulty/oppId from playerFixtureScore()) — nothing recomputed,
+// and nothing pulled in for players outside the candidates actually shown.
+function candidateChatDetail(c, teamsFullById){
+  const pos = POS[c.element_type];
+  const fixtures = c._proj.weeks.flatMap(w => w.fixtures.map(f => ({
+    gw: w.eventId,
+    opp: teamsFullById[f.oppId] ? teamsFullById[f.oppId].short_name : '?',
+    isHome: f.isHome,
+    difficulty: f.difficulty,
+    points: Math.round(f.points * 10) / 10,
+  })));
+  const detail = {
+    name: c.web_name,
+    team: teamsFullById[c.team] ? teamsFullById[c.team].short_name : '?',
+    pos,
+    price: money(c.now_cost),
+    blendedScore: Math.round(c._proj.blendedScore * 10) / 10,
+    avgFixtureDifficulty: Math.round(c._avgDiff * 10) / 10,
+    form: parseFloat(c.form) || 0,
+    fixtures, // the specific fixture difficulty driving the score, per GW in the window
+  };
+  if(pos !== 'FWD'){
+    const csProbs = c._proj.weeks.flatMap(w => w.fixtures.map(f => f.csProb));
+    if(csProbs.length) detail.cleanSheetPct = Math.round((csProbs.reduce((a,b) => a+b, 0) / csProbs.length) * 100);
+  }
+  if(pos === 'DEF' || pos === 'MID'){
+    const defcon90 = reliablePer90(c, 'defensive_contribution_per_90');
+    detail.defconPct = Math.round(defconHitProbability(defcon90, DEFCON_THRESHOLD[c.element_type]) * 100);
+  }
+  if(pos === 'GKP'){
+    detail.saves90 = Math.round(reliablePer90(c, 'saves_per_90') * 100) / 100;
+  } else {
+    detail.xg90 = Math.round(reliablePer90(c, 'expected_goals_per_90') * 100) / 100;
+    detail.xa90 = Math.round(reliablePer90(c, 'expected_assists_per_90') * 100) / 100;
+  }
+  if(c._lowMinSample) detail.minutesUncertain = true;
+  return detail;
+}
+
 function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfers){
   const wrap = document.getElementById('recWrap');
   wrap.innerHTML = '';
@@ -2712,14 +2756,25 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
   });
 
   // Top 2-3 flags for the chat assistant — a short reason string per flag
-  // rather than the full HTML card, to keep squadContext compact.
+  // rather than the full HTML card, to keep squadContext compact. Each
+  // flag's suggested IN candidates (the same handful shown in that flag's
+  // rec-card, up to 3) now carry their own scoring breakdown via
+  // candidateChatDetail() — so the assistant can answer "why is X rated
+  // higher than Y" about a suggested replacement, not just questions about
+  // the user's own squad. Deliberately scoped to just these candidates
+  // (not the whole player pool) to keep squadContext bounded.
   chatRecommenderFlags = eligible.slice(0, 3).map(ev => {
     const reason = ev.isInjured ? (ev.s.news || 'currently unavailable')
       : ev.hasBgwInWindow ? 'blank gameweek in the scoring window'
       : ev.toughFixtures ? `tough fixture run (avg difficulty ${ev.avgDiff.toFixed(1)})`
       : ev.benchEnabler ? 'rarely features — bench enabler upgrade available'
       : `projects lower than the best alternative by ${ev.gain.toFixed(1)}pts over ${NUM_GWS}GW`;
-    return { out: ev.s.web_name, in: ev.best ? ev.best.web_name : null, reason };
+    return {
+      out: ev.s.web_name,
+      in: ev.best ? ev.best.web_name : null,
+      reason,
+      inCandidates: ev.candidates.map(c => candidateChatDetail(c, teamsFullById)),
+    };
   });
 
   const suggestedIncomingIds = new Set();
@@ -3113,6 +3168,10 @@ let chatBusy = false;
 // the whole player pool), and fixtureTicker is opponent/H-A/difficulty
 // only (not full per-player stats) across all 20 teams — enough for
 // fixture-run/rotation questions without ballooning request size.
+// recommenderFlags' inCandidates (see candidateChatDetail()) are similarly
+// scoped to just the handful of players currently suggested as swaps, not
+// the whole player pool, so "why is X rated higher than Y" questions about
+// a suggested replacement can be answered without a league-wide payload.
 function assembleSquadContext(){
   if(!chatSquadSummary) return null;
   return {
