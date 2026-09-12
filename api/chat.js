@@ -12,13 +12,15 @@
 // squadContext alone only covers the user's own 15 players plus a handful
 // of Recommender-suggested replacements — it has nothing on the wider
 // player pool. For genuinely open-ended questions ("who are the best
-// forwards for GW4"), the model can instead call the get_top_players TOOL
+// forwards for GW4", or multi-gameweek ones like "best forwards over the
+// next 5 gameweeks"), the model can instead call the get_top_players TOOL
 // below, which this handler executes server-side (fetching bootstrap-
 // static/fixtures directly from the FPL API — see fetchFplData — and
 // running the same fixture-adjusted model as index.html, ported in
-// ./_scoring.js) and feeds the result back to Claude for a second turn.
-// squadContext-only questions never trigger this, so they cost exactly one
-// API call, same as before this tool existed.
+// ./_scoring.js — single-GW or GW_WEIGHTS-blended multi-GW depending on
+// the tool's `horizon` argument) and feeds the result back to Claude for a
+// second turn. squadContext-only questions never trigger this, so they
+// cost exactly one API call, same as before this tool existed.
 //
 // The Anthropic API key is read from process.env.ANTHROPIC_API_KEY. It is
 // never hardcoded and never returned to the client — only the assistant's
@@ -43,7 +45,7 @@ function buildSystemPrompt(squadContext) {
 
 Ground every answer in the SQUAD CONTEXT below whenever it's relevant — it's real data this app already computed from the official FPL API using its own scoring model (fixture-adjusted expected goals/assists/clean-sheets, a Team Score, transfer recommendations, a Captain/Vice-Captain suggestion, and point projections for this specific squad). Two fields cover multiple gameweeks, not just the next one: "squadMultiGwProjections" gives each of the user's own 15 players' projected points for each of the next few gameweeks individually, and "fixtureTicker" gives every Premier League team's upcoming opponent/home-or-away/difficulty for the same window — use these together for fixture-run, rotation-planning, or "who has the easiest run" questions rather than answering off only the next gameweek. Each entry in "recommenderFlags" also carries "inCandidates" — the same handful of suggested replacement players shown in that flag's card, each with their own blended score, average fixture difficulty, per-gameweek fixture-by-fixture breakdown, clean-sheet/DEFCON percentages, and underlying xG/xA or saves rates — use that to answer "why is [suggested player] rated higher than [other player]" follow-ups with the actual numbers behind the suggestion, not just the one-line reason. Cite specific numbers, player names, or reasons from that context rather than answering from generic football knowledge alone — e.g. "the Recommender already flags [Player] because [reason]" or "[Player]'s projected [X]pts this week is the highest of your options" is a much better answer than a generic one.
 
-SQUAD CONTEXT only covers the user's own 15 players and a handful of suggested replacements — it is NOT the full player pool. For a genuinely open-ended question about players outside that scope — "who are the best forwards this gameweek", "top midfielders by assist chance", any "who should I consider" question not already answerable from SQUAD CONTEXT — call the get_top_players tool rather than guessing or declining. Don't call it for questions SQUAD CONTEXT already answers (e.g. about the user's own squad or the Recommender's existing suggestions) — that data is already right here.
+SQUAD CONTEXT only covers the user's own 15 players and a handful of suggested replacements — it is NOT the full player pool. For a genuinely open-ended question about players outside that scope — "who are the best forwards this gameweek", "top midfielders by assist chance", any "who should I consider" question not already answerable from SQUAD CONTEXT — call the get_top_players tool rather than guessing or declining. This includes multi-gameweek questions about the wider player pool, not just single-gameweek ones: pass "horizon" (e.g. 3 or 5) for "who's best over the next N gameweeks" questions — don't say multi-gameweek comparisons for the full player pool are beyond your scope, the tool covers exactly that too. Don't call the tool for questions SQUAD CONTEXT already answers (e.g. about the user's own squad or the Recommender's existing suggestions) — that data is already right here.
 
 Be honest about genuine uncertainty rather than presenting a guess as fact. Rotation risk, a manager's team-selection choices, and whether a specific player actually starts are things this app's own model already flags as uncertain where relevant (e.g. its "New Signing / Limited Minutes — role uncertain" flag) — carry that same honesty into your answers. If the context doesn't clearly settle a question, say so and explain the tradeoff, rather than picking one side with false confidence.
 
@@ -58,7 +60,7 @@ ${JSON.stringify(squadContext ?? {}, null, 2)}
 // getTopPlayers() (./_scoring.js) accepts.
 const GET_TOP_PLAYERS_TOOL = {
   name: 'get_top_players',
-  description: 'Look up the top FPL players for one gameweek, ranked by a chosen projected stat, from this app\'s own fixture-adjusted scoring model (the same model behind its Point Projections / Goals & Assists / Clean Sheet % tables) — not general football knowledge. Use for open-ended "who\'s best" questions about players beyond the user\'s own squad and the Recommender\'s existing suggestions.',
+  description: 'Look up the top FPL players for one gameweek (or, with `horizon` > 1, a blended multi-gameweek total), ranked by a chosen projected stat, from this app\'s own fixture-adjusted scoring model (the same model behind its Point Projections / Goals & Assists / Clean Sheet % tables for horizon=1, and the same blended model behind its transfer Recommender for horizon>1) — not general football knowledge. Use for open-ended "who\'s best" questions about players beyond the user\'s own squad and the Recommender\'s existing suggestions, for a single gameweek OR a multi-gameweek run (e.g. "best forwards over the next 5 gameweeks").',
   input_schema: {
     type: 'object',
     properties: {
@@ -81,6 +83,12 @@ const GET_TOP_PLAYERS_TOOL = {
         minimum: 1,
         maximum: 25,
         description: 'How many players to return. Default 15, max 25.',
+      },
+      horizon: {
+        type: 'integer',
+        minimum: 1,
+        maximum: 8,
+        description: 'How many gameweeks, starting at `gameweek`, to blend into one ranking — nearer gameweeks are weighted more heavily than farther ones. Default 1 (single gameweek, matches the Point Projections table exactly). Use e.g. 3 or 5 for "over the next N gameweeks" questions — this then matches the same blended multi-gameweek model the transfer Recommender uses, applied across every eligible player in the game, not just the user\'s squad.',
       },
     },
     required: ['sort_by'],

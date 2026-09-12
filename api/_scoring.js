@@ -10,17 +10,19 @@
 // copied verbatim from there. If that model changes, mirror the change
 // here too.
 //
-// projected_points specifically mirrors index.html's SINGLE-GW model
+// horizon=1 (default) mirrors index.html's SINGLE-GW model
 // (singleGwFixtureScore/projectSingleGw, the one behind the Point
-// Projections table) — not the multi-GW Recommender model
-// (playerFixtureScore/computePlayerProjection), which this file ported by
-// mistake in an earlier pass. The two aren't interchangeable: the single-GW
-// model has its own minutes-reliability floor (0.15 vs the multi-GW
-// model's 0.3) and a defconOpportunityFactor adjustment the multi-GW model
-// doesn't have. goal_probability/assist_probability/clean_sheet_probability
+// Projections table). horizon>1 mirrors the multi-GW Recommender model
+// instead (playerFixtureScoreMultiGw/computePlayerProjection — same names
+// index.html uses, once as playerFixtureScore/computePlayerProjection) —
+// these are two deliberately different models in index.html itself (a
+// different minutes-reliability floor: 0.15 single-GW vs 0.3 multi-GW, and
+// a defconOpportunityFactor adjustment only the single-GW model has), not
+// interchangeable, so both are ported here rather than reusing one for
+// both cases. goal_probability/assist_probability/clean_sheet_probability
 // correctly mirror their own respective frontend functions
-// (projectionsRowForGw / teamCleanSheetRowForGw) and were never affected by
-// that mix-up.
+// (projectionsRowForGw / teamCleanSheetRowForGw) for horizon=1, and are
+// GW_WEIGHTS-weighted-averaged across the window for horizon>1.
 
 const POS = { 1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD' };
 const DEFCON_THRESHOLD = { 2: 10, 3: 12, 4: 12 };
@@ -28,6 +30,8 @@ const SAMPLE_FULL_CONFIDENCE_MINUTES = 600; // ~6.7 full matches
 const MINUTES_UNCERTAINTY_DISCOUNT = 0.75;
 const MIN_MINUTES_PACE_RATIO = 0.45;
 const CLUB_TENURE_GRACE_MINUTES = 45;
+const GW_WEIGHTS = [1.0, 0.85, 0.7, 0.55, 0.45]; // mirrors index.html's GW_WEIGHTS — nearer gameweeks weighted more heavily
+const MAX_HORIZON = 8; // horizon beyond GW_WEIGHTS.length reuses the last weight, same as index.html; capped here to keep a single tool call's fixture-scanning bounded
 
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
@@ -232,6 +236,100 @@ function projectPointsForGw(p, eventId, fixtures, bs) {
   return Math.max(0, points);
 }
 
+// The next `numGws` event ids starting from `startEventId` (or the next
+// unplayed gameweek, if omitted) — mirrors index.html's buildScoringWindow,
+// generalized to accept an explicit start so a horizon window can begin at
+// whatever gameweek the tool call asked for, not just "next."
+function buildScoringWindow(bs, numGws, startEventId) {
+  const start = startEventId || defaultEventId(bs);
+  if (!start) return [];
+  const maxId = bs.events[bs.events.length - 1].id;
+  const ids = [];
+  for (let i = 0; i < numGws; i++) {
+    const id = start + i;
+    if (id <= maxId) ids.push(id);
+  }
+  return ids;
+}
+
+// Single-fixture projected points for the MULTI-GW model — mirrors
+// index.html's playerFixtureScore() (distinct from singleGwFixtureScore()
+// above: floor of 0.3 on minsFactor, not 0.15, and no
+// defconOpportunityFactor adjustment — the same two real differences
+// documented at the top of this file).
+function playerFixtureScoreMultiGw(p, fixture, bs) {
+  const isHome = fixture.team_h === p.team;
+  const oppId = isHome ? fixture.team_a : fixture.team_h;
+  const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
+  const csProb = poissonZeroProb(adjustedGoalsConceded(p.team, oppId, difficulty, bs));
+  const attFactor = opponentAttackFactor(oppId, difficulty, bs);
+  const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
+  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs);
+  const xg90 = reliablePer90(p, 'expected_goals_per_90', bs);
+  const xa90 = reliablePer90(p, 'expected_assists_per_90', bs);
+  const defcon90 = reliablePer90(p, 'defensive_contribution_per_90', bs);
+
+  let pts;
+  if (p.element_type === 1) {
+    const saves90 = reliablePer90(p, 'saves_per_90', bs);
+    pts = 2 * minsFactor + csProb * 4 + (saves90 * minsFactor) / 3 + form * 0.25;
+  } else if (p.element_type === 2) {
+    const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[2]);
+    const attackPts = (xg90 * 6 + xa90 * 3) * minsFactor * attFactor;
+    pts = 2 * minsFactor + csProb * 4 + attackPts + defconProb * 2 + form * 0.2;
+  } else if (p.element_type === 3) {
+    const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[3]);
+    const attackPts = (xg90 * 5 + xa90 * 3) * minsFactor * attFactor;
+    pts = 2 * minsFactor + csProb * 1 + attackPts + defconProb * 2 + form * 0.25;
+  } else {
+    const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[4]);
+    const attackPts = (xg90 * 4 + xa90 * 3) * minsFactor * attFactor;
+    pts = 2 * minsFactor + attackPts + defconProb * 2 + form * 0.25;
+  }
+  return Math.max(0, pts) * availabilityMultiplier(p);
+}
+
+// Blended multi-GW score for one player across `windowEventIds` — mirrors
+// index.html's computePlayerProjection(): sums same-week fixtures (a DGW's
+// boost falls out naturally), weights each week by GW_WEIGHTS (nearer
+// gameweeks count more), blends FPL's own ep_next into the very next week
+// only, and applies the limited-minutes discount to every week (same
+// hasLimitedMinutesSample/MINUTES_UNCERTAINTY_DISCOUNT treatment applied
+// consistently everywhere else in this model).
+function computePlayerProjection(p, windowEventIds, fixtures, bs) {
+  const discount = hasLimitedMinutesSample(p, bs) ? MINUTES_UNCERTAINTY_DISCOUNT : 1;
+  let blended = 0;
+  windowEventIds.forEach((eventId, idx) => {
+    const weight = GW_WEIGHTS[idx] ?? GW_WEIGHTS[GW_WEIGHTS.length - 1];
+    const teamFixtures = fixtures.filter((f) => f.event === eventId && (f.team_h === p.team || f.team_a === p.team));
+    let weekPoints = teamFixtures.reduce((sum, f) => sum + playerFixtureScoreMultiGw(p, f, bs), 0);
+    if (idx === 0) {
+      const epNext = parseFloat(p.ep_next);
+      if (!isNaN(epNext)) weekPoints = weekPoints * 0.8 + epNext * 0.2;
+    }
+    weekPoints *= discount;
+    blended += weekPoints * weight;
+  });
+  return blended;
+}
+
+// GW_WEIGHTS-weighted average of a per-week PROBABILITY value across a
+// window (nulls — blank gameweeks — are skipped rather than treated as 0,
+// so a blank week doesn't drag a probability down, it just doesn't count).
+// Distinct from computePlayerProjection's weighted SUM above: points
+// accumulate across weeks, but a probability has to stay in [0,1], so it's
+// averaged, not summed.
+function weightedAverage(perWeekValues) {
+  let weightSum = 0, total = 0;
+  perWeekValues.forEach((v, idx) => {
+    if (v == null) return;
+    const w = GW_WEIGHTS[idx] ?? GW_WEIGHTS[GW_WEIGHTS.length - 1];
+    weightSum += w;
+    total += v * w;
+  });
+  return weightSum > 0 ? total / weightSum : null;
+}
+
 // Goal/assist probability for one player in one specific gameweek — mirrors
 // index.html's projectionsRowForGw().
 function projectGoalAssistForGw(p, eventId, fixtures, bs) {
@@ -274,14 +372,23 @@ function defaultEventId(bs) {
 // api/chat.js). `position` is one of POS's values or falsy for all
 // positions; `sort_by` is one of projected_points/goal_probability/
 // assist_probability/clean_sheet_probability; `limit` is capped to 25.
-// Pool is restricted to available (status 'a') players with any
-// current-season minutes — same "has a real signal to rank on" filter
-// index.html's findCandidates() uses — so the tool doesn't surface
-// completely unproven bench players.
-function getTopPlayers({ position, gameweek, sort_by, limit }, bs, fixtures) {
-  const eventId = gameweek || defaultEventId(bs);
-  if (!eventId) return { error: 'No upcoming gameweek to project — season may be over.' };
+// `horizon` (default 1) is how many gameweeks starting at `gameweek` to
+// blend together — 1 uses the single-GW model (matches the Point
+// Projections table exactly), >1 switches to the GW_WEIGHTS-weighted
+// multi-GW model (matches the Recommender's own blended score) applied
+// across the WHOLE eligible pool, not just a squad — see
+// computePlayerProjection/weightedAverage above for how points vs.
+// probabilities are blended differently. Pool is restricted to available
+// (status 'a') players with any current-season minutes — same "has a real
+// signal to rank on" filter index.html's findCandidates() uses — so the
+// tool doesn't surface completely unproven bench players.
+function getTopPlayers({ position, gameweek, sort_by, limit, horizon }, bs, fixtures) {
+  const startEventId = gameweek || defaultEventId(bs);
+  if (!startEventId) return { error: 'No upcoming gameweek to project — season may be over.' };
   const cappedLimit = clamp(Math.round(limit) || 15, 1, 25);
+  const cappedHorizon = clamp(Math.round(horizon) || 1, 1, MAX_HORIZON);
+  const windowEventIds = buildScoringWindow(bs, cappedHorizon, startEventId);
+  if (windowEventIds.length === 0) return { error: 'No upcoming gameweeks to project — season may be over.' };
 
   const teamShort = {}; bs.teams.forEach((t) => { teamShort[t.id] = t.short_name; });
   let pool = bs.elements.filter((e) => e.status === 'a' && e.minutes > 0);
@@ -290,30 +397,49 @@ function getTopPlayers({ position, gameweek, sort_by, limit }, bs, fixtures) {
   let rows;
   if (sort_by === 'clean_sheet_probability') {
     pool = pool.filter((e) => e.element_type !== 4); // FWDs don't earn clean-sheet points
-    rows = pool.map((e) => ({
-      name: e.web_name, team: teamShort[e.team], position: POS[e.element_type],
-      clean_sheet_probability: projectCleanSheetForGw(e.team, eventId, fixtures, bs),
-    })).filter((r) => r.clean_sheet_probability != null);
+    rows = pool.map((e) => {
+      const value = cappedHorizon > 1
+        ? weightedAverage(windowEventIds.map((eventId) => projectCleanSheetForGw(e.team, eventId, fixtures, bs)))
+        : projectCleanSheetForGw(e.team, startEventId, fixtures, bs);
+      return { name: e.web_name, team: teamShort[e.team], position: POS[e.element_type], clean_sheet_probability: value };
+    }).filter((r) => r.clean_sheet_probability != null);
     rows.sort((a, b) => b.clean_sheet_probability - a.clean_sheet_probability);
     rows.forEach((r) => { r.clean_sheet_probability = Math.round(r.clean_sheet_probability * 100) + '%'; });
   } else if (sort_by === 'goal_probability' || sort_by === 'assist_probability') {
     const outKey = sort_by;
     rows = pool.map((e) => {
-      const { goalProb, assistProb } = projectGoalAssistForGw(e, eventId, fixtures, bs);
-      const val = sort_by === 'goal_probability' ? goalProb : assistProb;
+      let val;
+      if (cappedHorizon > 1) {
+        val = weightedAverage(windowEventIds.map((eventId) => {
+          const { goalProb, assistProb } = projectGoalAssistForGw(e, eventId, fixtures, bs);
+          return sort_by === 'goal_probability' ? goalProb : assistProb;
+        }));
+      } else {
+        const { goalProb, assistProb } = projectGoalAssistForGw(e, startEventId, fixtures, bs);
+        val = sort_by === 'goal_probability' ? goalProb : assistProb;
+      }
       return { name: e.web_name, team: teamShort[e.team], position: POS[e.element_type], [outKey]: val };
     }).filter((r) => r[outKey] != null);
     rows.sort((a, b) => b[outKey] - a[outKey]);
     rows.forEach((r) => { r[outKey] = Math.round(r[outKey] * 100) + '%'; });
   } else { // projected_points (default / fallback for an unrecognized sort_by)
-    rows = pool.map((e) => ({
-      name: e.web_name, team: teamShort[e.team], position: POS[e.element_type],
-      projected_points: Math.round(projectPointsForGw(e, eventId, fixtures, bs) * 10) / 10,
-    }));
+    rows = pool.map((e) => {
+      const points = cappedHorizon > 1
+        ? computePlayerProjection(e, windowEventIds, fixtures, bs)
+        : projectPointsForGw(e, startEventId, fixtures, bs);
+      return { name: e.web_name, team: teamShort[e.team], position: POS[e.element_type], projected_points: Math.round(points * 10) / 10 };
+    });
     rows.sort((a, b) => b.projected_points - a.projected_points);
   }
 
-  return { gameweek: eventId, sort_by: sort_by || 'projected_points', position: position || 'ALL', results: rows.slice(0, cappedLimit) };
+  return {
+    gameweek: startEventId,
+    horizon: cappedHorizon,
+    gameweeksCovered: windowEventIds,
+    sort_by: sort_by || 'projected_points',
+    position: position || 'ALL',
+    results: rows.slice(0, cappedLimit),
+  };
 }
 
 module.exports = { getTopPlayers };
