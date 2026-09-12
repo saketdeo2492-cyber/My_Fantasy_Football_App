@@ -545,6 +545,16 @@
   #projCsTable th[data-sort]:hover, #projGaTable th[data-sort]:hover, #projPtsTable th[data-sort]:hover{ color:var(--ink); }
   #projCsTable th.sort-asc::after, #projGaTable th.sort-asc::after, #projPtsTable th.sort-asc::after{ content:' ▲'; color:var(--green); }
   #projCsTable th.sort-desc::after, #projGaTable th.sort-desc::after, #projPtsTable th.sort-desc::after{ content:' ▼'; color:var(--green); }
+  /* GW header cells must match their own column's data alignment, not the
+     table-wide default (th{text-align:left} below) — the column tracks
+     themselves are already pixel-identical between <th> and <td> (a real
+     <table> sizes them as one unit), but a left-aligned "GW5" label over
+     centered/right-aligned data reads as if the columns themselves had
+     drifted. Clean Sheets/Goals & Assists center their GW data
+     (.proj-gw-cell); Point Projections right-aligns it (.proj-pct) — each
+     table's GW headers now align the same way. */
+  #projCsTable th[data-sort^="gw"], #projGaTable th[data-sort^="gw"]{ text-align:center; }
+  #projPtsTable th[data-sort^="gw"]{ text-align:right; }
   .proj-pct{ font-family:'Space Mono',monospace; font-weight:700; text-align:right; }
   .proj-gw-cell{
     text-align:center; min-width:76px;
