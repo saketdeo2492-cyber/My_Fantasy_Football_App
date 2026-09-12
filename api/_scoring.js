@@ -5,9 +5,22 @@
 // (relies on `document`, DOM rendering, etc.) and isn't requireable from a
 // Node serverless function. Kept in careful sync with index.html's own
 // model: teamDefensiveFactor/teamAttackingFactor shrinkage, reliablePer90's
-// position-average blending, the unified Poisson clean-sheet calculation,
-// and the position-specific point formulas are all copied verbatim from
-// there. If that model changes, mirror the change here too.
+// (and reliableForm's) position-average blending, the unified Poisson
+// clean-sheet calculation, and the position-specific point formulas are all
+// copied verbatim from there. If that model changes, mirror the change
+// here too.
+//
+// projected_points specifically mirrors index.html's SINGLE-GW model
+// (singleGwFixtureScore/projectSingleGw, the one behind the Point
+// Projections table) — not the multi-GW Recommender model
+// (playerFixtureScore/computePlayerProjection), which this file ported by
+// mistake in an earlier pass. The two aren't interchangeable: the single-GW
+// model has its own minutes-reliability floor (0.15 vs the multi-GW
+// model's 0.3) and a defconOpportunityFactor adjustment the multi-GW model
+// doesn't have. goal_probability/assist_probability/clean_sheet_probability
+// correctly mirror their own respective frontend functions
+// (projectionsRowForGw / teamCleanSheetRowForGw) and were never affected by
+// that mix-up.
 
 const POS = { 1: 'GKP', 2: 'DEF', 3: 'MID', 4: 'FWD' };
 const DEFCON_THRESHOLD = { 2: 10, 3: 12, 4: 12 };
@@ -49,6 +62,13 @@ function reliablePer90(e, field, bs) {
   return raw * w + prior * (1 - w);
 }
 
+// `form` shrinkage — reliablePer90's blend-toward-position-average logic is
+// entirely generic over the field name, so this is a thin readability
+// wrapper around reliablePer90(e, 'form', bs), mirroring index.html.
+function reliableForm(e, bs) {
+  return reliablePer90(e, 'form', bs);
+}
+
 function teamDefensiveFactor(teamId, bs) {
   const PRIOR_XGC90 = 1.3;
   const defenders = bs.elements.filter((e) => e.team === teamId && (e.element_type === 1 || e.element_type === 2) && e.minutes > 0);
@@ -80,6 +100,37 @@ function opponentAttackFactor(opponentTeamId, difficulty, bs) {
   const fplFactor = fixtureAttackFactor(difficulty);
   const oppFactor = clamp(teamDefensiveFactor(opponentTeamId, bs) / 1.4, 0.5, 2.2);
   return fplFactor * oppFactor;
+}
+
+// `form`'s opponent adjustment — reuses opponentAttackFactor but DAMPENED
+// (form is real recent output, not a from-scratch projection, so it
+// shouldn't swing as hard on one fixture's difficulty as attackPts does).
+// Mirrors index.html's formOpponentFactor()/FORM_OPPONENT_DAMPENING.
+const FORM_OPPONENT_DAMPENING = 0.5;
+function formOpponentFactor(opponentTeamId, difficulty, bs) {
+  const full = opponentAttackFactor(opponentTeamId, difficulty, bs);
+  return 1 + (full - 1) * FORM_OPPONENT_DAMPENING;
+}
+
+// Denies the opponent's defensive-contribution opportunity when they're a
+// strong attacking side (they dominate the ball, leaving fewer defensive
+// actions to be had) — mirrors index.html's defconOpportunityFactor(),
+// used only by the single-GW model below (singleGwFixtureScore), same as
+// there.
+function defconOpportunityFactor(opponentTeamId, bs) {
+  const oppAttack = teamAttackingFactor(opponentTeamId, bs);
+  return clamp(1 + (0.45 - oppAttack) * 0.5, 0.7, 1.3);
+}
+
+// Minutes-reliability factor for the single-GW model — mirrors index.html's
+// minutesReliabilityFactor(p, 'ev') (this tool has no ceiling-mode concept,
+// so mode is always effectively 'ev'). Floor of 0.15, not the multi-GW
+// model's 0.3 — a real difference between the two models this file used to
+// blur by porting the wrong one (playerFixtureScore) instead of this one.
+function minutesReliabilityFactor(p) {
+  const raw = clamp(avgMinutesPerGame(p) / 90, 0.15, 1);
+  const factor = p.element_type === 4 ? raw * raw : raw;
+  return clamp(factor, 0.05, 1);
 }
 
 function defconHitProbability(per90rate, threshold) {
@@ -120,22 +171,36 @@ function hasLimitedMinutesSample(e, bs) {
 }
 
 // Single-fixture projected points, position-specific — mirrors index.html's
-// playerFixtureScore().
-function playerFixtureScore(p, fixture, bs) {
+// singleGwFixtureScore() in EV mode with no per-player match history
+// (mode='ceiling' and real per-match `history` both require data this tool
+// doesn't have access to — the Point Projections table itself uses the
+// exact same simplification for the full ~700-player pool: no per-player
+// history fetch, season-long rates via reliablePer90 standing in for
+// recencyWeightedPer90's seasonFallback, since recencyWeightedPer90 with no
+// history returns that fallback unchanged anyway). This — not the multi-GW
+// Recommender's playerFixtureScore()/computePlayerProjection() — is the
+// model that actually needs to match: get_top_players is documented to
+// mirror the Point Projections table, and previously (incorrectly) ported
+// the sibling multi-GW formula instead, which differs in its minutes-
+// reliability floor (0.3 vs 0.15 here) and lacks defconOpportunityFactor
+// entirely — small numeric drift for most players, but a real one.
+function singleGwFixtureScore(p, fixture, bs) {
   const isHome = fixture.team_h === p.team;
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
   const csProb = poissonZeroProb(adjustedGoalsConceded(p.team, oppId, difficulty, bs));
   const attFactor = opponentAttackFactor(oppId, difficulty, bs);
-  const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
-  const form = parseFloat(p.form) || 0;
+
   const xg90 = reliablePer90(p, 'expected_goals_per_90', bs);
   const xa90 = reliablePer90(p, 'expected_assists_per_90', bs);
-  const defcon90 = reliablePer90(p, 'defensive_contribution_per_90', bs);
+  const saves90 = reliablePer90(p, 'saves_per_90', bs);
+  const defcon90 = reliablePer90(p, 'defensive_contribution_per_90', bs) * defconOpportunityFactor(oppId, bs);
+
+  const minsFactor = minutesReliabilityFactor(p);
+  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs);
 
   let pts;
   if (p.element_type === 1) {
-    const saves90 = reliablePer90(p, 'saves_per_90', bs);
     pts = 2 * minsFactor + csProb * 4 + (saves90 * minsFactor) / 3 + form * 0.25;
   } else if (p.element_type === 2) {
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[2]);
@@ -150,18 +215,15 @@ function playerFixtureScore(p, fixture, bs) {
     const attackPts = (xg90 * 4 + xa90 * 3) * minsFactor * attFactor;
     pts = 2 * minsFactor + attackPts + defconProb * 2 + form * 0.25;
   }
-  return { points: Math.max(0, pts) * availabilityMultiplier(p) };
+  return Math.max(0, pts) * availabilityMultiplier(p); // projectedAvailability(p,'ev') === availabilityMultiplier(p)
 }
 
 // Point projection for one player in one specific gameweek (sums DGW
 // fixtures, blends in ep_next, applies the limited-minutes discount) —
-// mirrors index.html's projectSingleGw() in 'ev' mode with no per-player
-// history, the same simplification the Point Projections table itself
-// uses for the full ~700-player pool (recency-weighted history isn't
-// fetched for every player in the game, just season-long rates).
+// mirrors index.html's projectSingleGw() in 'ev' mode.
 function projectPointsForGw(p, eventId, fixtures, bs) {
   const teamFixtures = fixtures.filter((f) => f.event === eventId && (f.team_h === p.team || f.team_a === p.team));
-  let points = teamFixtures.reduce((sum, f) => sum + playerFixtureScore(p, f, bs).points, 0);
+  let points = teamFixtures.reduce((sum, f) => sum + singleGwFixtureScore(p, f, bs), 0);
   if (teamFixtures.length > 0) {
     const epNext = parseFloat(p.ep_next);
     if (!isNaN(epNext)) points = points * 0.8 + epNext * 0.2;

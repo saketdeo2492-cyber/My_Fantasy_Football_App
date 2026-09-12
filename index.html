@@ -1672,6 +1672,20 @@ function reliablePer90(e, field, bs){
   return raw * w + prior * (1 - w);
 }
 
+// `form` (FPL's own recent-points average) used to bypass every safeguard
+// applied to every other stat here — added to a player's score at
+// completely raw face value, with no shrinkage for a thin sample. One
+// early-season fluke match (e.g. a single goal-scoring cameo) can dominate
+// a player's form figure for weeks, exactly the same "small early sample
+// taken at face value" problem reliablePer90 above was built to fix — form
+// just wasn't running through it. reliablePer90()'s blend-toward-
+// position-average logic is entirely generic over the field name, so this
+// is a thin, readability-only wrapper around reliablePer90(e, 'form', bs)
+// rather than a separate implementation.
+function reliableForm(e, bs){
+  return reliablePer90(e, 'form', bs);
+}
+
 // FPL doesn't expose "appearances" directly. points_per_game is total_points
 // divided by games played, so total_points / points_per_game backs that
 // count out; starts is the fallback for players with no points on the board.
@@ -1931,6 +1945,22 @@ function opponentAttackFactor(opponentTeamId, difficulty, bs){
   return fplFactor * oppFactor;
 }
 
+// `form` previously had zero fixture adjustment at all — a flat form*weight
+// bonus regardless of opponent, while the attacking component right next to
+// it already gets the full opponentAttackFactor treatment above. Reuses
+// that same opponent-strength signal for form, but DAMPENED: form is real
+// recent output that already happened, not a from-scratch projection, so
+// it shouldn't swing as hard on a single upcoming fixture's difficulty as
+// a pure expected-goals estimate does. FORM_OPPONENT_DAMPENING=0.5 means a
+// fixture that would pull attackPts down (or up) by X% only pulls form by
+// X/2% — same direction, half the magnitude, centered on the same 1.0
+// neutral point opponentAttackFactor uses.
+const FORM_OPPONENT_DAMPENING = 0.5;
+function formOpponentFactor(opponentTeamId, difficulty, bs){
+  const full = opponentAttackFactor(opponentTeamId, difficulty, bs);
+  return 1 + (full - 1) * FORM_OPPONENT_DAMPENING;
+}
+
 // One player's fixture-adjusted expected goals / assists for a single
 // fixture, as raw rates (not yet run through Poisson) — same per-90 ×
 // fixture-factor × minutes-reliability combination playerFixtureScore()
@@ -2023,7 +2053,7 @@ function playerFixtureScore(p, fixture, bs){
   const csProb = poissonZeroProb(adjustedGoalsConceded(p.team, oppId, difficulty, bs));
   const attFactor = opponentAttackFactor(oppId, difficulty, bs);
   const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
-  const form = parseFloat(p.form) || 0;
+  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs);
   const xg90 = reliablePer90(p, 'expected_goals_per_90', bs);
   const xa90 = reliablePer90(p, 'expected_assists_per_90', bs);
   const defcon90 = reliablePer90(p, 'defensive_contribution_per_90', bs);
@@ -2190,7 +2220,7 @@ function singleGwFixtureScore(p, fixture, bs, history, mode){
   const defcon90 = defcon90raw * defconOpportunityFactor(oppId, bs);
 
   const minsFactor = minutesReliabilityFactor(p, mode);
-  const form = parseFloat(p.form) || 0;
+  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs);
 
   let pts;
   if(p.element_type === 1){
@@ -2702,7 +2732,7 @@ function candidateChatDetail(c, teamsFullById, bs){
     price: money(c.now_cost),
     blendedScore: Math.round(c._proj.blendedScore * 10) / 10,
     avgFixtureDifficulty: Math.round(c._avgDiff * 10) / 10,
-    form: parseFloat(c.form) || 0,
+    form: Math.round(reliableForm(c, bs) * 100) / 100, // shrunk toward the position average — matches what actually drives blendedScore, not FPL's raw face-value figure
     fixtures, // the specific fixture difficulty driving the score, per GW in the window
   };
   if(pos !== 'FWD'){
