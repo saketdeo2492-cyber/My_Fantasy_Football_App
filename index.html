@@ -1626,12 +1626,51 @@ function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
 
 // Per-90 rates are extrapolated from raw totals (rate = total / minutes *
 // 90), so a player with only a handful of minutes can show an absurd rate
-// off pure noise — e.g. 1 minute played with a single high-xG chance
-// extrapolates to an xG/90 north of 10. Shrink per-90 reliance toward 0
-// linearly until a player has ~2 full matches (180 mins) banked; full
-// weight after that. Applied everywhere a "_per_90" field is read.
-function statReliability(e){ return clamp((e.minutes || 0) / 180, 0, 1); }
-function reliablePer90(e, field){ return (parseFloat(e[field]) || 0) * statReliability(e); }
+// off pure noise — e.g. one 60-minute game with a single high-xG chance
+// already extrapolates to a season-defining rate. The old approach shrank
+// straight toward 0 (clamp(minutes/180,0,1) — "full confidence" after just
+// 2 matches), which has two problems: 180 minutes is a very low bar for
+// trusting a rate at face value, and 0 isn't a sensible thing to shrink
+// TOWARD — a low-minutes player probably performs roughly like an average
+// player at their position, not like someone who registers nothing.
+//
+// Instead this blends the player's own current-season rate toward the
+// POSITION AVERAGE for that field (see positionAvgPer90 below) — the
+// weight given to the player's own number ramps from 0 (no minutes at
+// all — pure prior) to 1 at SAMPLE_FULL_CONFIDENCE_MINUTES, a much more
+// realistic bar (~6-7 full matches) than the old 2-match cliff. A player
+// with one huge outlier match is pulled most of the way back to a
+// plausible league-average number; a player with a long, consistent
+// sample is trusted almost entirely on their own numbers, same as before.
+const SAMPLE_FULL_CONFIDENCE_MINUTES = 600; // ~6.7 full matches
+function sampleWeight(minutes){ return clamp((minutes || 0) / SAMPLE_FULL_CONFIDENCE_MINUTES, 0, 1); }
+
+// Minutes-weighted position-average rate for one "_per_90" field, over
+// every element of that position with any minutes at all this season —
+// the shrinkage prior reliablePer90() blends a low-sample player's own
+// rate toward. Cached per bootstrap-static payload (a WeakMap keyed on
+// `bs` itself invalidates automatically on every fresh bootstrap fetch —
+// no manual cache-busting needed).
+const _positionAvgCache = new WeakMap();
+function positionAvgPer90(elementType, field, bs){
+  let byBs = _positionAvgCache.get(bs);
+  if(!byBs){ byBs = {}; _positionAvgCache.set(bs, byBs); }
+  const key = elementType + '|' + field;
+  if(!(key in byBs)){
+    const pool = bs.elements.filter(e => e.element_type === elementType && (e.minutes || 0) > 0);
+    const avg = minutesWeightedAvg(pool, e => parseFloat(e[field]) || 0);
+    byBs[key] = avg == null ? 0 : avg;
+  }
+  return byBs[key];
+}
+
+function reliablePer90(e, field, bs){
+  const raw = parseFloat(e[field]) || 0;
+  const w = sampleWeight(e.minutes);
+  if(!bs) return raw * w; // defensive fallback only — every call site passes bs
+  const prior = positionAvgPer90(e.element_type, field, bs);
+  return raw * w + prior * (1 - w);
+}
 
 // FPL doesn't expose "appearances" directly. points_per_game is total_points
 // divided by games played, so total_points / points_per_game backs that
@@ -1709,7 +1748,9 @@ function isBenchEnabler(s){
 // as "go check team news on this one," not a confident verdict.
 const MIN_MINUTES_PACE_RATIO = 0.45; // flag when under ~45% of "played every gameweek since" pace
 const CLUB_TENURE_GRACE_MINUTES = 45; // one part-match's grace before season minutes look pre-move
-const MINUTES_UNCERTAINTY_DISCOUNT = 0.75; // 25% haircut applied when ranking a flagged player as an IN candidate
+const MINUTES_UNCERTAINTY_DISCOUNT = 0.75; // 25% haircut, applied consistently anywhere this player's
+  // own score is computed (computePlayerProjection, projectSingleGw) — not just when they're being
+  // considered as an incoming candidate
 
 const MINUTES_UNCERTAINTY_LABEL = 'New Signing / Limited Minutes at Current Club — role uncertain';
 const MINUTES_UNCERTAINTY_EXPLAINER = "Season stats here may be inflated by minutes earned at a different club, or this player simply hasn't nailed down a role at their current one yet — stats alone can't tell us which, and squad-role/manager-trust isn't something a model can predict. Treat this as a cue to check team news yourself, not a verdict either way.";
@@ -1752,36 +1793,71 @@ function minutesUncertaintyBadge(e, bs, variant){
   return `<span class="${cls}" title="${MINUTES_UNCERTAINTY_EXPLAINER}">${text}</span>`;
 }
 
-// Season-aggregate proxies for "how good is this team defensively / going
-// forward" — used only as a small nudge on top of FPL's own fixture
-// `difficulty`, which is already the primary fixture-strength signal.
-// Minutes-weighted (not a plain average) so a one-minute cameo with a
-// noisy per-90 rate can't swing a team's aggregate the way it would a
-// straight mean over the squad.
+// Shared weighting helper — minutes-weighted (not a plain average) so a
+// one-minute cameo with a noisy per-90 rate can't swing an aggregate the
+// way it would a straight mean over the group. Used by positionAvgPer90
+// above and the team-level proxies below.
 function minutesWeightedAvg(players, valueFn){
   let weightSum = 0, total = 0;
   players.forEach(e => { const w = e.minutes || 0; weightSum += w; total += valueFn(e) * w; });
   return weightSum > 0 ? total / weightSum : null;
 }
-function teamDefensiveFactor(teamId, bs){
-  const defenders = bs.elements.filter(e => e.team === teamId && (e.element_type === 1 || e.element_type === 2) && e.minutes > 0);
-  const avg = minutesWeightedAvg(defenders, e => parseFloat(e.expected_goals_conceded_per_90) || 1.3);
-  return avg == null ? 1.3 : avg;
-}
-function teamAttackingFactor(teamId, bs){
-  const attackers = bs.elements.filter(e => e.team === teamId && (e.element_type === 3 || e.element_type === 4) && e.minutes > 0);
-  const avg = minutesWeightedAvg(attackers, e => (parseFloat(e.expected_goals_per_90)||0) + (parseFloat(e.expected_assists_per_90)||0));
-  return avg == null ? 0.45 : avg;
+// Team-level counterpart to sampleWeight() above — how much to trust a
+// team's OWN minutes-weighted aggregate versus the league-average
+// fallback baked into teamDefensiveFactor/teamAttackingFactor below.
+// Individual player rates at least had the (previously too-generous)
+// minutes cutoff; team aggregates previously had NO shrinkage at all, so
+// a team's rating could be built entirely off 2-3 games of noise this
+// early in the season — worse than the player-level problem, since every
+// player on that team inherits the distortion. Reuses the exact same
+// sampleWeight() curve/threshold as the player-level fix, just fed the
+// team's games-played-this-season as an equivalent "minutes" figure
+// (gameweeksPlayedSoFar × 90) rather than one player's own minutes — so
+// both shrink toward their prior on the same schedule, and this
+// naturally stops mattering once the season is old enough for either to
+// have a real sample (~7 GWs in).
+function teamSampleWeight(bs){
+  return sampleWeight(gameweeksPlayedSoFar(bs) * 90);
 }
 
-// Clean-sheet probability for `teamId` in one fixture, clamped 3%-65% —
-// never a certainty, never truly impossible.
-function cleanSheetProbability(teamId, opponentTeamId, difficulty, bs){
-  const base = 0.50 - (difficulty - 3) * 0.09; // diff1→.68 diff3→.50 diff5→.32
-  const defAdj = (1.4 - teamDefensiveFactor(teamId, bs)) * 0.10;
-  const attAdj = (0.45 - teamAttackingFactor(opponentTeamId, bs)) * 0.15;
-  return clamp(base + defAdj + attAdj, 0.03, 0.65);
+// Season-aggregate proxies for "how good is this team defensively / going
+// forward" — used only as a small nudge on top of FPL's own fixture
+// `difficulty`, which is already the primary fixture-strength signal.
+// Shrunk toward the same league-average baseline used as the "no data"
+// fallback (1.3 xGC/90, 0.45 xGI/90) via teamSampleWeight above, so an
+// early-season team rating can't be taken at full strength off a handful
+// of games — e.g. a promoted side conceding little through 3 fluky
+// fixtures shouldn't yet rank as a top-half defense.
+function teamDefensiveFactor(teamId, bs){
+  const PRIOR_XGC90 = 1.3;
+  const defenders = bs.elements.filter(e => e.team === teamId && (e.element_type === 1 || e.element_type === 2) && e.minutes > 0);
+  const avg = minutesWeightedAvg(defenders, e => parseFloat(e.expected_goals_conceded_per_90) || PRIOR_XGC90);
+  const raw = avg == null ? PRIOR_XGC90 : avg;
+  const w = teamSampleWeight(bs);
+  return raw * w + PRIOR_XGC90 * (1 - w);
 }
+function teamAttackingFactor(teamId, bs){
+  const PRIOR_XGI90 = 0.45;
+  const attackers = bs.elements.filter(e => e.team === teamId && (e.element_type === 3 || e.element_type === 4) && e.minutes > 0);
+  const avg = minutesWeightedAvg(attackers, e => (parseFloat(e.expected_goals_per_90)||0) + (parseFloat(e.expected_assists_per_90)||0));
+  const raw = avg == null ? PRIOR_XGI90 : avg;
+  const w = teamSampleWeight(bs);
+  return raw * w + PRIOR_XGI90 * (1 - w);
+}
+
+// Clean-sheet probability used to live here as a separate, hand-tuned
+// additive heuristic clamped to [3%, 65%] — cleanSheetProbability(),
+// used only inside a player's own point projection (playerFixtureScore /
+// singleGwFixtureScore). Meanwhile the standalone Clean Sheet % table
+// (teamCleanSheetRowForGw / projectionsRowForGw, below) computed the SAME
+// underlying concept a completely different way: adjustedGoalsConceded()
+// run through an actual Poisson P(0) — uncapped, so it could show 85% for
+// an elite defense in the same fixture a player's own score would only
+// ever credit at most 65% (0.65×4=2.6pts) worth of clean-sheet value for.
+// Removed in favor of using adjustedGoalsConceded()+poissonZeroProb()
+// everywhere (see playerFixtureScore/singleGwFixtureScore below) — one
+// clean-sheet number per team/fixture, consistent between a player's own
+// score and the CS% table.
 
 // Mild fixture-difficulty scaler for attacking-return projections
 // (goals/assists) — season-long underlying stats are fixture-agnostic, so
@@ -1820,14 +1896,12 @@ function fixtureConcedeFactor(difficulty){
 }
 
 // Fixture-adjusted expected goals conceded for `teamId` in one specific
-// matchup — built from the exact same team-strength signals
-// cleanSheetProbability() above already computes (teamDefensiveFactor,
-// teamAttackingFactor), just recombined into an actual goals-conceded
-// figure instead of folded into that function's own additive probability
-// heuristic, so it can be run through Poisson here instead. 0.45 is the
-// same "typical opponent" baseline cleanSheetProbability's attAdj term
-// already uses, so an opponent exactly at that baseline leaves the
-// team's own season xGC/90 unscaled.
+// matchup — the single clean-sheet-relevant figure both a player's own
+// score (playerFixtureScore/singleGwFixtureScore, via poissonZeroProb
+// below) and the standalone CS% table (teamCleanSheetRowForGw) run
+// through Poisson. 0.45 is teamAttackingFactor's own "typical opponent"
+// baseline, so an opponent exactly at that baseline leaves the team's own
+// season xGC/90 unscaled.
 function adjustedGoalsConceded(teamId, opponentTeamId, difficulty, bs){
   const baseline = teamDefensiveFactor(teamId, bs);
   const oppFactor = clamp(teamAttackingFactor(opponentTeamId, bs) / 0.45, 0.5, 2.2);
@@ -1846,9 +1920,9 @@ function adjustedGoalsConceded(teamId, opponentTeamId, difficulty, bs){
 // teamDefensiveFactor the Clean Sheet % table already computes for that
 // opponent — while still keeping the mild difficulty-based scaler as a
 // secondary factor, same two-factor structure as adjustedGoalsConceded.
-// 1.4 is the same "typical defense" baseline cleanSheetProbability's own
-// defAdj term uses for teamDefensiveFactor, so an opponent exactly at
-// that baseline leaves the difficulty-only scaling unchanged. Lower
+// 1.4 is a "typical defense" baseline for teamDefensiveFactor, so an
+// opponent exactly at that baseline leaves the difficulty-only scaling
+// unchanged. Lower
 // teamDefensiveFactor (stingier opponent) pulls this below 1; higher
 // (leakier opponent) pushes it above 1.
 function opponentAttackFactor(opponentTeamId, difficulty, bs){
@@ -1870,8 +1944,8 @@ function fixtureAdjustedAttack(p, fixture, bs){
   const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
   return {
     isHome, difficulty, oppId,
-    adjXG: reliablePer90(p, 'expected_goals_per_90') * attFactor * minsFactor,
-    adjXA: reliablePer90(p, 'expected_assists_per_90') * attFactor * minsFactor,
+    adjXG: reliablePer90(p, 'expected_goals_per_90', bs) * attFactor * minsFactor,
+    adjXA: reliablePer90(p, 'expected_assists_per_90', bs) * attFactor * minsFactor,
   };
 }
 
@@ -1946,17 +2020,17 @@ function playerFixtureScore(p, fixture, bs){
   const isHome = fixture.team_h === p.team;
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
-  const csProb = cleanSheetProbability(p.team, oppId, difficulty, bs);
+  const csProb = poissonZeroProb(adjustedGoalsConceded(p.team, oppId, difficulty, bs));
   const attFactor = opponentAttackFactor(oppId, difficulty, bs);
   const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
   const form = parseFloat(p.form) || 0;
-  const xg90 = reliablePer90(p, 'expected_goals_per_90');
-  const xa90 = reliablePer90(p, 'expected_assists_per_90');
-  const defcon90 = reliablePer90(p, 'defensive_contribution_per_90');
+  const xg90 = reliablePer90(p, 'expected_goals_per_90', bs);
+  const xa90 = reliablePer90(p, 'expected_assists_per_90', bs);
+  const defcon90 = reliablePer90(p, 'defensive_contribution_per_90', bs);
 
   let pts;
   if(p.element_type === 1){ // GKP: appearance + CS (4pt) + save points + form
-    const saves90 = reliablePer90(p, 'saves_per_90');
+    const saves90 = reliablePer90(p, 'saves_per_90', bs);
     pts = 2*minsFactor + csProb*4 + (saves90*minsFactor)/3 + form*0.25;
   } else if(p.element_type === 2){ // DEF: appearance + CS (4pt) + attacking threat + DEFCON(10) + form
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[2]);
@@ -1991,8 +2065,21 @@ function buildScoringWindow(bs, numGws){
 // Blended multi-GW score for one player: sums same-week fixtures (which is
 // where a DGW's boost falls out naturally), weights each week by
 // GW_WEIGHTS, and — for the very next gameweek only — blends in FPL's own
-// ep_next as a sanity anchor against our from-scratch estimate.
+// ep_next as a sanity anchor against our from-scratch estimate. Applies
+// the same recently-transferred/limited-minutes discount
+// (hasLimitedMinutesSample/MINUTES_UNCERTAINTY_DISCOUNT) that
+// projectSingleGw() below already applied unconditionally — this is the
+// ONE place computePlayerProjection() is called for every use of it
+// (a squad's own players in renderRecommender's evaluation, incoming
+// candidates in findCandidates(), and punt picks in findPuntPicks()), so
+// baking the discount in here means it now applies consistently
+// regardless of whether the player is being scored as an existing squad
+// member or an incoming option — previously only the latter got it, so
+// e.g. a new signing's own projected score didn't reflect the same
+// uncertainty a rival candidate would be penalized for.
 function computePlayerProjection(p, windowEventIds, fixtures, bs){
+  const lowMinSample = hasLimitedMinutesSample(p, bs);
+  const discount = lowMinSample ? MINUTES_UNCERTAINTY_DISCOUNT : 1;
   let blended = 0;
   const weeks = [];
   windowEventIds.forEach((eventId, idx) => {
@@ -2004,10 +2091,11 @@ function computePlayerProjection(p, windowEventIds, fixtures, bs){
       const epNext = parseFloat(p.ep_next);
       if(!isNaN(epNext)) weekPoints = weekPoints*0.8 + epNext*0.2;
     }
+    weekPoints *= discount;
     blended += weekPoints * weight;
     weeks.push({ eventId, weight, weekPoints, fixtureCount: teamFixtures.length, isDGW: teamFixtures.length >= 2, isBGW: teamFixtures.length === 0, fixtures: fx });
   });
-  return { blendedScore: blended, weeks };
+  return { blendedScore: blended, weeks, lowMinSample };
 }
 
 // =====================================================================
@@ -2029,7 +2117,7 @@ const RECENCY_WEIGHTS = [1.0, 0.85, 0.7, 0.55, 0.45, 0.35];
 // `history` gives these as raw per-match numbers, not per-90 rates) drawn
 // from a player's own last `windowSize` gameweeks, most-recent-weighted.
 // Falls back to the season-long per-90 figure (already itself shrunk
-// toward 0 for a small sample by reliablePer90/statReliability) whenever
+// toward the position-average for a small sample by reliablePer90) whenever
 // history is missing (fetch failed) or the weighted-minutes sample is too
 // thin to trust — e.g. barely any minutes across the recent window.
 function recencyWeightedPer90(history, field, seasonFallback, windowSize){
@@ -2091,14 +2179,14 @@ function singleGwFixtureScore(p, fixture, bs, history, mode){
   const isHome = fixture.team_h === p.team;
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
-  const csProb = cleanSheetProbability(p.team, oppId, difficulty, bs);
+  const csProb = poissonZeroProb(adjustedGoalsConceded(p.team, oppId, difficulty, bs));
   const attFactor = opponentAttackFactor(oppId, difficulty, bs);
 
   const recencyWindow = mode === 'ceiling' ? 3 : 6; // shorter window = more reactive to a hot streak
-  const xg90 = recencyWeightedPer90(history, 'expected_goals', reliablePer90(p, 'expected_goals_per_90'), recencyWindow);
-  const xa90 = recencyWeightedPer90(history, 'expected_assists', reliablePer90(p, 'expected_assists_per_90'), recencyWindow);
-  const saves90 = recencyWeightedPer90(history, 'saves', reliablePer90(p, 'saves_per_90'), recencyWindow);
-  const defcon90raw = recencyWeightedPer90(history, 'defensive_contribution', reliablePer90(p, 'defensive_contribution_per_90'), recencyWindow);
+  const xg90 = recencyWeightedPer90(history, 'expected_goals', reliablePer90(p, 'expected_goals_per_90', bs), recencyWindow);
+  const xa90 = recencyWeightedPer90(history, 'expected_assists', reliablePer90(p, 'expected_assists_per_90', bs), recencyWindow);
+  const saves90 = recencyWeightedPer90(history, 'saves', reliablePer90(p, 'saves_per_90', bs), recencyWindow);
+  const defcon90raw = recencyWeightedPer90(history, 'defensive_contribution', reliablePer90(p, 'defensive_contribution_per_90', bs), recencyWindow);
   const defcon90 = defcon90raw * defconOpportunityFactor(oppId, bs);
 
   const minsFactor = minutesReliabilityFactor(p, mode);
@@ -2251,16 +2339,16 @@ function xgiQualifier(xgi){
 
 // Short, position-specific score-breakdown line — shown for both flagged
 // outgoing squad players and Punt Pick callouts.
-function positionBreakdown(p, avgDiff){
+function positionBreakdown(p, avgDiff, bs){
   const form = (parseFloat(p.form) || 0).toFixed(1);
-  const xgi = reliablePer90(p, 'expected_goal_involvements_per_90');
-  const xg = reliablePer90(p, 'expected_goals_per_90');
-  const defcon90 = reliablePer90(p, 'defensive_contribution_per_90');
+  const xgi = reliablePer90(p, 'expected_goal_involvements_per_90', bs);
+  const xg = reliablePer90(p, 'expected_goals_per_90', bs);
+  const defcon90 = reliablePer90(p, 'defensive_contribution_per_90', bs);
   const minsAvg = avgMinutesPerGame(p);
   const diffTxt = `${diffQualifier(avgDiff)} (avg difficulty ${avgDiff.toFixed(1)})`;
 
   if(p.element_type === 1){
-    return `Form ${form}, saves ${reliablePer90(p, 'saves_per_90').toFixed(1)}/90, ${diffTxt}`;
+    return `Form ${form}, saves ${reliablePer90(p, 'saves_per_90', bs).toFixed(1)}/90, ${diffTxt}`;
   }
   if(p.element_type === 2 || p.element_type === 3){
     const threshold = DEFCON_THRESHOLD[p.element_type];
@@ -2272,18 +2360,18 @@ function positionBreakdown(p, avgDiff){
 }
 
 // Short "why this one's better" line for a suggested replacement.
-function incomingReason(candidate, outgoing, candProj, outProj, candAvgDiff, outAvgDiff){
+function incomingReason(candidate, outgoing, candProj, outProj, candAvgDiff, outAvgDiff, bs){
   const parts = [];
   const fixtureDelta = outAvgDiff - candAvgDiff;
   const threshold = DEFCON_THRESHOLD[candidate.element_type];
   if(fixtureDelta >= 0.5) parts.push('easier fixture run');
   if(threshold){
-    const candDefconProb = defconHitProbability(reliablePer90(candidate, 'defensive_contribution_per_90'), threshold);
-    const outDefconProb = defconHitProbability(reliablePer90(outgoing, 'defensive_contribution_per_90'), threshold);
+    const candDefconProb = defconHitProbability(reliablePer90(candidate, 'defensive_contribution_per_90', bs), threshold);
+    const outDefconProb = defconHitProbability(reliablePer90(outgoing, 'defensive_contribution_per_90', bs), threshold);
     if(candDefconProb - outDefconProb >= 0.15) parts.push('defensive contribution upside');
   }
-  const candXgi = reliablePer90(candidate, 'expected_goal_involvements_per_90');
-  const outXgi = reliablePer90(outgoing, 'expected_goal_involvements_per_90');
+  const candXgi = reliablePer90(candidate, 'expected_goal_involvements_per_90', bs);
+  const outXgi = reliablePer90(outgoing, 'expected_goal_involvements_per_90', bs);
   if(candidate.element_type >= 3 && candXgi - outXgi >= 0.1) parts.push('stronger underlying attacking numbers');
   const candForm = parseFloat(candidate.form) || 0, outForm = parseFloat(outgoing.form) || 0;
   if(candForm - outForm >= 0.5) parts.push('better recent form');
@@ -2308,16 +2396,16 @@ function findPuntPicks(bs, ownedIds, windowEventIds, fixtures, teamsFullById, ex
     const group = byPos[posKey];
     if(group.length < 4) return;
     const scored = group.map(e => {
+      // computePlayerProjection() already bakes in the same down-weighting
+      // (hasLimitedMinutesSample/MINUTES_UNCERTAINTY_DISCOUNT) for every
+      // week including this one — a punt pick is still an IN suggestion,
+      // so a new-signing/short-on-minutes player shouldn't win a punt slot
+      // purely off a season line that may not be theirs.
       const proj = computePlayerProjection(e, windowEventIds, fixtures, bs);
       const week1 = proj.weeks[0];
       const week1Difficulty = week1 && week1.fixtures[0] ? week1.fixtures[0].difficulty : null;
-      const lowMinSample = hasLimitedMinutesSample(e, bs);
-      const rawWeek1Points = week1 ? week1.weekPoints : 0;
-      // Same down-weighting as findCandidates() — a punt pick is still an
-      // IN suggestion, so a new-signing/short-on-minutes player shouldn't
-      // win a punt slot purely off a season line that may not be theirs.
-      const week1Points = lowMinSample ? rawWeek1Points * MINUTES_UNCERTAINTY_DISCOUNT : rawWeek1Points;
-      return { e, proj, week1Points, rawWeek1Points, week1Difficulty, lowMinSample };
+      const week1Points = week1 ? week1.weekPoints : 0;
+      return { e, proj, week1Points, week1Difficulty, lowMinSample: proj.lowMinSample };
     });
     const sortedVals = scored.map(s => s.week1Points).sort((a,b) => a-b);
     const median = sortedVals[Math.floor(sortedVals.length/2)] || 0;
@@ -2354,15 +2442,14 @@ function findCandidates(pos, ownedIds, excludeIds, budget, outgoingTeamId, teamI
       return counts[e.team] <= 3; // 3-per-club limit against the resultant squad
     })
     .map(e => {
+      // computePlayerProjection() already bakes the down-weighting for an
+      // unreliable season line (new signing / short on minutes at this
+      // club) into blendedScore itself — see hasLimitedMinutesSample() for
+      // the full rationale. We still show the player if they clear the bar
+      // on that discounted basis, just don't let a stale/borrowed season
+      // line win the slot outright.
       const proj = computePlayerProjection(e, windowEventIds, fixtures, bs);
-      const lowMinSample = hasLimitedMinutesSample(e, bs);
-      // Rank on a down-weighted score when the season line looks
-      // unreliable (new signing / short on minutes at this club) — we
-      // still show the player if they clear the bar on a discounted
-      // basis, just don't let a stale/borrowed season line win the slot
-      // outright. See hasLimitedMinutesSample() for the full rationale.
-      const rankScore = lowMinSample ? proj.blendedScore * MINUTES_UNCERTAINTY_DISCOUNT : proj.blendedScore;
-      return { ...e, _proj: proj, _avgDiff: avgFixtureDifficulty(e.team, teamsFullById, fixtures, NUM_GWS), _lowMinSample: lowMinSample, _rankScore: rankScore };
+      return { ...e, _proj: proj, _avgDiff: avgFixtureDifficulty(e.team, teamsFullById, fixtures, NUM_GWS), _lowMinSample: proj.lowMinSample, _rankScore: proj.blendedScore };
     })
     .sort((a,b) => b._rankScore - a._rankScore)
     .slice(0, limit || 3);
@@ -2599,7 +2686,7 @@ const MIN_GAIN_TO_FLAG = 2; // a swap has to be worth at least this many blended
 // candidate (proj.weeks[].fixtures[] already carries per-fixture points/
 // csProb/difficulty/oppId from playerFixtureScore()) — nothing recomputed,
 // and nothing pulled in for players outside the candidates actually shown.
-function candidateChatDetail(c, teamsFullById){
+function candidateChatDetail(c, teamsFullById, bs){
   const pos = POS[c.element_type];
   const fixtures = c._proj.weeks.flatMap(w => w.fixtures.map(f => ({
     gw: w.eventId,
@@ -2623,14 +2710,14 @@ function candidateChatDetail(c, teamsFullById){
     if(csProbs.length) detail.cleanSheetPct = Math.round((csProbs.reduce((a,b) => a+b, 0) / csProbs.length) * 100);
   }
   if(pos === 'DEF' || pos === 'MID'){
-    const defcon90 = reliablePer90(c, 'defensive_contribution_per_90');
+    const defcon90 = reliablePer90(c, 'defensive_contribution_per_90', bs);
     detail.defconPct = Math.round(defconHitProbability(defcon90, DEFCON_THRESHOLD[c.element_type]) * 100);
   }
   if(pos === 'GKP'){
-    detail.saves90 = Math.round(reliablePer90(c, 'saves_per_90') * 100) / 100;
+    detail.saves90 = Math.round(reliablePer90(c, 'saves_per_90', bs) * 100) / 100;
   } else {
-    detail.xg90 = Math.round(reliablePer90(c, 'expected_goals_per_90') * 100) / 100;
-    detail.xa90 = Math.round(reliablePer90(c, 'expected_assists_per_90') * 100) / 100;
+    detail.xg90 = Math.round(reliablePer90(c, 'expected_goals_per_90', bs) * 100) / 100;
+    detail.xa90 = Math.round(reliablePer90(c, 'expected_assists_per_90', bs) * 100) / 100;
   }
   if(c._lowMinSample) detail.minutesUncertain = true;
   return detail;
@@ -2773,7 +2860,7 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
       out: ev.s.web_name,
       in: ev.best ? ev.best.web_name : null,
       reason,
-      inCandidates: ev.candidates.map(c => candidateChatDetail(c, teamsFullById)),
+      inCandidates: ev.candidates.map(c => candidateChatDetail(c, teamsFullById, bs)),
     };
   });
 
@@ -2826,7 +2913,7 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
 
       const reasonParts = [];
       if(ev.isInjured) reasonParts.push(weakest.news ? weakest.news : 'currently unavailable');
-      reasonParts.push(positionBreakdown(weakest, outAvgDiff));
+      reasonParts.push(positionBreakdown(weakest, outAvgDiff, bs));
       if(ev.hasBgwInWindow) reasonParts.push('blank gameweek in scoring window');
       if(ev.benchEnabler) reasonParts.push('rarely features — bench enabler');
 
@@ -2848,7 +2935,7 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
                 <div><span class="arrow">→</span><span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span>${c._lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
                 <div class="stats">
                   ${money(c.now_cost)} · blended ${c._proj.blendedScore.toFixed(1)}pts (${NUM_GWS}GW)${c._lowMinSample ? ` <span class="sub">(score down-weighted — see flag)</span>` : ''}
-                  <div class="rec-why">${incomingReason(c, weakest, c._proj, outProj, c._avgDiff, outAvgDiff)}</div>
+                  <div class="rec-why">${incomingReason(c, weakest, c._proj, outProj, c._avgDiff, outAvgDiff, bs)}</div>
                 </div>
               </div>
             `).join('')}
@@ -2877,7 +2964,7 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
         <div class="rec-card punt-card">
           <div class="rec-head">
             <div class="out">${p.e.web_name} <span class="sub">(${POS[p.e.element_type]}, ${teamById[p.e.team]}, ${money(p.e.now_cost)})</span>${p.lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
-            <div class="why">Weak next opponent — ${positionBreakdown(p.e, p.avgDiff)}</div>
+            <div class="why">Weak next opponent — ${positionBreakdown(p.e, p.avgDiff, bs)}</div>
           </div>
           <div class="rec-list">
             <div class="rec-opt">
