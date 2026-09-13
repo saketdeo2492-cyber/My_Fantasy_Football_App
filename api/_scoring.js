@@ -30,6 +30,7 @@ const SAMPLE_FULL_CONFIDENCE_MINUTES = 600; // ~6.7 full matches
 const MINUTES_UNCERTAINTY_DISCOUNT = 0.75;
 const MIN_MINUTES_PACE_RATIO = 0.45;
 const CLUB_TENURE_GRACE_MINUTES = 45;
+const SEASON_START_GRACE_DAYS = 45;
 const GW_WEIGHTS = [1.0, 0.85, 0.7, 0.55, 0.45]; // mirrors index.html's GW_WEIGHTS — nearer gameweeks weighted more heavily
 const MAX_HORIZON = 8; // horizon beyond GW_WEIGHTS.length reuses the last weight, same as index.html; capped here to keep a single tool call's fixture-scanning bounded
 
@@ -41,7 +42,17 @@ function minutesWeightedAvg(players, valueFn) {
   return weightSum > 0 ? total / weightSum : null;
 }
 
-function gameweeksPlayedSoFar(bs) { return bs.events.filter((e) => e.finished).length; }
+// Counts a gameweek as "played" once its deadline has passed, not just once
+// FPL marks it `finished` — mirrors index.html's gameweeksPlayedSoFar() fix
+// (a player's minutes update live as soon as matches are played, so an
+// in-progress gameweek can already be reflected in `minutes` before it's
+// flagged `finished`, which used to make hasLimitedMinutesSample() below
+// mistake "this gameweek isn't flagged finished yet" for "predates a club
+// move" — a false positive for any already-played, no-transfer player).
+function gameweeksPlayedSoFar(bs) {
+  const now = Date.now();
+  return bs.events.filter((e) => e.finished || (e.deadline_time && new Date(e.deadline_time).getTime() <= now)).length;
+}
 
 function sampleWeight(minutes) { return clamp((minutes || 0) / SAMPLE_FULL_CONFIDENCE_MINUTES, 0, 1); }
 function teamSampleWeight(bs) { return sampleWeight(gameweeksPlayedSoFar(bs) * 90); }
@@ -162,16 +173,34 @@ function gameweeksSinceJoiningCurrentClub(e, bs, gwPlayed) {
   if (!e.team_join_date) return gwPlayed;
   const joinTime = new Date(e.team_join_date).getTime();
   if (isNaN(joinTime)) return gwPlayed;
-  return bs.events.filter((ev) => ev.finished && new Date(ev.deadline_time || 0).getTime() >= joinTime).length;
+  const now = Date.now();
+  return bs.events.filter((ev) => {
+    const deadline = new Date(ev.deadline_time || 0).getTime();
+    return (ev.finished || deadline <= now) && deadline >= joinTime;
+  }).length;
 }
+
+// Whether team_join_date is actual evidence of a RECENT transfer, not just
+// "a join date happens to be on file" (FPL populates one for every player
+// regardless of tenure) — mirrors index.html's joinedCurrentClubRecently().
+function joinedCurrentClubRecently(e, bs) {
+  if (!e.team_join_date || !bs.events.length) return false;
+  const joinTime = new Date(e.team_join_date).getTime();
+  if (isNaN(joinTime)) return false;
+  const seasonStart = new Date(bs.events[0].deadline_time).getTime() - SEASON_START_GRACE_DAYS * 24 * 60 * 60 * 1000;
+  return joinTime >= seasonStart;
+}
+
 function hasLimitedMinutesSample(e, bs) {
   const gwPlayed = gameweeksPlayedSoFar(bs);
   if (gwPlayed === 0) return false;
   const minutes = e.minutes || 0;
-  const gwsAtClub = gameweeksSinceJoiningCurrentClub(e, bs, gwPlayed);
-  const predatesCurrentClub = minutes > gwsAtClub * 90 + CLUB_TENURE_GRACE_MINUTES;
+  if (joinedCurrentClubRecently(e, bs)) {
+    const gwsAtClub = gameweeksSinceJoiningCurrentClub(e, bs, gwPlayed);
+    if (minutes > gwsAtClub * 90 + CLUB_TENURE_GRACE_MINUTES) return true;
+  }
   const belowPace = minutes / (gwPlayed * 90) < MIN_MINUTES_PACE_RATIO;
-  return predatesCurrentClub || belowPace;
+  return belowPace;
 }
 
 // Single-fixture projected points, position-specific — mirrors index.html's
