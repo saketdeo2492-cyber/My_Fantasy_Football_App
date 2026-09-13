@@ -1923,15 +1923,46 @@ const CLUB_TENURE_GRACE_MINUTES = 45; // one part-match's grace before season mi
 const MINUTES_UNCERTAINTY_DISCOUNT = 0.75; // 25% haircut, applied consistently anywhere this player's
   // own score is computed (computePlayerProjection, projectSingleGw) — not just when they're being
   // considered as an incoming candidate
+const SEASON_START_GRACE_DAYS = 45; // team_join_date on/after (season start − this) counts as "joined
+  // recently" — wide enough to also catch a genuine preseason arrival, not just an in-season transfer
 
-const MINUTES_UNCERTAINTY_LABEL = 'New Signing / Limited Minutes at Current Club — role uncertain';
-const MINUTES_UNCERTAINTY_EXPLAINER = "Season stats here may be inflated by minutes earned at a different club, or this player simply hasn't nailed down a role at their current one yet — stats alone can't tell us which, and squad-role/manager-trust isn't something a model can predict. Treat this as a cue to check team news yourself, not a verdict either way.";
+// Two DIFFERENT things used to collapse into one "New Signing" label —
+// wrong whenever the second one fired without the first:
+//   'transfer' — team_join_date shows an ACTUAL recent move to this club
+//     (checked against season start, not just "a date exists" — see
+//     joinedCurrentClubRecently()) AND season minutes exceed what they
+//     could plausibly have earned at this club since. A real, specific
+//     signal: old-club stats are bolted onto the new club's fixtures.
+//   'pace' — minutes are just well below a full run of starts, full stop,
+//     for a player who has NOT changed clubs. Could be injury, rotation,
+//     suspension, or a fringe role — stats alone can't tell us which, but
+//     it's definitely not "new signing," and saying so would be wrong.
+const TRANSFER_LABEL = 'New Signing / Limited Minutes at Current Club — role uncertain';
+const TRANSFER_EXPLAINER = "This player joined their current club recently — season stats here may still include minutes earned at their previous one, inflating the season line before they've had a real chance to nail down a role at the new club. Treat this as a cue to check team news yourself, not a verdict either way.";
+const PACE_LABEL = 'Limited Recent Minutes — role uncertain';
+const PACE_EXPLAINER = "This player's season minutes are well below a full run of starts, for reasons stats alone can't identify — injury, rotation, suspension, or just not currently nailed down a role. Treat this as a cue to check team news yourself, not a verdict either way.";
 
-function gameweeksPlayedSoFar(bs){
-  return bs.events.filter(e => e.finished).length;
+function minutesUncertaintyText(reason){
+  return reason === 'transfer' ? { label: TRANSFER_LABEL, explainer: TRANSFER_EXPLAINER } : { label: PACE_LABEL, explainer: PACE_EXPLAINER };
 }
 
-// How many *finished* gameweeks have happened since a player joined their
+// Counts a gameweek as "played" once its deadline has passed — not just
+// once FPL marks it `finished`. bootstrap-static's per-player `minutes`
+// (and every season-aggregate stat) updates live as soon as matches are
+// played, so during any in-progress gameweek (deadline passed, not yet
+// `finished`) a player who's already featured can have MORE minutes on
+// record than gwPlayed accounts for if it only counted `finished` weeks —
+// which used to make hasLimitedMinutesSample() below mistake "the current
+// gameweek hasn't been flagged finished yet" for "these minutes predate a
+// club move," a false positive for any already-played, no-transfer player
+// (e.g. Saka) during that window.
+function gameweeksPlayedSoFar(bs){
+  const now = Date.now();
+  return bs.events.filter(e => e.finished || (e.deadline_time && new Date(e.deadline_time).getTime() <= now)).length;
+}
+
+// How many gameweeks (by the same deadline-passed measure as
+// gameweeksPlayedSoFar above) have happened since a player joined their
 // current club — i.e. how many real chances they've had to earn minutes
 // there. Falls back to "the whole season" when team_join_date is missing
 // or unparseable, which just disables the club-tenure check below and
@@ -1940,29 +1971,73 @@ function gameweeksSinceJoiningCurrentClub(e, bs, gwPlayed){
   if(!e.team_join_date) return gwPlayed;
   const joinTime = new Date(e.team_join_date).getTime();
   if(isNaN(joinTime)) return gwPlayed;
-  return bs.events.filter(ev => ev.finished && new Date(ev.deadline_time || 0).getTime() >= joinTime).length;
+  const now = Date.now();
+  return bs.events.filter(ev => {
+    const deadline = new Date(ev.deadline_time || 0).getTime();
+    return (ev.finished || deadline <= now) && deadline >= joinTime;
+  }).length;
+}
+
+// Whether team_join_date is actual evidence of an ACTUAL recent transfer —
+// not just "a join date happens to be on file," which FPL populates for
+// every player regardless of tenure (checked directly: Saka, at Arsenal
+// since 2018, still carries a team_join_date; comparing minutes against
+// it with no recency check is what let hasLimitedMinutesSample() call a
+// years-long-tenured player a "new signing"). Season start minus a grace
+// window catches a genuine preseason arrival too, not just an in-season one.
+function joinedCurrentClubRecently(e, bs){
+  if(!e.team_join_date || !bs.events.length) return false;
+  const joinTime = new Date(e.team_join_date).getTime();
+  if(isNaN(joinTime)) return false;
+  const seasonStart = new Date(bs.events[0].deadline_time).getTime() - SEASON_START_GRACE_DAYS * 24 * 60 * 60 * 1000;
+  return joinTime >= seasonStart;
+}
+
+// Returns which specific reason (if any) this player's season stats
+// shouldn't be trusted at face value — 'transfer', 'pace', or null.
+// hasLimitedMinutesSample() below is just this !== null, kept for every
+// call site that only needs the boolean (discounting a score, etc.);
+// anywhere the actual LABEL is shown, use this instead so the wording
+// matches the real reason.
+function minutesUncertaintyReason(e, bs){
+  const gwPlayed = gameweeksPlayedSoFar(bs);
+  if(gwPlayed === 0) return null; // preseason — nothing to compare against yet
+  const minutes = e.minutes || 0;
+
+  if(joinedCurrentClubRecently(e, bs)){
+    const gwsAtClub = gameweeksSinceJoiningCurrentClub(e, bs, gwPlayed);
+    if(minutes > gwsAtClub * 90 + CLUB_TENURE_GRACE_MINUTES) return 'transfer';
+  }
+
+  if(minutes / (gwPlayed * 90) < MIN_MINUTES_PACE_RATIO) return 'pace';
+
+  return null;
 }
 
 function hasLimitedMinutesSample(e, bs){
-  const gwPlayed = gameweeksPlayedSoFar(bs);
-  if(gwPlayed === 0) return false; // preseason — nothing to compare against yet
-  const minutes = e.minutes || 0;
+  return minutesUncertaintyReason(e, bs) !== null;
+}
 
-  const gwsAtClub = gameweeksSinceJoiningCurrentClub(e, bs, gwPlayed);
-  const predatesCurrentClub = minutes > gwsAtClub * 90 + CLUB_TENURE_GRACE_MINUTES;
-
-  const belowPace = minutes / (gwPlayed * 90) < MIN_MINUTES_PACE_RATIO;
-
-  return predatesCurrentClub || belowPace;
+// The shared badge markup for both the flag-styled spans below and every
+// other "▲ <label>" usage (Recommender candidate cards, Punt Picks, the
+// squad uncertainty banner) — one place building the reason-appropriate
+// label/explainer instead of five copies of the same ternary.
+function uncertainBadgeHtml(e, bs){
+  const reason = minutesUncertaintyReason(e, bs);
+  if(!reason) return '';
+  const { label, explainer } = minutesUncertaintyText(reason);
+  return `<span class="uncertain-badge" title="${explainer}">▲ ${label}</span>`;
 }
 
 // `variant` picks which flag styling to render with — 'pitch' for the
 // compact pitch-card badge, 'table' for the stats-table row badge.
 function minutesUncertaintyBadge(e, bs, variant){
-  if(!hasLimitedMinutesSample(e, bs)) return '';
+  const reason = minutesUncertaintyReason(e, bs);
+  if(!reason) return '';
+  const { explainer } = minutesUncertaintyText(reason);
   const cls = variant === 'table' ? 'flag uncertain' : 'pflag puncertain';
   const text = variant === 'table' ? 'UNCERTAIN ROLE' : 'ROLE?';
-  return `<span class="${cls}" title="${MINUTES_UNCERTAINTY_EXPLAINER}">${text}</span>`;
+  return `<span class="${cls}" title="${explainer}">${text}</span>`;
 }
 
 // Shared weighting helper — minutes-weighted (not a plain average) so a
@@ -2944,7 +3019,11 @@ function candidateChatDetail(c, teamsFullById, bs){
     detail.xg90 = Math.round(reliablePer90(c, 'expected_goals_per_90', bs) * 100) / 100;
     detail.xa90 = Math.round(reliablePer90(c, 'expected_assists_per_90', bs) * 100) / 100;
   }
-  if(c._lowMinSample) detail.minutesUncertain = true;
+  // The actual reason, not just a boolean — so the chat assistant can say
+  // "recently transferred" vs "limited recent minutes for another reason"
+  // accurately instead of assuming "new signing" either way.
+  const uncertaintyReason = minutesUncertaintyReason(c, bs);
+  if(uncertaintyReason) detail.minutesUncertain = uncertaintyReason;
   return detail;
 }
 
@@ -3035,12 +3114,22 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
   // players. Deliberately separate from the OUT-flag machinery below — we
   // are NOT confident enough in this signal to suggest selling anyone off
   // the back of it, only confident enough to flag it as something worth
-  // the manager's own research.
+  // the manager's own research. Split into two banners by the ACTUAL
+  // reason (see minutesUncertaintyReason()) rather than one banner that
+  // calls every flagged player a "new signing" even when they're really
+  // just low-minutes for an unrelated reason (injury, rotation, etc.).
   const uncertainSquad = evaluations.filter(ev => ev.lowMinSample);
-  if(uncertainSquad.length){
-    const names = uncertainSquad.map(ev => ev.s.web_name).join(', ');
-    wrap.innerHTML += `<div class="squad-risk-banner uncertainty">▲ ${MINUTES_UNCERTAINTY_LABEL.toUpperCase()} — ${names}. ${MINUTES_UNCERTAINTY_EXPLAINER}</div>`;
-  }
+  const uncertainByReason = { transfer: [], pace: [] };
+  uncertainSquad.forEach(ev => {
+    const reason = minutesUncertaintyReason(ev.s, bs);
+    if(reason) uncertainByReason[reason].push(ev.s.web_name);
+  });
+  ['transfer', 'pace'].forEach(reason => {
+    const names = uncertainByReason[reason];
+    if(!names.length) return;
+    const { label, explainer } = minutesUncertaintyText(reason);
+    wrap.innerHTML += `<div class="squad-risk-banner uncertainty">▲ ${label.toUpperCase()} — ${names.join(', ')}. ${explainer}</div>`;
+  });
 
   const eligible = evaluations.filter(ev => {
     if(!ev.best) return false;
@@ -3157,7 +3246,7 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
           <div class="rec-list">
             ${candidates.map(c => `
               <div class="rec-opt">
-                <div class="row-player"><span class="arrow">→</span>${playerPhotoHtml(c, teamById[c.team], 'photo-sm')}<span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span>${c._lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
+                <div class="row-player"><span class="arrow">→</span>${playerPhotoHtml(c, teamById[c.team], 'photo-sm')}<span class="n">${c.web_name}</span> <span class="sub">${teamById[c.team]}</span>${uncertainBadgeHtml(c, bs)}</div>
                 <div class="stats">
                   ${money(c.now_cost)} · blended ${c._proj.blendedScore.toFixed(1)}pts (${NUM_GWS}GW)${c._lowMinSample ? ` <span class="sub">(score down-weighted — see flag)</span>` : ''}
                   <div class="rec-why">${incomingReason(c, weakest, c._proj, outProj, c._avgDiff, outAvgDiff, bs)}</div>
@@ -3188,7 +3277,7 @@ function renderRecommender(bs, squad, bank, fixtures, teamsFullById, freeTransfe
       punts.map(p => `
         <div class="rec-card punt-card">
           <div class="rec-head">
-            <div class="out row-player">${playerPhotoHtml(p.e, teamById[p.e.team], 'photo-sm')}${p.e.web_name} <span class="sub">(${POS[p.e.element_type]}, ${teamById[p.e.team]}, ${money(p.e.now_cost)})</span>${p.lowMinSample ? `<span class="uncertain-badge" title="${MINUTES_UNCERTAINTY_EXPLAINER}">▲ ${MINUTES_UNCERTAINTY_LABEL}</span>` : ''}</div>
+            <div class="out row-player">${playerPhotoHtml(p.e, teamById[p.e.team], 'photo-sm')}${p.e.web_name} <span class="sub">(${POS[p.e.element_type]}, ${teamById[p.e.team]}, ${money(p.e.now_cost)})</span>${uncertainBadgeHtml(p.e, bs)}</div>
             <div class="why">Weak next opponent — ${positionBreakdown(p.e, p.avgDiff, bs)}</div>
           </div>
           <div class="rec-list">
