@@ -2195,16 +2195,23 @@ function formOpponentFactor(opponentTeamId, difficulty, bs){
 }
 
 // One player's fixture-adjusted expected goals / assists for a single
-// fixture, as raw rates (not yet run through Poisson) — same per-90 ×
-// fixture-factor × minutes-reliability combination playerFixtureScore()
-// above already applies inside its attackPts term, just isolated here
-// instead of weighted together into a points blend.
+// fixture, as raw rates (not yet run through Poisson) — feeds the Goals &
+// Assists table, which projects a single specific gameweek same as the
+// Point Projections table, so this uses minutesReliabilityFactor() (the
+// single-GW model's minutes-reliability term, 'ev' mode — this table has
+// no ceiling-mode concept) rather than the multi-GW recommender's own
+// looser 0.3-floor minsFactor below in playerFixtureScore(). Previously
+// used that multi-GW-style factor instead, which meant a player's adjXG
+// here and their adjXG inside the Point Projections table's attacking
+// component could disagree even though both are meant to describe the
+// same single-gameweek projection — fixed to share the same underlying
+// number.
 function fixtureAdjustedAttack(p, fixture, bs){
   const isHome = fixture.team_h === p.team;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const attFactor = opponentAttackFactor(oppId, difficulty, bs);
-  const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
+  const minsFactor = minutesReliabilityFactor(p, 'ev');
   return {
     isHome, difficulty, oppId,
     adjXG: reliablePer90(p, 'expected_goals_per_90', bs) * attFactor * minsFactor,
