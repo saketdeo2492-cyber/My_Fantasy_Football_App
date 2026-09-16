@@ -360,7 +360,16 @@ function weightedAverage(perWeekValues) {
 }
 
 // Goal/assist probability for one player in one specific gameweek — mirrors
-// index.html's projectionsRowForGw().
+// index.html's projectionsRowForGw()/fixtureAdjustedAttack(). Uses
+// minutesReliabilityFactor() (the single-GW model's minutes term) rather
+// than the multi-GW-style 0.3-floor factor, for the same reason
+// singleGwFixtureScore() above does: this is always a single specific
+// gameweek's projection (horizon>1 just averages several single-GW values
+// via weightedAverage(), same as index.html has no multi-GW concept for
+// this stat either), so it should match get_top_players' own
+// projected_points path and index.html's Goals & Assists table exactly.
+// Previously still used the old multi-GW-style factor even after
+// singleGwFixtureScore() itself was fixed — same drift, missed here.
 function projectGoalAssistForGw(p, eventId, fixtures, bs) {
   const teamFixtures = fixtures.filter((f) => f.event === eventId && (f.team_h === p.team || f.team_a === p.team));
   if (teamFixtures.length === 0) return { goalProb: null, assistProb: null };
@@ -370,7 +379,7 @@ function projectGoalAssistForGw(p, eventId, fixtures, bs) {
     const difficulty = isHome ? f.team_h_difficulty : f.team_a_difficulty;
     const oppId = isHome ? f.team_a : f.team_h;
     const attFactor = opponentAttackFactor(oppId, difficulty, bs);
-    const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
+    const minsFactor = minutesReliabilityFactor(p);
     sumXG += reliablePer90(p, 'expected_goals_per_90', bs) * attFactor * minsFactor;
     sumXA += reliablePer90(p, 'expected_assists_per_90', bs) * attFactor * minsFactor;
   });
