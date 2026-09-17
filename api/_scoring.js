@@ -84,8 +84,32 @@ function reliableForm(e, bs) {
   return reliablePer90(e, 'form', bs);
 }
 
+// A team's own strength_overall_home/away (FPL's official team-strength
+// rating, used for the game's own FDR — unlike strength_attack_*/
+// strength_defence_*, which the API reports as 0 for every team this
+// season) relative to the league average. Used to scale each team's prior
+// below, so an early-season small sample blends toward "what a team of
+// this known caliber usually does" rather than one flat league-wide
+// average — without this, a newly-promoted side's noisy first few games
+// and an elite side's noisy first few games pull toward the exact same
+// baseline, understating the gap between them until enough matches pile
+// up to overcome it on raw sample alone.
+const _leagueAvgStrengthCache = new WeakMap();
+function leagueAvgStrength(bs) {
+  if (!_leagueAvgStrengthCache.has(bs)) {
+    const avgs = bs.teams.map((t) => (t.strength_overall_home + t.strength_overall_away) / 2);
+    _leagueAvgStrengthCache.set(bs, avgs.reduce((a, b) => a + b, 0) / avgs.length);
+  }
+  return _leagueAvgStrengthCache.get(bs);
+}
+function teamTierMultiplier(teamId, bs) {
+  const t = bs.teams.find((team) => team.id === teamId);
+  if (!t) return 1;
+  return ((t.strength_overall_home + t.strength_overall_away) / 2) / leagueAvgStrength(bs);
+}
+
 function teamDefensiveFactor(teamId, bs) {
-  const PRIOR_XGC90 = 1.3;
+  const PRIOR_XGC90 = 1.3 / teamTierMultiplier(teamId, bs);
   const defenders = bs.elements.filter((e) => e.team === teamId && (e.element_type === 1 || e.element_type === 2) && e.minutes > 0);
   const avg = minutesWeightedAvg(defenders, (e) => parseFloat(e.expected_goals_conceded_per_90) || PRIOR_XGC90);
   const raw = avg == null ? PRIOR_XGC90 : avg;
@@ -93,7 +117,7 @@ function teamDefensiveFactor(teamId, bs) {
   return raw * w + PRIOR_XGC90 * (1 - w);
 }
 function teamAttackingFactor(teamId, bs) {
-  const PRIOR_XGI90 = 0.45;
+  const PRIOR_XGI90 = 0.45 * teamTierMultiplier(teamId, bs);
   const attackers = bs.elements.filter((e) => e.team === teamId && (e.element_type === 3 || e.element_type === 4) && e.minutes > 0);
   const avg = minutesWeightedAvg(attackers, (e) => (parseFloat(e.expected_goals_per_90) || 0) + (parseFloat(e.expected_assists_per_90) || 0));
   const raw = avg == null ? PRIOR_XGI90 : avg;
