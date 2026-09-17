@@ -1399,10 +1399,15 @@ function estimateFreeTransfers(historyCurrent, chips){
   finished.forEach(gw => {
     const chip = chipByEvent[gw.event];
     const chipFreeWeek = chip === 'wildcard' || chip === 'freehit';
-    if(!chipFreeWeek){
+    if(chipFreeWeek){
+      // Playing a wildcard/free hit resets the stockpile to 1 free transfer
+      // for next gameweek — it doesn't let whatever was banked going in
+      // keep accumulating on top of the chip's unlimited/free transfers.
+      banked = 1;
+    }else{
       banked = Math.max(banked - (gw.event_transfers||0), 0);
+      banked = Math.min(banked + 1, 5);
     }
-    banked = Math.min(banked + 1, 5);
   });
   return Math.min(banked, 5);
 }
@@ -1726,7 +1731,7 @@ function pitchCard(p, teamById, teamsFullById, fixtures, bs){
         <div class="pname">${p.web_name}</div>
       </div>
       <div class="pmeta">${teamCrestHtml(teamsFullById[p.team], 'crest-sm')}${teamById[p.team]} · ${money(p.now_cost)}</div>
-      ${injured ? `<div class="pflag">${p.status==='i'?'INJ':p.status==='s'?'SUSP':p.status.toUpperCase()}</div>` : ''}
+      ${injured ? `<div class="pflag">${statusBadge(p).replace(/<\/?span[^>]*>/g, '') || p.status.toUpperCase()}</div>` : ''}
       ${minutesUncertaintyBadge(p, bs, 'pitch')}
       ${fxHtml}
     </div>`;
