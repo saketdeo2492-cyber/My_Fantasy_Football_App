@@ -108,8 +108,43 @@ function teamTierMultiplier(teamId, bs) {
   return ((t.strength_overall_home + t.strength_overall_away) / 2) / leagueAvgStrength(bs);
 }
 
+// League-wide minutes-weighted xGC/90 (GK+DEF) and xGI/90 (MID+FWD),
+// pooled across every team with any minutes played. Mirrors index.html's
+// leagueBaselines()/leagueAvgXGC90()/leagueAvgXGI90() — replaces the flat
+// 1.3/1.4 (defense) and 0.45 (attack) constants these used to be, which
+// drifted out of sync with the live data (this season's real pooled
+// average is ~1.5 xGC/90 and ~0.37 xGI/90). Shrunk toward the OLD
+// hardcoded constant as a "sensible prior", weighted by minutes-per-pooled-
+// player via sampleWeight(), and cached per bootstrap-static payload the
+// same WeakMap-keyed-on-bs way as positionAvgPer90 above.
+const LEAGUE_PRIOR_XGC90 = 1.3;
+const LEAGUE_PRIOR_XGI90 = 0.45;
+const _leagueBaselineCache = new WeakMap();
+function leagueBaselines(bs) {
+  let cached = _leagueBaselineCache.get(bs);
+  if (cached) return cached;
+
+  const defPool = bs.elements.filter((e) => (e.element_type === 1 || e.element_type === 2) && (e.minutes || 0) > 0);
+  const defRaw = minutesWeightedAvg(defPool, (e) => parseFloat(e.expected_goals_conceded_per_90) || 0);
+  const defMinutes = defPool.reduce((sum, e) => sum + (e.minutes || 0), 0);
+  const defWeight = sampleWeight(defPool.length ? defMinutes / defPool.length : 0);
+  const xgc90 = (defRaw == null ? LEAGUE_PRIOR_XGC90 : defRaw) * defWeight + LEAGUE_PRIOR_XGC90 * (1 - defWeight);
+
+  const attPool = bs.elements.filter((e) => (e.element_type === 3 || e.element_type === 4) && (e.minutes || 0) > 0);
+  const attRaw = minutesWeightedAvg(attPool, (e) => (parseFloat(e.expected_goals_per_90) || 0) + (parseFloat(e.expected_assists_per_90) || 0));
+  const attMinutes = attPool.reduce((sum, e) => sum + (e.minutes || 0), 0);
+  const attWeight = sampleWeight(attPool.length ? attMinutes / attPool.length : 0);
+  const xgi90 = (attRaw == null ? LEAGUE_PRIOR_XGI90 : attRaw) * attWeight + LEAGUE_PRIOR_XGI90 * (1 - attWeight);
+
+  cached = { xgc90, xgi90 };
+  _leagueBaselineCache.set(bs, cached);
+  return cached;
+}
+function leagueAvgXGC90(bs) { return leagueBaselines(bs).xgc90; }
+function leagueAvgXGI90(bs) { return leagueBaselines(bs).xgi90; }
+
 function teamDefensiveFactor(teamId, bs) {
-  const PRIOR_XGC90 = 1.3 / teamTierMultiplier(teamId, bs);
+  const PRIOR_XGC90 = leagueAvgXGC90(bs) / teamTierMultiplier(teamId, bs);
   const defenders = bs.elements.filter((e) => e.team === teamId && (e.element_type === 1 || e.element_type === 2) && e.minutes > 0);
   const avg = minutesWeightedAvg(defenders, (e) => parseFloat(e.expected_goals_conceded_per_90) || PRIOR_XGC90);
   const raw = avg == null ? PRIOR_XGC90 : avg;
@@ -117,7 +152,7 @@ function teamDefensiveFactor(teamId, bs) {
   return raw * w + PRIOR_XGC90 * (1 - w);
 }
 function teamAttackingFactor(teamId, bs) {
-  const PRIOR_XGI90 = 0.45 * teamTierMultiplier(teamId, bs);
+  const PRIOR_XGI90 = leagueAvgXGI90(bs) * teamTierMultiplier(teamId, bs);
   const attackers = bs.elements.filter((e) => e.team === teamId && (e.element_type === 3 || e.element_type === 4) && e.minutes > 0);
   const avg = minutesWeightedAvg(attackers, (e) => (parseFloat(e.expected_goals_per_90) || 0) + (parseFloat(e.expected_assists_per_90) || 0));
   const raw = avg == null ? PRIOR_XGI90 : avg;
@@ -132,12 +167,12 @@ function poissonAtLeastOneProb(lambda) { return 1 - Math.exp(-Math.max(0, lambda
 
 function adjustedGoalsConceded(teamId, opponentTeamId, difficulty, bs) {
   const baseline = teamDefensiveFactor(teamId, bs);
-  const oppFactor = clamp(teamAttackingFactor(opponentTeamId, bs) / 0.45, 0.5, 2.2);
+  const oppFactor = clamp(teamAttackingFactor(opponentTeamId, bs) / leagueAvgXGI90(bs), 0.5, 2.2);
   return baseline * fixtureConcedeFactor(difficulty) * oppFactor;
 }
 function opponentAttackFactor(opponentTeamId, difficulty, bs) {
   const fplFactor = fixtureAttackFactor(difficulty);
-  const oppFactor = clamp(teamDefensiveFactor(opponentTeamId, bs) / 1.4, 0.5, 2.2);
+  const oppFactor = clamp(teamDefensiveFactor(opponentTeamId, bs) / leagueAvgXGC90(bs), 0.5, 2.2);
   return fplFactor * oppFactor;
 }
 

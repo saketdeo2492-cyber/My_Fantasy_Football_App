@@ -2096,10 +2096,52 @@ function teamTierMultiplier(teamId, bs){
   return ((t.strength_overall_home + t.strength_overall_away) / 2) / leagueAvgStrength(bs);
 }
 
+// League-wide minutes-weighted xGC/90 (GK+DEF) and xGI/90 (MID+FWD),
+// pooled across every team with any minutes played — "what does a
+// league-average defense/attack actually look like right now", computed
+// from live data instead of the flat 1.3/1.4 (defense) and 0.45 (attack)
+// constants this used to be. Those were calibrated once and then silently
+// drifted out of sync with reality as the pool of teams/players changes
+// season to season (verified against this season's bootstrap-static: the
+// real pooled average is ~1.5 xGC/90 and ~0.37 xGI/90, well off 1.3/1.4
+// and 0.45). Pooling across ~20 teams already cancels out most of any
+// single team's early-season noise, so this only needs a light shrinkage
+// of its own — toward the OLD hardcoded constant as a "sensible prior"
+// for a typical PL rate — weighted by how many minutes the average player
+// in the pool has actually played, reusing the same sampleWeight()/
+// SAMPLE_FULL_CONFIDENCE_MINUTES curve every per-player blend here already
+// uses. Cached per bootstrap-static payload, same WeakMap-keyed-on-bs
+// pattern as positionAvgPer90 above.
+const LEAGUE_PRIOR_XGC90 = 1.3;
+const LEAGUE_PRIOR_XGI90 = 0.45;
+const _leagueBaselineCache = new WeakMap();
+function leagueBaselines(bs){
+  let cached = _leagueBaselineCache.get(bs);
+  if(cached) return cached;
+
+  const defPool = bs.elements.filter(e => (e.element_type === 1 || e.element_type === 2) && (e.minutes || 0) > 0);
+  const defRaw = minutesWeightedAvg(defPool, e => parseFloat(e.expected_goals_conceded_per_90) || 0);
+  const defMinutes = defPool.reduce((sum, e) => sum + (e.minutes || 0), 0);
+  const defWeight = sampleWeight(defPool.length ? defMinutes / defPool.length : 0);
+  const xgc90 = (defRaw == null ? LEAGUE_PRIOR_XGC90 : defRaw) * defWeight + LEAGUE_PRIOR_XGC90 * (1 - defWeight);
+
+  const attPool = bs.elements.filter(e => (e.element_type === 3 || e.element_type === 4) && (e.minutes || 0) > 0);
+  const attRaw = minutesWeightedAvg(attPool, e => (parseFloat(e.expected_goals_per_90)||0) + (parseFloat(e.expected_assists_per_90)||0));
+  const attMinutes = attPool.reduce((sum, e) => sum + (e.minutes || 0), 0);
+  const attWeight = sampleWeight(attPool.length ? attMinutes / attPool.length : 0);
+  const xgi90 = (attRaw == null ? LEAGUE_PRIOR_XGI90 : attRaw) * attWeight + LEAGUE_PRIOR_XGI90 * (1 - attWeight);
+
+  cached = { xgc90, xgi90 };
+  _leagueBaselineCache.set(bs, cached);
+  return cached;
+}
+function leagueAvgXGC90(bs){ return leagueBaselines(bs).xgc90; }
+function leagueAvgXGI90(bs){ return leagueBaselines(bs).xgi90; }
+
 // Season-aggregate proxies for "how good is this team defensively / going
 // forward" — used only as a small nudge on top of FPL's own fixture
 // `difficulty`, which is already the primary fixture-strength signal.
-// Shrunk toward a team-tier-scaled baseline (1.3 xGC/90, 0.45 xGI/90,
+// Shrunk toward a team-tier-scaled baseline (leagueAvgXGC90/leagueAvgXGI90,
 // scaled by teamTierMultiplier) via teamSampleWeight above, so an
 // early-season team rating can't be taken at full strength off a handful
 // of games — e.g. a promoted side conceding little through 3 fluky
@@ -2108,7 +2150,7 @@ function teamTierMultiplier(teamId, bs){
 // keeps a small sample from pulling an elite side and a newly-promoted
 // side toward the exact same baseline in the meantime.
 function teamDefensiveFactor(teamId, bs){
-  const PRIOR_XGC90 = 1.3 / teamTierMultiplier(teamId, bs);
+  const PRIOR_XGC90 = leagueAvgXGC90(bs) / teamTierMultiplier(teamId, bs);
   const defenders = bs.elements.filter(e => e.team === teamId && (e.element_type === 1 || e.element_type === 2) && e.minutes > 0);
   const avg = minutesWeightedAvg(defenders, e => parseFloat(e.expected_goals_conceded_per_90) || PRIOR_XGC90);
   const raw = avg == null ? PRIOR_XGC90 : avg;
@@ -2116,7 +2158,7 @@ function teamDefensiveFactor(teamId, bs){
   return raw * w + PRIOR_XGC90 * (1 - w);
 }
 function teamAttackingFactor(teamId, bs){
-  const PRIOR_XGI90 = 0.45 * teamTierMultiplier(teamId, bs);
+  const PRIOR_XGI90 = leagueAvgXGI90(bs) * teamTierMultiplier(teamId, bs);
   const attackers = bs.elements.filter(e => e.team === teamId && (e.element_type === 3 || e.element_type === 4) && e.minutes > 0);
   const avg = minutesWeightedAvg(attackers, e => (parseFloat(e.expected_goals_per_90)||0) + (parseFloat(e.expected_assists_per_90)||0));
   const raw = avg == null ? PRIOR_XGI90 : avg;
@@ -2178,12 +2220,12 @@ function fixtureConcedeFactor(difficulty){
 // matchup — the single clean-sheet-relevant figure both a player's own
 // score (playerFixtureScore/singleGwFixtureScore, via poissonZeroProb
 // below) and the standalone CS% table (teamCleanSheetRowForGw) run
-// through Poisson. 0.45 is teamAttackingFactor's own "typical opponent"
-// baseline, so an opponent exactly at that baseline leaves the team's own
-// season xGC/90 unscaled.
+// through Poisson. leagueAvgXGI90(bs) is teamAttackingFactor's own
+// "typical opponent" baseline, so an opponent exactly at that baseline
+// leaves the team's own season xGC/90 unscaled.
 function adjustedGoalsConceded(teamId, opponentTeamId, difficulty, bs){
   const baseline = teamDefensiveFactor(teamId, bs);
-  const oppFactor = clamp(teamAttackingFactor(opponentTeamId, bs) / 0.45, 0.5, 2.2);
+  const oppFactor = clamp(teamAttackingFactor(opponentTeamId, bs) / leagueAvgXGI90(bs), 0.5, 2.2);
   return baseline * fixtureConcedeFactor(difficulty) * oppFactor;
 }
 
@@ -2199,14 +2241,14 @@ function adjustedGoalsConceded(teamId, opponentTeamId, difficulty, bs){
 // teamDefensiveFactor the Clean Sheet % table already computes for that
 // opponent — while still keeping the mild difficulty-based scaler as a
 // secondary factor, same two-factor structure as adjustedGoalsConceded.
-// 1.4 is a "typical defense" baseline for teamDefensiveFactor, so an
-// opponent exactly at that baseline leaves the difficulty-only scaling
-// unchanged. Lower
+// leagueAvgXGC90(bs) is a "typical defense" baseline for
+// teamDefensiveFactor, so an opponent exactly at that baseline leaves the
+// difficulty-only scaling unchanged. Lower
 // teamDefensiveFactor (stingier opponent) pulls this below 1; higher
 // (leakier opponent) pushes it above 1.
 function opponentAttackFactor(opponentTeamId, difficulty, bs){
   const fplFactor = fixtureAttackFactor(difficulty);
-  const oppFactor = clamp(teamDefensiveFactor(opponentTeamId, bs) / 1.4, 0.5, 2.2);
+  const oppFactor = clamp(teamDefensiveFactor(opponentTeamId, bs) / leagueAvgXGC90(bs), 0.5, 2.2);
   return fplFactor * oppFactor;
 }
 
