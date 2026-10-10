@@ -1,10 +1,10 @@
 {
   "eventId": 6,
-  "fetchedAt": "2026-10-10T07:52:37.680Z",
-  "bootstrapResponseDate": "Sat, 10 Oct 2026 07:52:37 GMT",
-  "bootstrapResponseAge": 132,
+  "fetchedAt": "2026-10-10T08:06:49.637Z",
+  "bootstrapResponseDate": "Sat, 10 Oct 2026 08:06:49 GMT",
+  "bootstrapResponseAge": 86,
   "refetchedForFreshness": false,
-  "transfersInEventSum": 15567066,
+  "transfersInEventSum": 15721420,
   "nonAvailableCount": 212,
   "players": [
     {
