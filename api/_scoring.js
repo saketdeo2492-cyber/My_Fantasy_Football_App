@@ -490,6 +490,25 @@ function projectCleanSheetForGw(teamId, eventId, fixtures, bs) {
   return poissonZeroProb(sumXGC);
 }
 
+// Fixture-adjusted expected GOALS for `teamId` in gameweek `eventId` — the
+// attacking mirror of projectCleanSheetForGw() above: an opponent's own
+// expected goals CONCEDED is, by definition, this team's own expected
+// goals SCORED, so this swaps the two teamId arguments into
+// adjustedGoalsConceded() (using the OPPONENT's own difficulty digit for
+// this fixture) rather than inventing a second formula.
+function projectImpliedGoalsForGw(teamId, eventId, fixtures, bs) {
+  const teamFixtures = fixtures.filter((f) => f.event === eventId && (f.team_h === teamId || f.team_a === teamId));
+  if (teamFixtures.length === 0) return null;
+  let sumGoals = 0;
+  teamFixtures.forEach((f) => {
+    const isHome = f.team_h === teamId;
+    const oppId = isHome ? f.team_a : f.team_h;
+    const oppDifficulty = isHome ? f.team_a_difficulty : f.team_h_difficulty;
+    sumGoals += adjustedGoalsConceded(oppId, teamId, oppDifficulty, bs);
+  });
+  return sumGoals;
+}
+
 function defaultEventId(bs) {
   const next = bs.events.find((e) => e.is_next) || bs.events.find((e) => !e.finished);
   return next ? next.id : null;
@@ -569,4 +588,10 @@ function getTopPlayers({ position, gameweek, sort_by, limit, horizon }, bs, fixt
   };
 }
 
-module.exports = { getTopPlayers };
+module.exports = {
+  getTopPlayers,
+  projectPointsForGw,
+  projectCleanSheetForGw,
+  projectImpliedGoalsForGw,
+  defaultEventId,
+};
