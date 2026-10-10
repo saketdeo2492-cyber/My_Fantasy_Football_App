@@ -1,0 +1,6131 @@
+{
+  "eventId": 6,
+  "takenAt": "2026-10-10T05:39:38.478Z",
+  "players": [
+    {
+      "id": 1,
+      "web_name": "Raya",
+      "team": 1,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.622
+    },
+    {
+      "id": 2,
+      "web_name": "Arrizabalaga",
+      "team": 1,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.649
+    },
+    {
+      "id": 3,
+      "web_name": "Meslier",
+      "team": 1,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.649
+    },
+    {
+      "id": 4,
+      "web_name": "Gabriel",
+      "team": 1,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.522
+    },
+    {
+      "id": 5,
+      "web_name": "J.Timber",
+      "team": 1,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.574
+    },
+    {
+      "id": 6,
+      "web_name": "Saliba",
+      "team": 1,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.098
+    },
+    {
+      "id": 7,
+      "web_name": "Lewis-Skelly",
+      "team": 1,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.554
+    },
+    {
+      "id": 8,
+      "web_name": "Calafiori",
+      "team": 1,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.884
+    },
+    {
+      "id": 9,
+      "web_name": "Hincapie",
+      "team": 1,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.992
+    },
+    {
+      "id": 10,
+      "web_name": "White",
+      "team": 1,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.91
+    },
+    {
+      "id": 11,
+      "web_name": "Mosquera",
+      "team": 1,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.968
+    },
+    {
+      "id": 12,
+      "web_name": "Saka",
+      "team": 1,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.654
+    },
+    {
+      "id": 13,
+      "web_name": "Rice",
+      "team": 1,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 2.837
+    },
+    {
+      "id": 14,
+      "web_name": "Eze",
+      "team": 1,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.283
+    },
+    {
+      "id": 15,
+      "web_name": "Ødegaard",
+      "team": 1,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.825
+    },
+    {
+      "id": 16,
+      "web_name": "Madueke",
+      "team": 1,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.032
+    },
+    {
+      "id": 17,
+      "web_name": "Merino",
+      "team": 1,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.258
+    },
+    {
+      "id": 18,
+      "web_name": "Martinelli",
+      "team": 1,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.051
+    },
+    {
+      "id": 19,
+      "web_name": "Zubimendi",
+      "team": 1,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.305
+    },
+    {
+      "id": 20,
+      "web_name": "Dowman",
+      "team": 1,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.092
+    },
+    {
+      "id": 22,
+      "web_name": "Nwaneri",
+      "team": 1,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.051
+    },
+    {
+      "id": 23,
+      "web_name": "Fábio Vieira",
+      "team": 1,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.051
+    },
+    {
+      "id": 24,
+      "web_name": "Nelson",
+      "team": 1,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.051
+    },
+    {
+      "id": 25,
+      "web_name": "Gyökeres",
+      "team": 1,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.53
+    },
+    {
+      "id": 26,
+      "web_name": "Havertz",
+      "team": 1,
+      "element_type": 4,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 2.458
+    },
+    {
+      "id": 27,
+      "web_name": "G.Jesus",
+      "team": 1,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.023
+    },
+    {
+      "id": 31,
+      "web_name": "Konsa",
+      "team": 1,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 3.394
+    },
+    {
+      "id": 452,
+      "web_name": "Bruno G.",
+      "team": 1,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.192
+    },
+    {
+      "id": 557,
+      "web_name": "Tzolis",
+      "team": 1,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.133
+    },
+    {
+      "id": 29,
+      "web_name": "M.Bizot",
+      "team": 2,
+      "element_type": 1,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 1.506
+    },
+    {
+      "id": 30,
+      "web_name": "Digne",
+      "team": 2,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 32,
+      "web_name": "Cash",
+      "team": 2,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.007
+    },
+    {
+      "id": 33,
+      "web_name": "Mings",
+      "team": 2,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.484
+    },
+    {
+      "id": 34,
+      "web_name": "Pau",
+      "team": 2,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 1.119
+    },
+    {
+      "id": 35,
+      "web_name": "Bogarde",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.826
+    },
+    {
+      "id": 36,
+      "web_name": "Maatsen",
+      "team": 2,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.127
+    },
+    {
+      "id": 37,
+      "web_name": "Lindelöf",
+      "team": 2,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.669
+    },
+    {
+      "id": 38,
+      "web_name": "A.García",
+      "team": 2,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.777
+    },
+    {
+      "id": 39,
+      "web_name": "Nedeljkovic",
+      "team": 2,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 41,
+      "web_name": "Buendía",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.396
+    },
+    {
+      "id": 44,
+      "web_name": "Bailey",
+      "team": 2,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 45,
+      "web_name": "McGinn",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.138
+    },
+    {
+      "id": 46,
+      "web_name": "Barkley",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.508
+    },
+    {
+      "id": 47,
+      "web_name": "Kamara",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.36
+    },
+    {
+      "id": 48,
+      "web_name": "Onana",
+      "team": 2,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 49,
+      "web_name": "Iling Jr",
+      "team": 2,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 50,
+      "web_name": "Burrowes",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.785
+    },
+    {
+      "id": 51,
+      "web_name": "George Hemmings",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.14
+    },
+    {
+      "id": 52,
+      "web_name": "Alysson",
+      "team": 2,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 1.035
+    },
+    {
+      "id": 53,
+      "web_name": "Manzambi",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.677
+    },
+    {
+      "id": 54,
+      "web_name": "Gomes",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.147
+    },
+    {
+      "id": 55,
+      "web_name": "Watkins",
+      "team": 2,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.023
+    },
+    {
+      "id": 56,
+      "web_name": "Abraham",
+      "team": 2,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.58
+    },
+    {
+      "id": 160,
+      "web_name": "Garnacho",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.765
+    },
+    {
+      "id": 166,
+      "web_name": "N.Jackson",
+      "team": 2,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.836
+    },
+    {
+      "id": 582,
+      "web_name": "Madjo",
+      "team": 2,
+      "element_type": 4,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 0.348
+    },
+    {
+      "id": 596,
+      "web_name": "Ruggeri",
+      "team": 2,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.502
+    },
+    {
+      "id": 597,
+      "web_name": "Suzuki",
+      "team": 2,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.178
+    },
+    {
+      "id": 606,
+      "web_name": "Rowe",
+      "team": 2,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.777
+    },
+    {
+      "id": 607,
+      "web_name": "Lynch",
+      "team": 2,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 611,
+      "web_name": "Wan-Bissaka",
+      "team": 2,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.591
+    },
+    {
+      "id": 618,
+      "web_name": "Goretzka",
+      "team": 2,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 630,
+      "web_name": "Harwood-Bellis",
+      "team": 2,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.777
+    },
+    {
+      "id": 631,
+      "web_name": "Mbaye",
+      "team": 2,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.983
+    },
+    {
+      "id": 667,
+      "web_name": "Wright",
+      "team": 2,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.663
+    },
+    {
+      "id": 57,
+      "web_name": "Petrović",
+      "team": 3,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.802
+    },
+    {
+      "id": 58,
+      "web_name": "Forster",
+      "team": 3,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.54
+    },
+    {
+      "id": 59,
+      "web_name": "Dennis",
+      "team": 3,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.027
+    },
+    {
+      "id": 60,
+      "web_name": "Hill",
+      "team": 3,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.602
+    },
+    {
+      "id": 61,
+      "web_name": "Truffert",
+      "team": 3,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.261
+    },
+    {
+      "id": 62,
+      "web_name": "Diakité",
+      "team": 3,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.789
+    },
+    {
+      "id": 63,
+      "web_name": "Milosavljević",
+      "team": 3,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 64,
+      "web_name": "Smith",
+      "team": 3,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.337
+    },
+    {
+      "id": 65,
+      "web_name": "J.Araujo",
+      "team": 3,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 66,
+      "web_name": "Soler",
+      "team": 3,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.789
+    },
+    {
+      "id": 67,
+      "web_name": "Rayan",
+      "team": 3,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.262
+    },
+    {
+      "id": 68,
+      "web_name": "Tavernier",
+      "team": 3,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.856
+    },
+    {
+      "id": 69,
+      "web_name": "Scott",
+      "team": 3,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.168
+    },
+    {
+      "id": 70,
+      "web_name": "Kluivert",
+      "team": 3,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.144
+    },
+    {
+      "id": 71,
+      "web_name": "Cook",
+      "team": 3,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.207
+    },
+    {
+      "id": 72,
+      "web_name": "Gannon-Doak",
+      "team": 3,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.009
+    },
+    {
+      "id": 73,
+      "web_name": "Adams",
+      "team": 3,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.865
+    },
+    {
+      "id": 74,
+      "web_name": "Brooks",
+      "team": 3,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.859
+    },
+    {
+      "id": 75,
+      "web_name": "Christie",
+      "team": 3,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.328
+    },
+    {
+      "id": 76,
+      "web_name": "Tóth.A",
+      "team": 3,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.861
+    },
+    {
+      "id": 77,
+      "web_name": "Adli",
+      "team": 3,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 78,
+      "web_name": "Kroupi.Jr",
+      "team": 3,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 79,
+      "web_name": "Evanilson",
+      "team": 3,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.584
+    },
+    {
+      "id": 80,
+      "web_name": "Enes Ünal",
+      "team": 3,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.024
+    },
+    {
+      "id": 81,
+      "web_name": "Rodríguez",
+      "team": 3,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.548
+    },
+    {
+      "id": 566,
+      "web_name": "Silva",
+      "team": 3,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.182
+    },
+    {
+      "id": 573,
+      "web_name": "Sanchez",
+      "team": 3,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.789
+    },
+    {
+      "id": 608,
+      "web_name": "Jebbison",
+      "team": 3,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.535
+    },
+    {
+      "id": 615,
+      "web_name": "Di Gregorio",
+      "team": 3,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.54
+    },
+    {
+      "id": 82,
+      "web_name": "Kelleher",
+      "team": 4,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.977
+    },
+    {
+      "id": 83,
+      "web_name": "Valdimarsson",
+      "team": 4,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.455
+    },
+    {
+      "id": 84,
+      "web_name": "Collins",
+      "team": 4,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.142
+    },
+    {
+      "id": 85,
+      "web_name": "Van den Berg",
+      "team": 4,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.09
+    },
+    {
+      "id": 86,
+      "web_name": "Lewis-Potter",
+      "team": 4,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.299
+    },
+    {
+      "id": 87,
+      "web_name": "Ajer",
+      "team": 4,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.114
+    },
+    {
+      "id": 88,
+      "web_name": "Kayode",
+      "team": 4,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.256
+    },
+    {
+      "id": 89,
+      "web_name": "Henry",
+      "team": 4,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.788
+    },
+    {
+      "id": 90,
+      "web_name": "Hickey",
+      "team": 4,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.283
+    },
+    {
+      "id": 92,
+      "web_name": "Ji-soo",
+      "team": 4,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.791
+    },
+    {
+      "id": 93,
+      "web_name": "Schuster",
+      "team": 4,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 6.413
+    },
+    {
+      "id": 94,
+      "web_name": "Schade",
+      "team": 4,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 6.81
+    },
+    {
+      "id": 95,
+      "web_name": "O.Dango",
+      "team": 4,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.84
+    },
+    {
+      "id": 96,
+      "web_name": "Damsgaard",
+      "team": 4,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 2.352
+    },
+    {
+      "id": 97,
+      "web_name": "Jensen",
+      "team": 4,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.115
+    },
+    {
+      "id": 98,
+      "web_name": "Janelt",
+      "team": 4,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.693
+    },
+    {
+      "id": 99,
+      "web_name": "Milambo",
+      "team": 4,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.053
+    },
+    {
+      "id": 100,
+      "web_name": "Carvalho",
+      "team": 4,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.534
+    },
+    {
+      "id": 102,
+      "web_name": "Yarmoliuk",
+      "team": 4,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.046
+    },
+    {
+      "id": 103,
+      "web_name": "Dasilva",
+      "team": 4,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.053
+    },
+    {
+      "id": 105,
+      "web_name": "Anthony",
+      "team": 4,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.171
+    },
+    {
+      "id": 106,
+      "web_name": "Thiago",
+      "team": 4,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.975
+    },
+    {
+      "id": 107,
+      "web_name": "Furo",
+      "team": 4,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.027
+    },
+    {
+      "id": 108,
+      "web_name": "Wilson",
+      "team": 4,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.533
+    },
+    {
+      "id": 565,
+      "web_name": "M.Sangaré",
+      "team": 4,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.692
+    },
+    {
+      "id": 620,
+      "web_name": "Diouf",
+      "team": 4,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.016
+    },
+    {
+      "id": 657,
+      "web_name": "Nunes",
+      "team": 4,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.052
+    },
+    {
+      "id": 660,
+      "web_name": "Fredrick",
+      "team": 4,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.956
+    },
+    {
+      "id": 661,
+      "web_name": "Balcombe",
+      "team": 4,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.605
+    },
+    {
+      "id": 109,
+      "web_name": "Verbruggen",
+      "team": 5,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.048
+    },
+    {
+      "id": 111,
+      "web_name": "Steele",
+      "team": 5,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.458
+    },
+    {
+      "id": 113,
+      "web_name": "F.Kadıoğlu",
+      "team": 5,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.327
+    },
+    {
+      "id": 114,
+      "web_name": "Boscagli",
+      "team": 5,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.726
+    },
+    {
+      "id": 115,
+      "web_name": "De Cuyper",
+      "team": 5,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.341
+    },
+    {
+      "id": 116,
+      "web_name": "Dunk",
+      "team": 5,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.648
+    },
+    {
+      "id": 117,
+      "web_name": "Coppola",
+      "team": 5,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.711
+    },
+    {
+      "id": 118,
+      "web_name": "Igor",
+      "team": 5,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.036
+    },
+    {
+      "id": 119,
+      "web_name": "Costinha",
+      "team": 5,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.892
+    },
+    {
+      "id": 120,
+      "web_name": "Svoboda",
+      "team": 5,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.795
+    },
+    {
+      "id": 121,
+      "web_name": "Mitoma",
+      "team": 5,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.04
+    },
+    {
+      "id": 122,
+      "web_name": "Minteh",
+      "team": 5,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.04
+    },
+    {
+      "id": 123,
+      "web_name": "Hinshelwood",
+      "team": 5,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 50,
+      "projected_points": 1.175
+    },
+    {
+      "id": 124,
+      "web_name": "Groß",
+      "team": 5,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 7.562
+    },
+    {
+      "id": 125,
+      "web_name": "Georginio",
+      "team": 5,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.282
+    },
+    {
+      "id": 126,
+      "web_name": "O'Riley",
+      "team": 5,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.991
+    },
+    {
+      "id": 127,
+      "web_name": "Gomez",
+      "team": 5,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.481
+    },
+    {
+      "id": 128,
+      "web_name": "Buonanotte",
+      "team": 5,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.04
+    },
+    {
+      "id": 129,
+      "web_name": "Ayari",
+      "team": 5,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.228
+    },
+    {
+      "id": 130,
+      "web_name": "Wieffer",
+      "team": 5,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.094
+    },
+    {
+      "id": 132,
+      "web_name": "Howell",
+      "team": 5,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.04
+    },
+    {
+      "id": 133,
+      "web_name": "Watson",
+      "team": 5,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.04
+    },
+    {
+      "id": 134,
+      "web_name": "Oriola",
+      "team": 5,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.8
+    },
+    {
+      "id": 135,
+      "web_name": "Yohanna",
+      "team": 5,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 137,
+      "web_name": "Tzimas",
+      "team": 5,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.025
+    },
+    {
+      "id": 138,
+      "web_name": "Kostoulas",
+      "team": 5,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.912
+    },
+    {
+      "id": 139,
+      "web_name": "Ferguson",
+      "team": 5,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.025
+    },
+    {
+      "id": 328,
+      "web_name": "Struijk",
+      "team": 5,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 1.142
+    },
+    {
+      "id": 504,
+      "web_name": "Vuskovic",
+      "team": 5,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.342
+    },
+    {
+      "id": 594,
+      "web_name": "David",
+      "team": 5,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.496
+    },
+    {
+      "id": 600,
+      "web_name": "Osman",
+      "team": 5,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.87
+    },
+    {
+      "id": 605,
+      "web_name": "Yalcouyé",
+      "team": 5,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.393
+    },
+    {
+      "id": 614,
+      "web_name": "Hadjam",
+      "team": 5,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.711
+    },
+    {
+      "id": 624,
+      "web_name": "Cozier-Duberry",
+      "team": 5,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.04
+    },
+    {
+      "id": 639,
+      "web_name": "Andrés",
+      "team": 5,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.786
+    },
+    {
+      "id": 652,
+      "web_name": "Azeez",
+      "team": 5,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.04
+    },
+    {
+      "id": 658,
+      "web_name": "Ibrahim",
+      "team": 5,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.8
+    },
+    {
+      "id": 28,
+      "web_name": "Martinez",
+      "team": 6,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.871
+    },
+    {
+      "id": 40,
+      "web_name": "Rogers",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.985
+    },
+    {
+      "id": 101,
+      "web_name": "Henderson",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.614
+    },
+    {
+      "id": 136,
+      "web_name": "Welbeck",
+      "team": 6,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.783
+    },
+    {
+      "id": 140,
+      "web_name": "Sánchez",
+      "team": 6,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.124
+    },
+    {
+      "id": 141,
+      "web_name": "Jörgensen",
+      "team": 6,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.048
+    },
+    {
+      "id": 142,
+      "web_name": "James",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.058
+    },
+    {
+      "id": 143,
+      "web_name": "Chalobah",
+      "team": 6,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.063
+    },
+    {
+      "id": 144,
+      "web_name": "Gusto",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.732
+    },
+    {
+      "id": 145,
+      "web_name": "Fofana",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.956
+    },
+    {
+      "id": 146,
+      "web_name": "B.Badiashile",
+      "team": 6,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.063
+    },
+    {
+      "id": 148,
+      "web_name": "Hato",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.611
+    },
+    {
+      "id": 149,
+      "web_name": "Colwill",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.261
+    },
+    {
+      "id": 150,
+      "web_name": "M.Sarr",
+      "team": 6,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.063
+    },
+    {
+      "id": 151,
+      "web_name": "Acheampong",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.464
+    },
+    {
+      "id": 152,
+      "web_name": "Palestra",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.255
+    },
+    {
+      "id": 154,
+      "web_name": "Palmer",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.258
+    },
+    {
+      "id": 156,
+      "web_name": "Neto",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.1
+    },
+    {
+      "id": 157,
+      "web_name": "Estêvão",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.044
+    },
+    {
+      "id": 158,
+      "web_name": "Gittens",
+      "team": 6,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.045
+    },
+    {
+      "id": 159,
+      "web_name": "Caicedo",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.876
+    },
+    {
+      "id": 161,
+      "web_name": "Lavia",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.029
+    },
+    {
+      "id": 163,
+      "web_name": "D.Essugo",
+      "team": 6,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.045
+    },
+    {
+      "id": 164,
+      "web_name": "Quenda",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.946
+    },
+    {
+      "id": 165,
+      "web_name": "João Pedro",
+      "team": 6,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 5.098
+    },
+    {
+      "id": 168,
+      "web_name": "Marc Guiu",
+      "team": 6,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.024
+    },
+    {
+      "id": 169,
+      "web_name": "Mheuka",
+      "team": 6,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.482
+    },
+    {
+      "id": 170,
+      "web_name": "Emegha",
+      "team": 6,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.024
+    },
+    {
+      "id": 200,
+      "web_name": "Lacroix",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.728
+    },
+    {
+      "id": 560,
+      "web_name": "Penders",
+      "team": 6,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.955
+    },
+    {
+      "id": 561,
+      "web_name": "Anselmino",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.255
+    },
+    {
+      "id": 568,
+      "web_name": "Barco",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.549
+    },
+    {
+      "id": 583,
+      "web_name": "Chavarria",
+      "team": 6,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.402
+    },
+    {
+      "id": 662,
+      "web_name": "Nicoll-Jazuli",
+      "team": 6,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.08
+    },
+    {
+      "id": 91,
+      "web_name": "Pinnock",
+      "team": 7,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.401
+    },
+    {
+      "id": 104,
+      "web_name": "Onyeka",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.202
+    },
+    {
+      "id": 110,
+      "web_name": "Rushworth",
+      "team": 7,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.132
+    },
+    {
+      "id": 171,
+      "web_name": "Dovin",
+      "team": 7,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.044
+    },
+    {
+      "id": 172,
+      "web_name": "Wilson",
+      "team": 7,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.879
+    },
+    {
+      "id": 173,
+      "web_name": "Thomas",
+      "team": 7,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.862
+    },
+    {
+      "id": 174,
+      "web_name": "Kitching",
+      "team": 7,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.06
+    },
+    {
+      "id": 175,
+      "web_name": "van Ewijk",
+      "team": 7,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 2.313
+    },
+    {
+      "id": 176,
+      "web_name": "Dasilva",
+      "team": 7,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.057
+    },
+    {
+      "id": 177,
+      "web_name": "Kesler-Hayden",
+      "team": 7,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 50,
+      "projected_points": 0.6
+    },
+    {
+      "id": 178,
+      "web_name": "Bidwell",
+      "team": 7,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.2
+    },
+    {
+      "id": 179,
+      "web_name": "Latibeaudiere",
+      "team": 7,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.308
+    },
+    {
+      "id": 180,
+      "web_name": "Woolfenden",
+      "team": 7,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.06
+    },
+    {
+      "id": 181,
+      "web_name": "Brau",
+      "team": 7,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.06
+    },
+    {
+      "id": 182,
+      "web_name": "Amenda",
+      "team": 7,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.153
+    },
+    {
+      "id": 183,
+      "web_name": "Rudoni",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.936
+    },
+    {
+      "id": 184,
+      "web_name": "Grimes",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.297
+    },
+    {
+      "id": 185,
+      "web_name": "Sakamoto",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.348
+    },
+    {
+      "id": 186,
+      "web_name": "Mason-Clark",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.618
+    },
+    {
+      "id": 187,
+      "web_name": "Eccles",
+      "team": 7,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.047
+    },
+    {
+      "id": 188,
+      "web_name": "Torp",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.068
+    },
+    {
+      "id": 189,
+      "web_name": "Shepherd",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.934
+    },
+    {
+      "id": 190,
+      "web_name": "Tchaouna",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.353
+    },
+    {
+      "id": 191,
+      "web_name": "Borges Rodrigues",
+      "team": 7,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.047
+    },
+    {
+      "id": 192,
+      "web_name": "Andrews",
+      "team": 7,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.047
+    },
+    {
+      "id": 193,
+      "web_name": "Wright",
+      "team": 7,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.027
+    },
+    {
+      "id": 194,
+      "web_name": "Thomas-Asante",
+      "team": 7,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.921
+    },
+    {
+      "id": 195,
+      "web_name": "Simms",
+      "team": 7,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.788
+    },
+    {
+      "id": 196,
+      "web_name": "Markelo",
+      "team": 7,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.027
+    },
+    {
+      "id": 197,
+      "web_name": "Bassette",
+      "team": 7,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.027
+    },
+    {
+      "id": 492,
+      "web_name": "Awoniyi",
+      "team": 7,
+      "element_type": 4,
+      "status": "s",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.103
+    },
+    {
+      "id": 575,
+      "web_name": "Yirenkyi",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.549
+    },
+    {
+      "id": 584,
+      "web_name": "Hamer",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.922
+    },
+    {
+      "id": 599,
+      "web_name": "Cherif",
+      "team": 7,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.754
+    },
+    {
+      "id": 623,
+      "web_name": "Bentley",
+      "team": 7,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.879
+    },
+    {
+      "id": 655,
+      "web_name": "Gboho",
+      "team": 7,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.934
+    },
+    {
+      "id": 656,
+      "web_name": "Mfuni",
+      "team": 7,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.985
+    },
+    {
+      "id": 42,
+      "web_name": "Guessand",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.965
+    },
+    {
+      "id": 153,
+      "web_name": "Disasi",
+      "team": 8,
+      "element_type": 2,
+      "status": "s",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.062
+    },
+    {
+      "id": 198,
+      "web_name": "Henderson",
+      "team": 8,
+      "element_type": 1,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.132
+    },
+    {
+      "id": 199,
+      "web_name": "Benitez",
+      "team": 8,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.519
+    },
+    {
+      "id": 202,
+      "web_name": "Richards",
+      "team": 8,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.809
+    },
+    {
+      "id": 203,
+      "web_name": "Canvot",
+      "team": 8,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.32
+    },
+    {
+      "id": 204,
+      "web_name": "Mitchell",
+      "team": 8,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.336
+    },
+    {
+      "id": 205,
+      "web_name": "Sosa",
+      "team": 8,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.035
+    },
+    {
+      "id": 206,
+      "web_name": "Chadi Riad",
+      "team": 8,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.081
+    },
+    {
+      "id": 207,
+      "web_name": "Mingueza",
+      "team": 8,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.7
+    },
+    {
+      "id": 208,
+      "web_name": "Sarr",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.815
+    },
+    {
+      "id": 210,
+      "web_name": "Wharton",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.008
+    },
+    {
+      "id": 211,
+      "web_name": "Yeremy",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.495
+    },
+    {
+      "id": 212,
+      "web_name": "Hughes",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.888
+    },
+    {
+      "id": 213,
+      "web_name": "Lerma",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.155
+    },
+    {
+      "id": 214,
+      "web_name": "Kamada",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.894
+    },
+    {
+      "id": 215,
+      "web_name": "Devenny",
+      "team": 8,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.037
+    },
+    {
+      "id": 216,
+      "web_name": "Esse",
+      "team": 8,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.037
+    },
+    {
+      "id": 217,
+      "web_name": "M.França",
+      "team": 8,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.037
+    },
+    {
+      "id": 218,
+      "web_name": "Doucouré",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.749
+    },
+    {
+      "id": 219,
+      "web_name": "J.Rak-Sakyi",
+      "team": 8,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.037
+    },
+    {
+      "id": 220,
+      "web_name": "Cardines",
+      "team": 8,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.035
+    },
+    {
+      "id": 221,
+      "web_name": "Drakes-Thomas",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.749
+    },
+    {
+      "id": 222,
+      "web_name": "Strand Larsen",
+      "team": 8,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.562
+    },
+    {
+      "id": 223,
+      "web_name": "Mateta",
+      "team": 8,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.069
+    },
+    {
+      "id": 224,
+      "web_name": "Nketiah",
+      "team": 8,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.901
+    },
+    {
+      "id": 225,
+      "web_name": "Uche",
+      "team": 8,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.022
+    },
+    {
+      "id": 241,
+      "web_name": "McNeil",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.262
+    },
+    {
+      "id": 555,
+      "web_name": "Matthews",
+      "team": 8,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.429
+    },
+    {
+      "id": 577,
+      "web_name": "Tomiyasu",
+      "team": 8,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.062
+    },
+    {
+      "id": 588,
+      "web_name": "Khalaili",
+      "team": 8,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.272
+    },
+    {
+      "id": 595,
+      "web_name": "Gozo",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.81
+    },
+    {
+      "id": 633,
+      "web_name": "Ahanor",
+      "team": 8,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.175
+    },
+    {
+      "id": 643,
+      "web_name": "Chilwell",
+      "team": 8,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.775
+    },
+    {
+      "id": 644,
+      "web_name": "Timber",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.453
+    },
+    {
+      "id": 647,
+      "web_name": "Osorio",
+      "team": 8,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.759
+    },
+    {
+      "id": 21,
+      "web_name": "Nørgaard",
+      "team": 9,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 50,
+      "projected_points": 0.529
+    },
+    {
+      "id": 209,
+      "web_name": "Johnson",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.38
+    },
+    {
+      "id": 226,
+      "web_name": "Pickford",
+      "team": 9,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.517
+    },
+    {
+      "id": 227,
+      "web_name": "Travers",
+      "team": 9,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.465
+    },
+    {
+      "id": 228,
+      "web_name": "King",
+      "team": 9,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.465
+    },
+    {
+      "id": 229,
+      "web_name": "Tarkowski",
+      "team": 9,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 6.821
+    },
+    {
+      "id": 230,
+      "web_name": "Branthwaite",
+      "team": 9,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.892
+    },
+    {
+      "id": 231,
+      "web_name": "Keane",
+      "team": 9,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.799
+    },
+    {
+      "id": 232,
+      "web_name": "O'Brien",
+      "team": 9,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.957
+    },
+    {
+      "id": 233,
+      "web_name": "Mykolenko",
+      "team": 9,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 4.286
+    },
+    {
+      "id": 234,
+      "web_name": "Patterson",
+      "team": 9,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.09
+    },
+    {
+      "id": 235,
+      "web_name": "Aznou",
+      "team": 9,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.09
+    },
+    {
+      "id": 236,
+      "web_name": "Dewsbury-Hall",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.553
+    },
+    {
+      "id": 238,
+      "web_name": "Grealish",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.821
+    },
+    {
+      "id": 239,
+      "web_name": "Garner",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.748
+    },
+    {
+      "id": 242,
+      "web_name": "George",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.997
+    },
+    {
+      "id": 243,
+      "web_name": "Alcaraz",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.096
+    },
+    {
+      "id": 244,
+      "web_name": "Armstrong",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.734
+    },
+    {
+      "id": 245,
+      "web_name": "Dibling",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.383
+    },
+    {
+      "id": 246,
+      "web_name": "Röhl",
+      "team": 9,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 50,
+      "projected_points": 1.585
+    },
+    {
+      "id": 247,
+      "web_name": "Hackney",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.471
+    },
+    {
+      "id": 248,
+      "web_name": "Beto",
+      "team": 9,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.026
+    },
+    {
+      "id": 249,
+      "web_name": "Barry",
+      "team": 9,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.173
+    },
+    {
+      "id": 649,
+      "web_name": "Maitland-Niles",
+      "team": 9,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.68
+    },
+    {
+      "id": 654,
+      "web_name": "Graham",
+      "team": 9,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.059
+    },
+    {
+      "id": 250,
+      "web_name": "Leno",
+      "team": 10,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.625
+    },
+    {
+      "id": 251,
+      "web_name": "Lecomte",
+      "team": 10,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.943
+    },
+    {
+      "id": 252,
+      "web_name": "McNally",
+      "team": 10,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.047
+    },
+    {
+      "id": 253,
+      "web_name": "Andersen",
+      "team": 10,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.231
+    },
+    {
+      "id": 254,
+      "web_name": "Robinson",
+      "team": 10,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 3.107
+    },
+    {
+      "id": 255,
+      "web_name": "J.Cuenca",
+      "team": 10,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.668
+    },
+    {
+      "id": 256,
+      "web_name": "Tete",
+      "team": 10,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.514
+    },
+    {
+      "id": 257,
+      "web_name": "Bassey",
+      "team": 10,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.435
+    },
+    {
+      "id": 258,
+      "web_name": "Castagne",
+      "team": 10,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.422
+    },
+    {
+      "id": 261,
+      "web_name": "Iwobi",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.343
+    },
+    {
+      "id": 262,
+      "web_name": "Smith Rowe",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.027
+    },
+    {
+      "id": 263,
+      "web_name": "Kevin",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.181
+    },
+    {
+      "id": 264,
+      "web_name": "Bobb",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.897
+    },
+    {
+      "id": 265,
+      "web_name": "Berge",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.168
+    },
+    {
+      "id": 266,
+      "web_name": "Cairney",
+      "team": 10,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.048
+    },
+    {
+      "id": 268,
+      "web_name": "King",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.609
+    },
+    {
+      "id": 269,
+      "web_name": "Sessegnon",
+      "team": 10,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.331
+    },
+    {
+      "id": 270,
+      "web_name": "Reed",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.969
+    },
+    {
+      "id": 271,
+      "web_name": "Muniz",
+      "team": 10,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.641
+    },
+    {
+      "id": 272,
+      "web_name": "Kusi-Asare",
+      "team": 10,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.573
+    },
+    {
+      "id": 569,
+      "web_name": "Gonzalo",
+      "team": 10,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.582
+    },
+    {
+      "id": 570,
+      "web_name": "Palacios",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.942
+    },
+    {
+      "id": 580,
+      "web_name": "Charles",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.819
+    },
+    {
+      "id": 610,
+      "web_name": "De Fougerolles",
+      "team": 10,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.063
+    },
+    {
+      "id": 626,
+      "web_name": "Zepa",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.969
+    },
+    {
+      "id": 635,
+      "web_name": "Larsson",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.163
+    },
+    {
+      "id": 636,
+      "web_name": "Ángel",
+      "team": 10,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.969
+    },
+    {
+      "id": 650,
+      "web_name": "Affengruber",
+      "team": 10,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.636
+    },
+    {
+      "id": 240,
+      "web_name": "Iroegbunam",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.174
+    },
+    {
+      "id": 273,
+      "web_name": "Phillips",
+      "team": 11,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.764
+    },
+    {
+      "id": 274,
+      "web_name": "Butland",
+      "team": 11,
+      "element_type": 1,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.038
+    },
+    {
+      "id": 275,
+      "web_name": "Cartwright",
+      "team": 11,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.038
+    },
+    {
+      "id": 276,
+      "web_name": "Lo-Tutala",
+      "team": 11,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.038
+    },
+    {
+      "id": 277,
+      "web_name": "Egan",
+      "team": 11,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.585
+    },
+    {
+      "id": 278,
+      "web_name": "Hughes",
+      "team": 11,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.053
+    },
+    {
+      "id": 279,
+      "web_name": "Ajayi",
+      "team": 11,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.13
+    },
+    {
+      "id": 280,
+      "web_name": "Coyle",
+      "team": 11,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.408
+    },
+    {
+      "id": 281,
+      "web_name": "Drameh",
+      "team": 11,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.069
+    },
+    {
+      "id": 282,
+      "web_name": "Giles",
+      "team": 11,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.065
+    },
+    {
+      "id": 283,
+      "web_name": "Jacob",
+      "team": 11,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.053
+    },
+    {
+      "id": 284,
+      "web_name": "McCarthy",
+      "team": 11,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.053
+    },
+    {
+      "id": 285,
+      "web_name": "McNair",
+      "team": 11,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.255
+    },
+    {
+      "id": 286,
+      "web_name": "Belloumi",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.962
+    },
+    {
+      "id": 287,
+      "web_name": "Millar",
+      "team": 11,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.057
+    },
+    {
+      "id": 288,
+      "web_name": "Dowell",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.851
+    },
+    {
+      "id": 289,
+      "web_name": "Crooks",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.563
+    },
+    {
+      "id": 290,
+      "web_name": "Slater",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.14
+    },
+    {
+      "id": 291,
+      "web_name": "Matazo",
+      "team": 11,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.043
+    },
+    {
+      "id": 292,
+      "web_name": "Ömür",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.851
+    },
+    {
+      "id": 293,
+      "web_name": "Kamara",
+      "team": 11,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.043
+    },
+    {
+      "id": 294,
+      "web_name": "Zambrano",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.851
+    },
+    {
+      "id": 295,
+      "web_name": "McBurnie",
+      "team": 11,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.447
+    },
+    {
+      "id": 296,
+      "web_name": "Akintola",
+      "team": 11,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.043
+    },
+    {
+      "id": 297,
+      "web_name": "Gyabi",
+      "team": 11,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.043
+    },
+    {
+      "id": 298,
+      "web_name": "Destan",
+      "team": 11,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.024
+    },
+    {
+      "id": 299,
+      "web_name": "Burstow",
+      "team": 11,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.024
+    },
+    {
+      "id": 340,
+      "web_name": "Gelhardt",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.935
+    },
+    {
+      "id": 556,
+      "web_name": "Targett",
+      "team": 11,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.052
+    },
+    {
+      "id": 563,
+      "web_name": "Morita",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.477
+    },
+    {
+      "id": 572,
+      "web_name": "Tzolakis",
+      "team": 11,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.935
+    },
+    {
+      "id": 574,
+      "web_name": "Hjertø-Dahl",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.851
+    },
+    {
+      "id": 576,
+      "web_name": "Stroud",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.337
+    },
+    {
+      "id": 585,
+      "web_name": "Herrington",
+      "team": 11,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.574
+    },
+    {
+      "id": 586,
+      "web_name": "Mendy",
+      "team": 11,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.029
+    },
+    {
+      "id": 589,
+      "web_name": "Gourna-Douath",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.558
+    },
+    {
+      "id": 617,
+      "web_name": "Cho",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.487
+    },
+    {
+      "id": 632,
+      "web_name": "Ansah",
+      "team": 11,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.024
+    },
+    {
+      "id": 637,
+      "web_name": "Vaz",
+      "team": 11,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.624
+    },
+    {
+      "id": 638,
+      "web_name": "Norton-Cuffy",
+      "team": 11,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.078
+    },
+    {
+      "id": 642,
+      "web_name": "Thomas",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.563
+    },
+    {
+      "id": 645,
+      "web_name": "Mouzakitis",
+      "team": 11,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.851
+    },
+    {
+      "id": 259,
+      "web_name": "Diop",
+      "team": 12,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.417
+    },
+    {
+      "id": 267,
+      "web_name": "Lukić",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.987
+    },
+    {
+      "id": 300,
+      "web_name": "Walton",
+      "team": 12,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.227
+    },
+    {
+      "id": 301,
+      "web_name": "Palmer",
+      "team": 12,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.64
+    },
+    {
+      "id": 302,
+      "web_name": "Button",
+      "team": 12,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.64
+    },
+    {
+      "id": 303,
+      "web_name": "Kipré",
+      "team": 12,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.93
+    },
+    {
+      "id": 304,
+      "web_name": "O'Shea",
+      "team": 12,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.305
+    },
+    {
+      "id": 305,
+      "web_name": "Davis",
+      "team": 12,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 6.011
+    },
+    {
+      "id": 306,
+      "web_name": "Greaves",
+      "team": 12,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.817
+    },
+    {
+      "id": 307,
+      "web_name": "Johnson",
+      "team": 12,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.046
+    },
+    {
+      "id": 308,
+      "web_name": "Furlong",
+      "team": 12,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.014
+    },
+    {
+      "id": 309,
+      "web_name": "Núñez",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.195
+    },
+    {
+      "id": 310,
+      "web_name": "Matusiwa",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.885
+    },
+    {
+      "id": 311,
+      "web_name": "Burns",
+      "team": 12,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.044
+    },
+    {
+      "id": 312,
+      "web_name": "Taylor",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.885
+    },
+    {
+      "id": 313,
+      "web_name": "Clarke",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.788
+    },
+    {
+      "id": 314,
+      "web_name": "Ogbene",
+      "team": 12,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.044
+    },
+    {
+      "id": 315,
+      "web_name": "Fatawu",
+      "team": 12,
+      "element_type": 3,
+      "status": "s",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.14
+    },
+    {
+      "id": 316,
+      "web_name": "Emersonn",
+      "team": 12,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.01
+    },
+    {
+      "id": 317,
+      "web_name": "Hirst",
+      "team": 12,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.028
+    },
+    {
+      "id": 318,
+      "web_name": "Philogene",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.318
+    },
+    {
+      "id": 319,
+      "web_name": "Szmodics",
+      "team": 12,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.044
+    },
+    {
+      "id": 320,
+      "web_name": "Akpom",
+      "team": 12,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.707
+    },
+    {
+      "id": 321,
+      "web_name": "Walle Egeli",
+      "team": 12,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.544
+    },
+    {
+      "id": 322,
+      "web_name": "Al-Hamadi",
+      "team": 12,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.028
+    },
+    {
+      "id": 323,
+      "web_name": "McAteer",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.896
+    },
+    {
+      "id": 324,
+      "web_name": "Mehmeti",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.885
+    },
+    {
+      "id": 554,
+      "web_name": "Van Oevelen",
+      "team": 12,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.032
+    },
+    {
+      "id": 562,
+      "web_name": "Maeda",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.552
+    },
+    {
+      "id": 564,
+      "web_name": "Scherpen",
+      "team": 12,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.981
+    },
+    {
+      "id": 571,
+      "web_name": "Florentino",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.052
+    },
+    {
+      "id": 591,
+      "web_name": "Enciso",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.207
+    },
+    {
+      "id": 592,
+      "web_name": "Ouattara",
+      "team": 12,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.352
+    },
+    {
+      "id": 602,
+      "web_name": "Humphreys",
+      "team": 12,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.044
+    },
+    {
+      "id": 619,
+      "web_name": "Palacios",
+      "team": 12,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.54
+    },
+    {
+      "id": 640,
+      "web_name": "Flemming",
+      "team": 12,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.936
+    },
+    {
+      "id": 260,
+      "web_name": "Wilson",
+      "team": 13,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 0.814
+    },
+    {
+      "id": 326,
+      "web_name": "Perri",
+      "team": 13,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.025
+    },
+    {
+      "id": 327,
+      "web_name": "Bijol",
+      "team": 13,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.449
+    },
+    {
+      "id": 329,
+      "web_name": "Rodon",
+      "team": 13,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.073
+    },
+    {
+      "id": 330,
+      "web_name": "Bogle",
+      "team": 13,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.391
+    },
+    {
+      "id": 331,
+      "web_name": "Gudmundsson",
+      "team": 13,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.485
+    },
+    {
+      "id": 332,
+      "web_name": "Justin",
+      "team": 13,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.674
+    },
+    {
+      "id": 333,
+      "web_name": "Bornauw",
+      "team": 13,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.037
+    },
+    {
+      "id": 334,
+      "web_name": "Muharemović",
+      "team": 13,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.382
+    },
+    {
+      "id": 335,
+      "web_name": "Stach",
+      "team": 13,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.861
+    },
+    {
+      "id": 336,
+      "web_name": "Okafor",
+      "team": 13,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.059
+    },
+    {
+      "id": 337,
+      "web_name": "Aaronson",
+      "team": 13,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.197
+    },
+    {
+      "id": 338,
+      "web_name": "Ampadu",
+      "team": 13,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.027
+    },
+    {
+      "id": 339,
+      "web_name": "Longstaff",
+      "team": 13,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.764
+    },
+    {
+      "id": 341,
+      "web_name": "Gnonto",
+      "team": 13,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.035
+    },
+    {
+      "id": 342,
+      "web_name": "Harrison",
+      "team": 13,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.035
+    },
+    {
+      "id": 343,
+      "web_name": "James",
+      "team": 13,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 344,
+      "web_name": "Gruev",
+      "team": 13,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.701
+    },
+    {
+      "id": 345,
+      "web_name": "Tanaka",
+      "team": 13,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.02
+    },
+    {
+      "id": 346,
+      "web_name": "Calvert-Lewin",
+      "team": 13,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.952
+    },
+    {
+      "id": 347,
+      "web_name": "Nmecha",
+      "team": 13,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.515
+    },
+    {
+      "id": 348,
+      "web_name": "Piroe",
+      "team": 13,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.019
+    },
+    {
+      "id": 349,
+      "web_name": "Mateo Joseph",
+      "team": 13,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.019
+    },
+    {
+      "id": 385,
+      "web_name": "Trafford",
+      "team": 13,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.28
+    },
+    {
+      "id": 598,
+      "web_name": "Elvedi",
+      "team": 13,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.199
+    },
+    {
+      "id": 603,
+      "web_name": "Lienou",
+      "team": 13,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.74
+    },
+    {
+      "id": 604,
+      "web_name": "Cresswell",
+      "team": 13,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.701
+    },
+    {
+      "id": 625,
+      "web_name": "Cairns",
+      "team": 13,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.505
+    },
+    {
+      "id": 629,
+      "web_name": "Zetterer",
+      "team": 13,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.505
+    },
+    {
+      "id": 641,
+      "web_name": "Bard",
+      "team": 13,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.888
+    },
+    {
+      "id": 648,
+      "web_name": "Bahoya",
+      "team": 13,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 0.585
+    },
+    {
+      "id": 350,
+      "web_name": "A.Becker",
+      "team": 14,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.523
+    },
+    {
+      "id": 351,
+      "web_name": "Mamardashvili",
+      "team": 14,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.503
+    },
+    {
+      "id": 352,
+      "web_name": "Woodman",
+      "team": 14,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.503
+    },
+    {
+      "id": 353,
+      "web_name": "Pecsi",
+      "team": 14,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.025
+    },
+    {
+      "id": 354,
+      "web_name": "Jaros",
+      "team": 14,
+      "element_type": 1,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.025
+    },
+    {
+      "id": 355,
+      "web_name": "Davies",
+      "team": 14,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.503
+    },
+    {
+      "id": 356,
+      "web_name": "Virgil",
+      "team": 14,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.463
+    },
+    {
+      "id": 357,
+      "web_name": "Frimpong",
+      "team": 14,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.523
+    },
+    {
+      "id": 358,
+      "web_name": "Kerkez",
+      "team": 14,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.873
+    },
+    {
+      "id": 359,
+      "web_name": "Gomez",
+      "team": 14,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.716
+    },
+    {
+      "id": 360,
+      "web_name": "Bradley",
+      "team": 14,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.036
+    },
+    {
+      "id": 361,
+      "web_name": "Lucky",
+      "team": 14,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.716
+    },
+    {
+      "id": 362,
+      "web_name": "Jacquet",
+      "team": 14,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.905
+    },
+    {
+      "id": 363,
+      "web_name": "Leoni",
+      "team": 14,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.036
+    },
+    {
+      "id": 364,
+      "web_name": "Tsimikas",
+      "team": 14,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.056
+    },
+    {
+      "id": 365,
+      "web_name": "Ramsay",
+      "team": 14,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.036
+    },
+    {
+      "id": 366,
+      "web_name": "Wirtz",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.787
+    },
+    {
+      "id": 367,
+      "web_name": "Gakpo",
+      "team": 14,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.143
+    },
+    {
+      "id": 368,
+      "web_name": "Szoboszlai",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.849
+    },
+    {
+      "id": 369,
+      "web_name": "Ngumoha",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.119
+    },
+    {
+      "id": 370,
+      "web_name": "Chiesa",
+      "team": 14,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 25,
+      "projected_points": 0.183
+    },
+    {
+      "id": 371,
+      "web_name": "Gravenberch",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.378
+    },
+    {
+      "id": 372,
+      "web_name": "Mac Allister",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.904
+    },
+    {
+      "id": 373,
+      "web_name": "C.Jones",
+      "team": 14,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.037
+    },
+    {
+      "id": 374,
+      "web_name": "Endo",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.733
+    },
+    {
+      "id": 375,
+      "web_name": "Nyoni",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.862
+    },
+    {
+      "id": 376,
+      "web_name": "Bajcetic",
+      "team": 14,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.037
+    },
+    {
+      "id": 377,
+      "web_name": "Munoz",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.083
+    },
+    {
+      "id": 378,
+      "web_name": "McConnell",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.733
+    },
+    {
+      "id": 379,
+      "web_name": "Isak",
+      "team": 14,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.172
+    },
+    {
+      "id": 380,
+      "web_name": "Ekitiké",
+      "team": 14,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.022
+    },
+    {
+      "id": 381,
+      "web_name": "Koumas",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.808
+    },
+    {
+      "id": 382,
+      "web_name": "Danns",
+      "team": 14,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.44
+    },
+    {
+      "id": 383,
+      "web_name": "Elliott",
+      "team": 14,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.037
+    },
+    {
+      "id": 579,
+      "web_name": "Araujo",
+      "team": 14,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.163
+    },
+    {
+      "id": 627,
+      "web_name": "Barcola",
+      "team": 14,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.942
+    },
+    {
+      "id": 155,
+      "web_name": "Enzo",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.292
+    },
+    {
+      "id": 237,
+      "web_name": "Ndiaye",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.488
+    },
+    {
+      "id": 384,
+      "web_name": "Donnarumma",
+      "team": 15,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.77
+    },
+    {
+      "id": 386,
+      "web_name": "Bettinelli",
+      "team": 15,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.643
+    },
+    {
+      "id": 387,
+      "web_name": "O'Reilly",
+      "team": 15,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 1.154
+    },
+    {
+      "id": 388,
+      "web_name": "Guéhi",
+      "team": 15,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.121
+    },
+    {
+      "id": 389,
+      "web_name": "Matheus N.",
+      "team": 15,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.448
+    },
+    {
+      "id": 390,
+      "web_name": "Rúben",
+      "team": 15,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.471
+    },
+    {
+      "id": 391,
+      "web_name": "Gvardiol",
+      "team": 15,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.364
+    },
+    {
+      "id": 392,
+      "web_name": "Aït-Nouri",
+      "team": 15,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.889
+    },
+    {
+      "id": 393,
+      "web_name": "Khusanov",
+      "team": 15,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.538
+    },
+    {
+      "id": 394,
+      "web_name": "Alleyne",
+      "team": 15,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.044
+    },
+    {
+      "id": 395,
+      "web_name": "Lewis",
+      "team": 15,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.567
+    },
+    {
+      "id": 396,
+      "web_name": "Vitor Reis",
+      "team": 15,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.888
+    },
+    {
+      "id": 397,
+      "web_name": "Semenyo",
+      "team": 15,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 3.744
+    },
+    {
+      "id": 398,
+      "web_name": "Foden",
+      "team": 15,
+      "element_type": 3,
+      "status": "s",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.118
+    },
+    {
+      "id": 399,
+      "web_name": "Cherki",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.282
+    },
+    {
+      "id": 400,
+      "web_name": "Doku",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.902
+    },
+    {
+      "id": 402,
+      "web_name": "Rodrigo",
+      "team": 15,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 404,
+      "web_name": "Reijnders",
+      "team": 15,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 406,
+      "web_name": "Kovačić",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.885
+    },
+    {
+      "id": 407,
+      "web_name": "Echeverri",
+      "team": 15,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 408,
+      "web_name": "Phillips",
+      "team": 15,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 409,
+      "web_name": "Mukasa",
+      "team": 15,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 410,
+      "web_name": "Monga",
+      "team": 15,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 411,
+      "web_name": "Haaland",
+      "team": 15,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.916
+    },
+    {
+      "id": 481,
+      "web_name": "Anderson",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.571
+    },
+    {
+      "id": 587,
+      "web_name": "Rulli",
+      "team": 15,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.643
+    },
+    {
+      "id": 616,
+      "web_name": "Bouaddi",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.811
+    },
+    {
+      "id": 621,
+      "web_name": "McAidoo",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.805
+    },
+    {
+      "id": 622,
+      "web_name": "Braithwaite",
+      "team": 15,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.888
+    },
+    {
+      "id": 628,
+      "web_name": "Allan",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.77
+    },
+    {
+      "id": 653,
+      "web_name": "Samba",
+      "team": 15,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.77
+    },
+    {
+      "id": 43,
+      "web_name": "Tielemans",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.156
+    },
+    {
+      "id": 131,
+      "web_name": "Baleba",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.077
+    },
+    {
+      "id": 162,
+      "web_name": "Andrey Santos",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.507
+    },
+    {
+      "id": 325,
+      "web_name": "Darlow",
+      "team": 16,
+      "element_type": 1,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 1.189
+    },
+    {
+      "id": 412,
+      "web_name": "Lammens",
+      "team": 16,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.749
+    },
+    {
+      "id": 413,
+      "web_name": "Bayindir",
+      "team": 16,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.079
+    },
+    {
+      "id": 414,
+      "web_name": "Heaton",
+      "team": 16,
+      "element_type": 1,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.079
+    },
+    {
+      "id": 415,
+      "web_name": "Dorgu",
+      "team": 16,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.085
+    },
+    {
+      "id": 416,
+      "web_name": "De Ligt",
+      "team": 16,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.096
+    },
+    {
+      "id": 417,
+      "web_name": "Dalot",
+      "team": 16,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.979
+    },
+    {
+      "id": 418,
+      "web_name": "Maguire",
+      "team": 16,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.43
+    },
+    {
+      "id": 419,
+      "web_name": "Martinez",
+      "team": 16,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.222
+    },
+    {
+      "id": 420,
+      "web_name": "Yoro",
+      "team": 16,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.979
+    },
+    {
+      "id": 421,
+      "web_name": "Heaven",
+      "team": 16,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.212
+    },
+    {
+      "id": 422,
+      "web_name": "Mazraoui",
+      "team": 16,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 1.679
+    },
+    {
+      "id": 423,
+      "web_name": "Shaw",
+      "team": 16,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.205
+    },
+    {
+      "id": 424,
+      "web_name": "Amass",
+      "team": 16,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.925
+    },
+    {
+      "id": 425,
+      "web_name": "Fredricson",
+      "team": 16,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.096
+    },
+    {
+      "id": 426,
+      "web_name": "B.Fernandes",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.49
+    },
+    {
+      "id": 427,
+      "web_name": "Mbeumo",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.599
+    },
+    {
+      "id": 428,
+      "web_name": "Cunha",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.556
+    },
+    {
+      "id": 429,
+      "web_name": "Rashford",
+      "team": 16,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 2.548
+    },
+    {
+      "id": 430,
+      "web_name": "Mount",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.157
+    },
+    {
+      "id": 431,
+      "web_name": "Amad",
+      "team": 16,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.054
+    },
+    {
+      "id": 432,
+      "web_name": "Mainoo",
+      "team": 16,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 3.256
+    },
+    {
+      "id": 433,
+      "web_name": "Ugarte",
+      "team": 16,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.054
+    },
+    {
+      "id": 434,
+      "web_name": "J.Fletcher",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.077
+    },
+    {
+      "id": 435,
+      "web_name": "Lacey",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.074
+    },
+    {
+      "id": 436,
+      "web_name": "Collyer",
+      "team": 16,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.054
+    },
+    {
+      "id": 437,
+      "web_name": "Bendito Mantato",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.077
+    },
+    {
+      "id": 438,
+      "web_name": "Fletcher",
+      "team": 16,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.077
+    },
+    {
+      "id": 439,
+      "web_name": "Šeško",
+      "team": 16,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.025
+    },
+    {
+      "id": 440,
+      "web_name": "Zirkzee",
+      "team": 16,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.682
+    },
+    {
+      "id": 441,
+      "web_name": "Obi",
+      "team": 16,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.026
+    },
+    {
+      "id": 405,
+      "web_name": "N.Gonzalez",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.998
+    },
+    {
+      "id": 442,
+      "web_name": "Pope",
+      "team": 17,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.286
+    },
+    {
+      "id": 443,
+      "web_name": "Gillespie",
+      "team": 17,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.286
+    },
+    {
+      "id": 444,
+      "web_name": "Jaouen",
+      "team": 17,
+      "element_type": 1,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.064
+    },
+    {
+      "id": 445,
+      "web_name": "Thiaw",
+      "team": 17,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.421
+    },
+    {
+      "id": 446,
+      "web_name": "Schär",
+      "team": 17,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.794
+    },
+    {
+      "id": 447,
+      "web_name": "Botman",
+      "team": 17,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.858
+    },
+    {
+      "id": 448,
+      "web_name": "Burn",
+      "team": 17,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.082
+    },
+    {
+      "id": 449,
+      "web_name": "Hall",
+      "team": 17,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 5.9
+    },
+    {
+      "id": 450,
+      "web_name": "Livramento",
+      "team": 17,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 50,
+      "projected_points": 0.962
+    },
+    {
+      "id": 451,
+      "web_name": "A.Murphy",
+      "team": 17,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.082
+    },
+    {
+      "id": 453,
+      "web_name": "Barnes",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.781
+    },
+    {
+      "id": 454,
+      "web_name": "Elanga",
+      "team": 17,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.164
+    },
+    {
+      "id": 456,
+      "web_name": "J.Ramsey",
+      "team": 17,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.067
+    },
+    {
+      "id": 457,
+      "web_name": "J.Murphy",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.627
+    },
+    {
+      "id": 458,
+      "web_name": "Joelinton",
+      "team": 17,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 0.791
+    },
+    {
+      "id": 459,
+      "web_name": "L.Miley",
+      "team": 17,
+      "element_type": 3,
+      "status": "d",
+      "chance_of_playing_next_round": 75,
+      "projected_points": 2.676
+    },
+    {
+      "id": 460,
+      "web_name": "Willock",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.038
+    },
+    {
+      "id": 461,
+      "web_name": "Touré",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.677
+    },
+    {
+      "id": 462,
+      "web_name": "Steur",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.703
+    },
+    {
+      "id": 463,
+      "web_name": "Woltemade",
+      "team": 17,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.028
+    },
+    {
+      "id": 464,
+      "web_name": "Wissa",
+      "team": 17,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.309
+    },
+    {
+      "id": 465,
+      "web_name": "Osula",
+      "team": 17,
+      "element_type": 4,
+      "status": "d",
+      "chance_of_playing_next_round": 50,
+      "projected_points": 0.74
+    },
+    {
+      "id": 466,
+      "web_name": "Neave",
+      "team": 17,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.029
+    },
+    {
+      "id": 559,
+      "web_name": "Bamba",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.272
+    },
+    {
+      "id": 567,
+      "web_name": "Horníček",
+      "team": 17,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.219
+    },
+    {
+      "id": 593,
+      "web_name": "Dedić",
+      "team": 17,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 50,
+      "projected_points": 1.767
+    },
+    {
+      "id": 609,
+      "web_name": "Shahar",
+      "team": 17,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.082
+    },
+    {
+      "id": 634,
+      "web_name": "Fernandez-Pardo",
+      "team": 17,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.4
+    },
+    {
+      "id": 659,
+      "web_name": "Miley",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.055
+    },
+    {
+      "id": 663,
+      "web_name": "Pivas",
+      "team": 17,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.797
+    },
+    {
+      "id": 664,
+      "web_name": "Salia",
+      "team": 17,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.724
+    },
+    {
+      "id": 665,
+      "web_name": "Mills",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.22
+    },
+    {
+      "id": 666,
+      "web_name": "Thompson",
+      "team": 17,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.22
+    },
+    {
+      "id": 167,
+      "web_name": "Delap",
+      "team": 18,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.112
+    },
+    {
+      "id": 201,
+      "web_name": "Muñoz",
+      "team": 18,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.105
+    },
+    {
+      "id": 467,
+      "web_name": "Sels",
+      "team": 18,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.291
+    },
+    {
+      "id": 468,
+      "web_name": "John",
+      "team": 18,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.486
+    },
+    {
+      "id": 469,
+      "web_name": "N.Williams",
+      "team": 18,
+      "element_type": 2,
+      "status": "d",
+      "chance_of_playing_next_round": 50,
+      "projected_points": 2.336
+    },
+    {
+      "id": 470,
+      "web_name": "Morato",
+      "team": 18,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.09
+    },
+    {
+      "id": 471,
+      "web_name": "Milenković",
+      "team": 18,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.214
+    },
+    {
+      "id": 472,
+      "web_name": "Murillo",
+      "team": 18,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 5.816
+    },
+    {
+      "id": 473,
+      "web_name": "Aina",
+      "team": 18,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.001
+    },
+    {
+      "id": 474,
+      "web_name": "Jair Cunha",
+      "team": 18,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.117
+    },
+    {
+      "id": 475,
+      "web_name": "Savona",
+      "team": 18,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.09
+    },
+    {
+      "id": 476,
+      "web_name": "O.Richards",
+      "team": 18,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.807
+    },
+    {
+      "id": 477,
+      "web_name": "Abbott",
+      "team": 18,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.09
+    },
+    {
+      "id": 478,
+      "web_name": "Netz",
+      "team": 18,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.853
+    },
+    {
+      "id": 479,
+      "web_name": "Bindon",
+      "team": 18,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.09
+    },
+    {
+      "id": 480,
+      "web_name": "Gibbs-White",
+      "team": 18,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 5.663
+    },
+    {
+      "id": 482,
+      "web_name": "Hudson-Odoi",
+      "team": 18,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.059
+    },
+    {
+      "id": 483,
+      "web_name": "Ndoye",
+      "team": 18,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.567
+    },
+    {
+      "id": 484,
+      "web_name": "Hutchinson",
+      "team": 18,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.053
+    },
+    {
+      "id": 485,
+      "web_name": "Bakwa",
+      "team": 18,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.053
+    },
+    {
+      "id": 486,
+      "web_name": "McAtee",
+      "team": 18,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.033
+    },
+    {
+      "id": 487,
+      "web_name": "Dominguez",
+      "team": 18,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.059
+    },
+    {
+      "id": 488,
+      "web_name": "I.Sangaré",
+      "team": 18,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.636
+    },
+    {
+      "id": 489,
+      "web_name": "Yates",
+      "team": 18,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.061
+    },
+    {
+      "id": 490,
+      "web_name": "Wood",
+      "team": 18,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.661
+    },
+    {
+      "id": 491,
+      "web_name": "Igor Jesus",
+      "team": 18,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.089
+    },
+    {
+      "id": 493,
+      "web_name": "Kalimuendo",
+      "team": 18,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.548
+    },
+    {
+      "id": 558,
+      "web_name": "Schlager",
+      "team": 18,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.699
+    },
+    {
+      "id": 581,
+      "web_name": "Diomande",
+      "team": 18,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.087
+    },
+    {
+      "id": 590,
+      "web_name": "Benda",
+      "team": 18,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.486
+    },
+    {
+      "id": 112,
+      "web_name": "Van Hecke",
+      "team": 19,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 4.301
+    },
+    {
+      "id": 147,
+      "web_name": "Tosin",
+      "team": 19,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.687
+    },
+    {
+      "id": 401,
+      "web_name": "Marmoush",
+      "team": 19,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.87
+    },
+    {
+      "id": 403,
+      "web_name": "Sávio",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.238
+    },
+    {
+      "id": 455,
+      "web_name": "Tonali",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.169
+    },
+    {
+      "id": 494,
+      "web_name": "Vicario",
+      "team": 19,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.016
+    },
+    {
+      "id": 495,
+      "web_name": "Austin",
+      "team": 19,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.326
+    },
+    {
+      "id": 496,
+      "web_name": "Kinsky",
+      "team": 19,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.267
+    },
+    {
+      "id": 497,
+      "web_name": "Dubravka",
+      "team": 19,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.326
+    },
+    {
+      "id": 498,
+      "web_name": "Senesi",
+      "team": 19,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.907
+    },
+    {
+      "id": 499,
+      "web_name": "Pedro Porro",
+      "team": 19,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.069
+    },
+    {
+      "id": 500,
+      "web_name": "Romero",
+      "team": 19,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.028
+    },
+    {
+      "id": 502,
+      "web_name": "Robertson",
+      "team": 19,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.022
+    },
+    {
+      "id": 503,
+      "web_name": "Van de Ven",
+      "team": 19,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.264
+    },
+    {
+      "id": 505,
+      "web_name": "Spence",
+      "team": 19,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.028
+    },
+    {
+      "id": 506,
+      "web_name": "Udogie",
+      "team": 19,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.751
+    },
+    {
+      "id": 507,
+      "web_name": "Phillips",
+      "team": 19,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.028
+    },
+    {
+      "id": 508,
+      "web_name": "Davies",
+      "team": 19,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.56
+    },
+    {
+      "id": 509,
+      "web_name": "Byfield",
+      "team": 19,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.56
+    },
+    {
+      "id": 510,
+      "web_name": "Rowswell",
+      "team": 19,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.56
+    },
+    {
+      "id": 511,
+      "web_name": "Souza",
+      "team": 19,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.028
+    },
+    {
+      "id": 512,
+      "web_name": "Kudus",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.496
+    },
+    {
+      "id": 513,
+      "web_name": "Xavi",
+      "team": 19,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.036
+    },
+    {
+      "id": 514,
+      "web_name": "Tel",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.14
+    },
+    {
+      "id": 515,
+      "web_name": "Maddison",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.046
+    },
+    {
+      "id": 516,
+      "web_name": "Bentancur",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.381
+    },
+    {
+      "id": 517,
+      "web_name": "Odobert",
+      "team": 19,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.036
+    },
+    {
+      "id": 518,
+      "web_name": "P.M.Sarr",
+      "team": 19,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.036
+    },
+    {
+      "id": 519,
+      "web_name": "Gallagher",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.885
+    },
+    {
+      "id": 520,
+      "web_name": "Bergvall",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.183
+    },
+    {
+      "id": 521,
+      "web_name": "Kulusevski",
+      "team": 19,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.036
+    },
+    {
+      "id": 522,
+      "web_name": "Gray",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.862
+    },
+    {
+      "id": 523,
+      "web_name": "Moore",
+      "team": 19,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.066
+    },
+    {
+      "id": 524,
+      "web_name": "Olusesi",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.724
+    },
+    {
+      "id": 525,
+      "web_name": "Fernandes",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.217
+    },
+    {
+      "id": 526,
+      "web_name": "Solanke",
+      "team": 19,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.907
+    },
+    {
+      "id": 527,
+      "web_name": "Richarlison",
+      "team": 19,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.073
+    },
+    {
+      "id": 528,
+      "web_name": "Scarlett",
+      "team": 19,
+      "element_type": 4,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.022
+    },
+    {
+      "id": 578,
+      "web_name": "Mudryk",
+      "team": 19,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.038
+    },
+    {
+      "id": 601,
+      "web_name": "Williams-Barnett",
+      "team": 19,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.724
+    },
+    {
+      "id": 501,
+      "web_name": "Danso",
+      "team": 20,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.476
+    },
+    {
+      "id": 529,
+      "web_name": "Roefs",
+      "team": 20,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.216
+    },
+    {
+      "id": 530,
+      "web_name": "Patterson",
+      "team": 20,
+      "element_type": 1,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.017
+    },
+    {
+      "id": 531,
+      "web_name": "Ellborg",
+      "team": 20,
+      "element_type": 1,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.347
+    },
+    {
+      "id": 532,
+      "web_name": "Ballard",
+      "team": 20,
+      "element_type": 2,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.133
+    },
+    {
+      "id": 533,
+      "web_name": "Mukiele",
+      "team": 20,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 3.292
+    },
+    {
+      "id": 534,
+      "web_name": "Hume",
+      "team": 20,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.696
+    },
+    {
+      "id": 535,
+      "web_name": "Alderete",
+      "team": 20,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 0.72
+    },
+    {
+      "id": 536,
+      "web_name": "Reinildo",
+      "team": 20,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.07
+    },
+    {
+      "id": 537,
+      "web_name": "Seelt",
+      "team": 20,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.029
+    },
+    {
+      "id": 538,
+      "web_name": "Hjelde",
+      "team": 20,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.029
+    },
+    {
+      "id": 539,
+      "web_name": "O'Nien",
+      "team": 20,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.473
+    },
+    {
+      "id": 540,
+      "web_name": "Masuaku",
+      "team": 20,
+      "element_type": 2,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.029
+    },
+    {
+      "id": 541,
+      "web_name": "Meunier",
+      "team": 20,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 2.778
+    },
+    {
+      "id": 542,
+      "web_name": "E.Le Fée",
+      "team": 20,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 4.74
+    },
+    {
+      "id": 543,
+      "web_name": "Diarra",
+      "team": 20,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.038
+    },
+    {
+      "id": 544,
+      "web_name": "Xhaka",
+      "team": 20,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.53
+    },
+    {
+      "id": 545,
+      "web_name": "Sadiki",
+      "team": 20,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 3.056
+    },
+    {
+      "id": 546,
+      "web_name": "Adingra",
+      "team": 20,
+      "element_type": 3,
+      "status": "u",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.039
+    },
+    {
+      "id": 547,
+      "web_name": "Mundle",
+      "team": 20,
+      "element_type": 3,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.04
+    },
+    {
+      "id": 548,
+      "web_name": "Rigg",
+      "team": 20,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.761
+    },
+    {
+      "id": 549,
+      "web_name": "Talbi",
+      "team": 20,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.145
+    },
+    {
+      "id": 550,
+      "web_name": "Jocelin.T",
+      "team": 20,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.773
+    },
+    {
+      "id": 551,
+      "web_name": "N.Angulo",
+      "team": 20,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 2.99
+    },
+    {
+      "id": 552,
+      "web_name": "Brobbey",
+      "team": 20,
+      "element_type": 4,
+      "status": "i",
+      "chance_of_playing_next_round": 0,
+      "projected_points": 0.197
+    },
+    {
+      "id": 553,
+      "web_name": "Isidor",
+      "team": 20,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.682
+    },
+    {
+      "id": 612,
+      "web_name": "Methalie",
+      "team": 20,
+      "element_type": 2,
+      "status": "a",
+      "chance_of_playing_next_round": 100,
+      "projected_points": 1.756
+    },
+    {
+      "id": 613,
+      "web_name": "Ahoka",
+      "team": 20,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.773
+    },
+    {
+      "id": 646,
+      "web_name": "Fofana",
+      "team": 20,
+      "element_type": 3,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 1.068
+    },
+    {
+      "id": 651,
+      "web_name": "J.Angulo",
+      "team": 20,
+      "element_type": 4,
+      "status": "a",
+      "chance_of_playing_next_round": null,
+      "projected_points": 0.505
+    }
+  ],
+  "teams": [
+    {
+      "id": 1,
+      "name": "Arsenal",
+      "clean_sheet_probability": 0.5467040076172905,
+      "implied_goals": 1.6319103140054574
+    },
+    {
+      "id": 2,
+      "name": "Aston Villa",
+      "clean_sheet_probability": 0.18894563869614753,
+      "implied_goals": 0.7547945121554832
+    },
+    {
+      "id": 3,
+      "name": "Bournemouth",
+      "clean_sheet_probability": 0.19463849000948732,
+      "implied_goals": 1.1636707522995167
+    },
+    {
+      "id": 4,
+      "name": "Brentford",
+      "clean_sheet_probability": 0.47010720612249757,
+      "implied_goals": 1.6662959312410799
+    },
+    {
+      "id": 5,
+      "name": "Brighton",
+      "clean_sheet_probability": 0.1710763888570994,
+      "implied_goals": 1.9319538055071193
+    },
+    {
+      "id": 6,
+      "name": "Chelsea",
+      "clean_sheet_probability": 0.31233756020401215,
+      "implied_goals": 1.636611338400262
+    },
+    {
+      "id": 7,
+      "name": "Coventry City",
+      "clean_sheet_probability": 0.28320586541045567,
+      "implied_goals": 0.8982121909205704
+    },
+    {
+      "id": 8,
+      "name": "Crystal Palace",
+      "clean_sheet_probability": 0.17123880118107715,
+      "implied_goals": 0.738294289913254
+    },
+    {
+      "id": 9,
+      "name": "Everton",
+      "clean_sheet_probability": 0.4720690107370888,
+      "implied_goals": 1.362322523324395
+    },
+    {
+      "id": 10,
+      "name": "Fulham",
+      "clean_sheet_probability": 0.2978168871077989,
+      "implied_goals": 1.5443750978594888
+    },
+    {
+      "id": 11,
+      "name": "Hull City",
+      "clean_sheet_probability": 0.2560653680058502,
+      "implied_goals": 0.7506300948953559
+    },
+    {
+      "id": 12,
+      "name": "Ipswich Town",
+      "clean_sheet_probability": 0.21344521192594507,
+      "implied_goals": 1.2112764541351326
+    },
+    {
+      "id": 13,
+      "name": "Leeds",
+      "clean_sheet_probability": 0.19555564439269071,
+      "implied_goals": 0.6038477425477984
+    },
+    {
+      "id": 14,
+      "name": "Liverpool",
+      "clean_sheet_probability": 0.18813100649540915,
+      "implied_goals": 1.4849578145206923
+    },
+    {
+      "id": 15,
+      "name": "Man City",
+      "clean_sheet_probability": 0.2265118959878208,
+      "implied_goals": 1.670616715773892
+    },
+    {
+      "id": 16,
+      "name": "Man Utd",
+      "clean_sheet_probability": 0.516631842528705,
+      "implied_goals": 1.928060072593904
+    },
+    {
+      "id": 17,
+      "name": "Newcastle",
+      "clean_sheet_probability": 0.4072971788085231,
+      "implied_goals": 1.2615812061819343
+    },
+    {
+      "id": 18,
+      "name": "Nott'm Forest",
+      "clean_sheet_probability": 0.4779284280028618,
+      "implied_goals": 1.764696198541173
+    },
+    {
+      "id": 19,
+      "name": "Spurs",
+      "clean_sheet_probability": 0.14543004874794263,
+      "implied_goals": 0.6604247615658867
+    },
+    {
+      "id": 20,
+      "name": "Sunderland",
+      "clean_sheet_probability": 0.14486488399490816,
+      "implied_goals": 1.7656451037658947
+    }
+  ]
+}
