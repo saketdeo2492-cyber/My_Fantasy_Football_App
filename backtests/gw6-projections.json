@@ -1,6 +1,11 @@
 {
   "eventId": 6,
-  "takenAt": "2026-10-10T06:27:51.424Z",
+  "fetchedAt": "2026-10-10T07:52:37.680Z",
+  "bootstrapResponseDate": "Sat, 10 Oct 2026 07:52:37 GMT",
+  "bootstrapResponseAge": 132,
+  "refetchedForFreshness": false,
+  "transfersInEventSum": 15567066,
+  "nonAvailableCount": 212,
   "players": [
     {
       "id": 1,
@@ -9,7 +14,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.622
+      "news": "",
+      "projEV": 5.622,
+      "projAvail": 5.622
     },
     {
       "id": 2,
@@ -18,7 +25,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.649
+      "news": "",
+      "projEV": 1.649,
+      "projAvail": 1.649
     },
     {
       "id": 3,
@@ -27,7 +36,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.649
+      "news": "",
+      "projEV": 1.649,
+      "projAvail": 1.649
     },
     {
       "id": 4,
@@ -36,7 +47,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.522
+      "news": "",
+      "projEV": 5.522,
+      "projAvail": 5.522
     },
     {
       "id": 5,
@@ -45,7 +58,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.574
+      "news": "",
+      "projEV": 2.574,
+      "projAvail": 2.574
     },
     {
       "id": 6,
@@ -54,7 +69,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.098
+      "news": "Back injury - Unknown return date",
+      "projEV": 1.953,
+      "projAvail": 0.098
     },
     {
       "id": 7,
@@ -63,7 +80,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.554
+      "news": "",
+      "projEV": 2.554,
+      "projAvail": 2.554
     },
     {
       "id": 8,
@@ -72,7 +91,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.884
+      "news": "",
+      "projEV": 4.884,
+      "projAvail": 4.884
     },
     {
       "id": 9,
@@ -81,7 +102,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.992
+      "news": "",
+      "projEV": 1.992,
+      "projAvail": 1.992
     },
     {
       "id": 10,
@@ -90,7 +113,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.91
+      "news": "",
+      "projEV": 3.91,
+      "projAvail": 3.91
     },
     {
       "id": 11,
@@ -99,7 +124,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.968
+      "news": "",
+      "projEV": 2.968,
+      "projAvail": 2.968
     },
     {
       "id": 12,
@@ -108,7 +135,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.654
+      "news": "",
+      "projEV": 5.654,
+      "projAvail": 5.654
     },
     {
       "id": 13,
@@ -117,7 +146,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 2.837
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 3.61,
+      "projAvail": 2.837
     },
     {
       "id": 14,
@@ -126,7 +157,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.283
+      "news": "",
+      "projEV": 1.283,
+      "projAvail": 1.283
     },
     {
       "id": 15,
@@ -135,7 +168,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.825
+      "news": "",
+      "projEV": 3.825,
+      "projAvail": 3.825
     },
     {
       "id": 16,
@@ -144,7 +179,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.032
+      "news": "",
+      "projEV": 1.032,
+      "projAvail": 1.032
     },
     {
       "id": 17,
@@ -153,7 +190,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.258
+      "news": "",
+      "projEV": 1.258,
+      "projAvail": 1.258
     },
     {
       "id": 18,
@@ -162,7 +201,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.051
+      "news": "Has joined Al Hilal permanently",
+      "projEV": 1.027,
+      "projAvail": 0.051
     },
     {
       "id": 19,
@@ -171,7 +212,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.305
+      "news": "",
+      "projEV": 1.305,
+      "projAvail": 1.305
     },
     {
       "id": 20,
@@ -180,7 +223,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.092
+      "news": "",
+      "projEV": 1.092,
+      "projAvail": 1.092
     },
     {
       "id": 22,
@@ -189,7 +234,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.051
+      "news": "Has joined Borussia Dortmund on loan for the rest of the season",
+      "projEV": 1.027,
+      "projAvail": 0.051
     },
     {
       "id": 23,
@@ -198,7 +245,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.051
+      "news": "Has joined Hamburger SV permanently",
+      "projEV": 1.027,
+      "projAvail": 0.051
     },
     {
       "id": 24,
@@ -207,7 +256,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.051
+      "news": "has departed the club as a free agent.",
+      "projEV": 1.027,
+      "projAvail": 0.051
     },
     {
       "id": 25,
@@ -216,7 +267,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.53
+      "news": "",
+      "projEV": 0.53,
+      "projAvail": 0.53
     },
     {
       "id": 26,
@@ -225,7 +278,9 @@
       "element_type": 4,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 2.458
+      "news": "Hamstring injury - 75% chance of playing",
+      "projEV": 3.204,
+      "projAvail": 2.458
     },
     {
       "id": 27,
@@ -234,7 +289,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.023
+      "news": "Has joined FC Barcelona permanently",
+      "projEV": 0.467,
+      "projAvail": 0.023
     },
     {
       "id": 31,
@@ -243,7 +300,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 3.394
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 4.352,
+      "projAvail": 3.394
     },
     {
       "id": 452,
@@ -252,7 +311,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.192
+      "news": "",
+      "projEV": 2.192,
+      "projAvail": 2.192
     },
     {
       "id": 557,
@@ -261,7 +322,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.133
+      "news": "Hamstring injury - Expected back 24 Oct",
+      "projEV": 2.655,
+      "projAvail": 0.133
     },
     {
       "id": 29,
@@ -270,7 +333,9 @@
       "element_type": 1,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 1.506
+      "news": "Back injury - 75% chance of playing",
+      "projEV": 2.008,
+      "projAvail": 1.506
     },
     {
       "id": 30,
@@ -279,7 +344,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Paris Saint-Germain permanently",
+      "projEV": 0.777,
+      "projAvail": 0.039
     },
     {
       "id": 32,
@@ -288,7 +355,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.007
+      "news": "",
+      "projEV": 2.007,
+      "projAvail": 2.007
     },
     {
       "id": 33,
@@ -297,7 +366,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.484
+      "news": "",
+      "projEV": 2.484,
+      "projAvail": 2.484
     },
     {
       "id": 34,
@@ -306,7 +377,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 1.119
+      "news": "Hamstring injury - 75% chance of playing",
+      "projEV": 1.473,
+      "projAvail": 1.119
     },
     {
       "id": 35,
@@ -315,7 +388,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.826
+      "news": "",
+      "projEV": 0.826,
+      "projAvail": 0.826
     },
     {
       "id": 36,
@@ -324,7 +399,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.127
+      "news": "Ankle injury - Unknown return date",
+      "projEV": 2.535,
+      "projAvail": 0.127
     },
     {
       "id": 37,
@@ -333,7 +410,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.669
+      "news": "",
+      "projEV": 2.669,
+      "projAvail": 2.669
     },
     {
       "id": 38,
@@ -342,7 +421,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.777
+      "news": "",
+      "projEV": 0.777,
+      "projAvail": 0.777
     },
     {
       "id": 39,
@@ -351,7 +432,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Rangers on loan for the rest of the season",
+      "projEV": 0.777,
+      "projAvail": 0.039
     },
     {
       "id": 41,
@@ -360,7 +443,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.396
+      "news": "",
+      "projEV": 4.396,
+      "projAvail": 4.396
     },
     {
       "id": 44,
@@ -369,7 +454,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Olympiakos permanently",
+      "projEV": 0.785,
+      "projAvail": 0.039
     },
     {
       "id": 45,
@@ -378,7 +465,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.138
+      "news": "",
+      "projEV": 4.138,
+      "projAvail": 4.138
     },
     {
       "id": 46,
@@ -387,7 +476,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.508
+      "news": "",
+      "projEV": 2.508,
+      "projAvail": 2.508
     },
     {
       "id": 47,
@@ -396,7 +487,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.36
+      "news": "",
+      "projEV": 3.36,
+      "projAvail": 3.36
     },
     {
       "id": 48,
@@ -405,7 +498,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.785,
+      "projAvail": 0.039
     },
     {
       "id": 49,
@@ -414,7 +509,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Bolton Wanderers on loan for the rest of the season",
+      "projEV": 0.785,
+      "projAvail": 0.039
     },
     {
       "id": 50,
@@ -423,7 +520,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.785
+      "news": "",
+      "projEV": 0.785,
+      "projAvail": 0.785
     },
     {
       "id": 51,
@@ -432,7 +531,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.14
+      "news": "",
+      "projEV": 2.14,
+      "projAvail": 2.14
     },
     {
       "id": 52,
@@ -441,7 +542,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 1.035
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 1.271,
+      "projAvail": 1.035
     },
     {
       "id": 53,
@@ -450,7 +553,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.677
+      "news": "",
+      "projEV": 2.677,
+      "projAvail": 2.677
     },
     {
       "id": 54,
@@ -459,7 +564,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.147
+      "news": "",
+      "projEV": 2.147,
+      "projAvail": 2.147
     },
     {
       "id": 55,
@@ -468,7 +575,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.023
+      "news": "Has joined Al Hilal permanently",
+      "projEV": 0.464,
+      "projAvail": 0.023
     },
     {
       "id": 56,
@@ -477,7 +586,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.58
+      "news": "",
+      "projEV": 0.58,
+      "projAvail": 0.58
     },
     {
       "id": 160,
@@ -486,7 +597,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.765
+      "news": "",
+      "projEV": 0.765,
+      "projAvail": 0.765
     },
     {
       "id": 166,
@@ -495,7 +608,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.836
+      "news": "",
+      "projEV": 2.836,
+      "projAvail": 2.836
     },
     {
       "id": 582,
@@ -504,7 +619,9 @@
       "element_type": 4,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 0.348
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 0.464,
+      "projAvail": 0.348
     },
     {
       "id": 596,
@@ -513,7 +630,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.502
+      "news": "",
+      "projEV": 1.502,
+      "projAvail": 1.502
     },
     {
       "id": 597,
@@ -522,7 +641,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.178
+      "news": "",
+      "projEV": 3.178,
+      "projAvail": 3.178
     },
     {
       "id": 606,
@@ -531,7 +652,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.777
+      "news": "",
+      "projEV": 0.777,
+      "projAvail": 0.777
     },
     {
       "id": 607,
@@ -540,7 +663,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Oxford United on loan until January",
+      "projEV": 0.785,
+      "projAvail": 0.039
     },
     {
       "id": 611,
@@ -549,7 +674,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.591
+      "news": "",
+      "projEV": 1.591,
+      "projAvail": 1.591
     },
     {
       "id": 618,
@@ -558,7 +685,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Knee injury - Expected back 17 Oct",
+      "projEV": 0.785,
+      "projAvail": 0.039
     },
     {
       "id": 630,
@@ -567,7 +696,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.777
+      "news": "",
+      "projEV": 0.777,
+      "projAvail": 0.777
     },
     {
       "id": 631,
@@ -576,7 +707,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.983
+      "news": "",
+      "projEV": 0.983,
+      "projAvail": 0.983
     },
     {
       "id": 667,
@@ -585,7 +718,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.663
+      "news": "",
+      "projEV": 0.663,
+      "projAvail": 0.663
     },
     {
       "id": 57,
@@ -594,7 +729,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.802
+      "news": "",
+      "projEV": 2.802,
+      "projAvail": 2.802
     },
     {
       "id": 58,
@@ -603,7 +740,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.54
+      "news": "",
+      "projEV": 0.54,
+      "projAvail": 0.54
     },
     {
       "id": 59,
@@ -612,7 +751,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.027
+      "news": "Has joined MK Dons permanently",
+      "projEV": 0.54,
+      "projAvail": 0.027
     },
     {
       "id": 60,
@@ -621,7 +762,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.602
+      "news": "",
+      "projEV": 3.602,
+      "projAvail": 3.602
     },
     {
       "id": 61,
@@ -630,7 +773,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.261
+      "news": "",
+      "projEV": 3.261,
+      "projAvail": 3.261
     },
     {
       "id": 62,
@@ -639,7 +784,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.789
+      "news": "",
+      "projEV": 0.789,
+      "projAvail": 0.789
     },
     {
       "id": 63,
@@ -648,7 +795,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Thigh injury - Unknown return date",
+      "projEV": 0.789,
+      "projAvail": 0.039
     },
     {
       "id": 64,
@@ -657,7 +806,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.337
+      "news": "",
+      "projEV": 2.337,
+      "projAvail": 2.337
     },
     {
       "id": 65,
@@ -666,7 +817,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Thigh injury - Unknown return date",
+      "projEV": 0.789,
+      "projAvail": 0.039
     },
     {
       "id": 66,
@@ -675,7 +828,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.789
+      "news": "",
+      "projEV": 0.789,
+      "projAvail": 0.789
     },
     {
       "id": 67,
@@ -684,7 +839,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.262
+      "news": "",
+      "projEV": 3.262,
+      "projAvail": 3.262
     },
     {
       "id": 68,
@@ -693,7 +850,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.856
+      "news": "",
+      "projEV": 4.856,
+      "projAvail": 4.856
     },
     {
       "id": 69,
@@ -702,7 +861,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.168
+      "news": "Thigh injury - Unknown return date",
+      "projEV": 3.361,
+      "projAvail": 0.168
     },
     {
       "id": 70,
@@ -711,7 +872,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.144
+      "news": "Unspecified injury - Unknown return date",
+      "projEV": 2.879,
+      "projAvail": 0.144
     },
     {
       "id": 71,
@@ -720,7 +883,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.207
+      "news": "",
+      "projEV": 1.207,
+      "projAvail": 1.207
     },
     {
       "id": 72,
@@ -729,7 +894,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.009
+      "news": "",
+      "projEV": 1.009,
+      "projAvail": 1.009
     },
     {
       "id": 73,
@@ -738,7 +905,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.865
+      "news": "",
+      "projEV": 2.865,
+      "projAvail": 2.865
     },
     {
       "id": 74,
@@ -747,7 +916,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.859
+      "news": "",
+      "projEV": 0.859,
+      "projAvail": 0.859
     },
     {
       "id": 75,
@@ -756,7 +927,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.328
+      "news": "",
+      "projEV": 1.328,
+      "projAvail": 1.328
     },
     {
       "id": 76,
@@ -765,7 +938,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.861
+      "news": "",
+      "projEV": 0.861,
+      "projAvail": 0.861
     },
     {
       "id": 77,
@@ -774,7 +949,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Calf injury - Unknown return date",
+      "projEV": 0.787,
+      "projAvail": 0.039
     },
     {
       "id": 78,
@@ -783,7 +960,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Foot injury - Expected back 7 Nov",
+      "projEV": 0.787,
+      "projAvail": 0.039
     },
     {
       "id": 79,
@@ -792,7 +971,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.584
+      "news": "",
+      "projEV": 3.584,
+      "projAvail": 3.584
     },
     {
       "id": 80,
@@ -801,7 +982,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.024
+      "news": "Has joined Getafe permanently",
+      "projEV": 0.475,
+      "projAvail": 0.024
     },
     {
       "id": 81,
@@ -810,7 +993,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.548
+      "news": "",
+      "projEV": 0.548,
+      "projAvail": 0.548
     },
     {
       "id": 566,
@@ -819,7 +1004,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.182
+      "news": "",
+      "projEV": 4.182,
+      "projAvail": 4.182
     },
     {
       "id": 573,
@@ -828,7 +1015,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.789
+      "news": "",
+      "projEV": 0.789,
+      "projAvail": 0.789
     },
     {
       "id": 608,
@@ -837,7 +1026,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.535
+      "news": "",
+      "projEV": 0.535,
+      "projAvail": 0.535
     },
     {
       "id": 615,
@@ -846,7 +1037,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.54
+      "news": "",
+      "projEV": 0.54,
+      "projAvail": 0.54
     },
     {
       "id": 82,
@@ -855,7 +1048,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.977
+      "news": "",
+      "projEV": 4.977,
+      "projAvail": 4.977
     },
     {
       "id": 83,
@@ -864,7 +1059,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.455
+      "news": "",
+      "projEV": 1.455,
+      "projAvail": 1.455
     },
     {
       "id": 84,
@@ -873,7 +1070,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.142
+      "news": "Calf injury - Unknown return date",
+      "projEV": 2.837,
+      "projAvail": 0.142
     },
     {
       "id": 85,
@@ -882,7 +1081,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.09
+      "news": "Groin injury - Unknown return date",
+      "projEV": 1.791,
+      "projAvail": 0.09
     },
     {
       "id": 86,
@@ -891,7 +1092,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.299
+      "news": "",
+      "projEV": 4.299,
+      "projAvail": 4.299
     },
     {
       "id": 87,
@@ -900,7 +1103,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.114
+      "news": "",
+      "projEV": 5.114,
+      "projAvail": 5.114
     },
     {
       "id": 88,
@@ -909,7 +1114,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.256
+      "news": "",
+      "projEV": 4.256,
+      "projAvail": 4.256
     },
     {
       "id": 89,
@@ -918,7 +1125,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.788
+      "news": "",
+      "projEV": 1.788,
+      "projAvail": 1.788
     },
     {
       "id": 90,
@@ -927,7 +1136,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.283
+      "news": "",
+      "projEV": 2.283,
+      "projAvail": 2.283
     },
     {
       "id": 92,
@@ -936,7 +1147,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.791
+      "news": "",
+      "projEV": 1.791,
+      "projAvail": 1.791
     },
     {
       "id": 93,
@@ -945,7 +1158,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 6.413
+      "news": "",
+      "projEV": 6.413,
+      "projAvail": 6.413
     },
     {
       "id": 94,
@@ -954,7 +1169,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 6.81
+      "news": "",
+      "projEV": 6.81,
+      "projAvail": 6.81
     },
     {
       "id": 95,
@@ -963,7 +1180,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.84
+      "news": "",
+      "projEV": 1.84,
+      "projAvail": 1.84
     },
     {
       "id": 96,
@@ -972,7 +1191,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 2.352
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 3.037,
+      "projAvail": 2.352
     },
     {
       "id": 97,
@@ -981,7 +1202,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.115
+      "news": "Unspecified injury - Expected back 10 Oct",
+      "projEV": 2.298,
+      "projAvail": 0.115
     },
     {
       "id": 98,
@@ -990,7 +1213,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.693
+      "news": "",
+      "projEV": 4.693,
+      "projAvail": 4.693
     },
     {
       "id": 99,
@@ -999,7 +1224,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.053
+      "news": "Knee injury - Unknown return date",
+      "projEV": 1.052,
+      "projAvail": 0.053
     },
     {
       "id": 100,
@@ -1008,7 +1235,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.534
+      "news": "",
+      "projEV": 1.534,
+      "projAvail": 1.534
     },
     {
       "id": 102,
@@ -1017,7 +1246,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.046
+      "news": "",
+      "projEV": 3.046,
+      "projAvail": 3.046
     },
     {
       "id": 103,
@@ -1026,7 +1257,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.053
+      "news": "Hamstring injury - Expected back 10 Oct",
+      "projEV": 1.052,
+      "projAvail": 0.053
     },
     {
       "id": 105,
@@ -1035,7 +1268,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.171
+      "news": "",
+      "projEV": 4.171,
+      "projAvail": 4.171
     },
     {
       "id": 106,
@@ -1044,7 +1279,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.975
+      "news": "",
+      "projEV": 4.975,
+      "projAvail": 4.975
     },
     {
       "id": 107,
@@ -1053,7 +1290,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.027
+      "news": "Unspecified injury - Unknown return date",
+      "projEV": 0.531,
+      "projAvail": 0.027
     },
     {
       "id": 108,
@@ -1062,7 +1301,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.533
+      "news": "",
+      "projEV": 0.533,
+      "projAvail": 0.533
     },
     {
       "id": 565,
@@ -1071,7 +1312,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.692
+      "news": "",
+      "projEV": 3.692,
+      "projAvail": 3.692
     },
     {
       "id": 620,
@@ -1080,7 +1323,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.016
+      "news": "",
+      "projEV": 2.016,
+      "projAvail": 2.016
     },
     {
       "id": 657,
@@ -1089,7 +1334,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.052
+      "news": "",
+      "projEV": 1.052,
+      "projAvail": 1.052
     },
     {
       "id": 660,
@@ -1098,7 +1345,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.956
+      "news": "",
+      "projEV": 1.956,
+      "projAvail": 1.956
     },
     {
       "id": 661,
@@ -1107,7 +1356,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.605
+      "news": "",
+      "projEV": 1.605,
+      "projAvail": 1.605
     },
     {
       "id": 109,
@@ -1116,7 +1367,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.048
+      "news": "",
+      "projEV": 4.048,
+      "projAvail": 4.048
     },
     {
       "id": 111,
@@ -1125,7 +1378,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.458
+      "news": "",
+      "projEV": 0.458,
+      "projAvail": 0.458
     },
     {
       "id": 113,
@@ -1134,7 +1389,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.327
+      "news": "",
+      "projEV": 3.327,
+      "projAvail": 3.327
     },
     {
       "id": 114,
@@ -1143,7 +1400,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.726
+      "news": "",
+      "projEV": 3.726,
+      "projAvail": 3.726
     },
     {
       "id": 115,
@@ -1152,7 +1411,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.341
+      "news": "",
+      "projEV": 5.341,
+      "projAvail": 5.341
     },
     {
       "id": 116,
@@ -1161,7 +1422,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.648
+      "news": "",
+      "projEV": 3.648,
+      "projAvail": 3.648
     },
     {
       "id": 117,
@@ -1170,7 +1433,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.711
+      "news": "",
+      "projEV": 0.711,
+      "projAvail": 0.711
     },
     {
       "id": 118,
@@ -1179,7 +1444,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.036
+      "news": "Has joined Burnley permanently",
+      "projEV": 0.711,
+      "projAvail": 0.036
     },
     {
       "id": 119,
@@ -1188,7 +1455,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.892
+      "news": "",
+      "projEV": 0.892,
+      "projAvail": 0.892
     },
     {
       "id": 120,
@@ -1197,7 +1466,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.795
+      "news": "",
+      "projEV": 0.795,
+      "projAvail": 0.795
     },
     {
       "id": 121,
@@ -1206,7 +1477,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.04
+      "news": "Hamstring injury - Expected back 10 Oct",
+      "projEV": 0.8,
+      "projAvail": 0.04
     },
     {
       "id": 122,
@@ -1215,7 +1488,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.04
+      "news": "Leg injury - Expected back 28 Nov",
+      "projEV": 0.8,
+      "projAvail": 0.04
     },
     {
       "id": 123,
@@ -1224,7 +1499,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 50,
-      "projected_points": 1.175
+      "news": "Ankle injury - 50% chance of playing",
+      "projEV": 2.349,
+      "projAvail": 1.175
     },
     {
       "id": 124,
@@ -1233,7 +1510,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 7.562
+      "news": "",
+      "projEV": 7.562,
+      "projAvail": 7.562
     },
     {
       "id": 125,
@@ -1242,7 +1521,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.282
+      "news": "",
+      "projEV": 1.282,
+      "projAvail": 1.282
     },
     {
       "id": 126,
@@ -1251,7 +1532,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.991
+      "news": "",
+      "projEV": 0.991,
+      "projAvail": 0.991
     },
     {
       "id": 127,
@@ -1260,7 +1543,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.481
+      "news": "",
+      "projEV": 4.481,
+      "projAvail": 4.481
     },
     {
       "id": 128,
@@ -1269,7 +1554,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.04
+      "news": "Has joined Elche on loan for the rest of the season",
+      "projEV": 0.8,
+      "projAvail": 0.04
     },
     {
       "id": 129,
@@ -1278,7 +1565,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.228
+      "news": "",
+      "projEV": 4.228,
+      "projAvail": 4.228
     },
     {
       "id": 130,
@@ -1287,7 +1576,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.094
+      "news": "Knee injury - Unknown return date",
+      "projEV": 1.871,
+      "projAvail": 0.094
     },
     {
       "id": 132,
@@ -1296,7 +1587,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.04
+      "news": "Has joined Leicester City on loan for the rest of the season",
+      "projEV": 0.8,
+      "projAvail": 0.04
     },
     {
       "id": 133,
@@ -1305,7 +1598,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.04
+      "news": "Has joined Leicester City on loan for the rest of the season",
+      "projEV": 0.8,
+      "projAvail": 0.04
     },
     {
       "id": 134,
@@ -1314,7 +1609,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.8
+      "news": "",
+      "projEV": 0.8,
+      "projAvail": 0.8
     },
     {
       "id": 135,
@@ -1323,7 +1620,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Unspecified injury - Expected back 10 Oct",
+      "projEV": 0.785,
+      "projAvail": 0.039
     },
     {
       "id": 137,
@@ -1332,7 +1631,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.025
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.505,
+      "projAvail": 0.025
     },
     {
       "id": 138,
@@ -1341,7 +1642,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.912
+      "news": "",
+      "projEV": 4.912,
+      "projAvail": 4.912
     },
     {
       "id": 139,
@@ -1350,7 +1653,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.025
+      "news": "Ankle injury - Expected back 10 Oct",
+      "projEV": 0.505,
+      "projAvail": 0.025
     },
     {
       "id": 328,
@@ -1359,7 +1664,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 1.142
+      "news": "Hamstring injury - 75% chance of playing",
+      "projEV": 1.412,
+      "projAvail": 1.142
     },
     {
       "id": 504,
@@ -1368,7 +1675,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.342
+      "news": "",
+      "projEV": 4.342,
+      "projAvail": 4.342
     },
     {
       "id": 594,
@@ -1377,7 +1686,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.496
+      "news": "",
+      "projEV": 0.496,
+      "projAvail": 0.496
     },
     {
       "id": 600,
@@ -1386,7 +1697,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.87
+      "news": "",
+      "projEV": 0.87,
+      "projAvail": 0.87
     },
     {
       "id": 605,
@@ -1395,7 +1708,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.393
+      "news": "",
+      "projEV": 3.393,
+      "projAvail": 3.393
     },
     {
       "id": 614,
@@ -1404,7 +1719,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.711
+      "news": "",
+      "projEV": 0.711,
+      "projAvail": 0.711
     },
     {
       "id": 624,
@@ -1413,7 +1730,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.04
+      "news": "Has joined Middlesbrough on loan for the rest of the season",
+      "projEV": 0.8,
+      "projAvail": 0.04
     },
     {
       "id": 639,
@@ -1422,7 +1741,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.786
+      "news": "",
+      "projEV": 2.786,
+      "projAvail": 2.786
     },
     {
       "id": 652,
@@ -1431,7 +1752,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.04
+      "news": "Hamstring injury - Expected back 10 Oct",
+      "projEV": 0.8,
+      "projAvail": 0.04
     },
     {
       "id": 658,
@@ -1440,7 +1763,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.8
+      "news": "",
+      "projEV": 0.8,
+      "projAvail": 0.8
     },
     {
       "id": 28,
@@ -1449,7 +1774,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.871
+      "news": "",
+      "projEV": 2.871,
+      "projAvail": 2.871
     },
     {
       "id": 40,
@@ -1458,7 +1785,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.985
+      "news": "",
+      "projEV": 4.985,
+      "projAvail": 4.985
     },
     {
       "id": 101,
@@ -1467,7 +1796,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.614
+      "news": "",
+      "projEV": 2.614,
+      "projAvail": 2.614
     },
     {
       "id": 136,
@@ -1476,7 +1807,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.783
+      "news": "",
+      "projEV": 0.783,
+      "projAvail": 0.783
     },
     {
       "id": 140,
@@ -1485,7 +1818,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.124
+      "news": "Has joined Como on loan for the rest of the season",
+      "projEV": 2.48,
+      "projAvail": 0.124
     },
     {
       "id": 141,
@@ -1494,7 +1829,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.048
+      "news": "Has joined RC Strasbourg on loan for the rest of the season",
+      "projEV": 0.955,
+      "projAvail": 0.048
     },
     {
       "id": 142,
@@ -1503,7 +1840,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.058
+      "news": "",
+      "projEV": 3.058,
+      "projAvail": 3.058
     },
     {
       "id": 143,
@@ -1512,7 +1851,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.063
+      "news": "Has joined Como permanently",
+      "projEV": 1.255,
+      "projAvail": 0.063
     },
     {
       "id": 144,
@@ -1521,7 +1862,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.732
+      "news": "",
+      "projEV": 2.732,
+      "projAvail": 2.732
     },
     {
       "id": 145,
@@ -1530,7 +1873,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.956
+      "news": "",
+      "projEV": 3.956,
+      "projAvail": 3.956
     },
     {
       "id": 146,
@@ -1539,7 +1884,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.063
+      "news": "Has joined Napoli on loan for the rest of the season",
+      "projEV": 1.255,
+      "projAvail": 0.063
     },
     {
       "id": 148,
@@ -1548,7 +1895,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.611
+      "news": "",
+      "projEV": 2.611,
+      "projAvail": 2.611
     },
     {
       "id": 149,
@@ -1557,7 +1906,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.261
+      "news": "",
+      "projEV": 3.261,
+      "projAvail": 3.261
     },
     {
       "id": 150,
@@ -1566,7 +1917,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.063
+      "news": "Has joined Real Sociedad on loan for the rest of the season",
+      "projEV": 1.255,
+      "projAvail": 0.063
     },
     {
       "id": 151,
@@ -1575,7 +1928,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.464
+      "news": "",
+      "projEV": 2.464,
+      "projAvail": 2.464
     },
     {
       "id": 152,
@@ -1584,7 +1939,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.255
+      "news": "",
+      "projEV": 1.255,
+      "projAvail": 1.255
     },
     {
       "id": 154,
@@ -1593,7 +1950,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.258
+      "news": "",
+      "projEV": 4.258,
+      "projAvail": 4.258
     },
     {
       "id": 156,
@@ -1602,7 +1961,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.1
+      "news": "",
+      "projEV": 3.1,
+      "projAvail": 3.1
     },
     {
       "id": 157,
@@ -1611,7 +1972,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.044
+      "news": "",
+      "projEV": 1.044,
+      "projAvail": 1.044
     },
     {
       "id": 158,
@@ -1620,7 +1983,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.045
+      "news": "Ankle injury - Unknown return date",
+      "projEV": 0.895,
+      "projAvail": 0.045
     },
     {
       "id": 159,
@@ -1629,7 +1994,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.876
+      "news": "",
+      "projEV": 0.876,
+      "projAvail": 0.876
     },
     {
       "id": 161,
@@ -1638,7 +2005,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.029
+      "news": "",
+      "projEV": 3.029,
+      "projAvail": 3.029
     },
     {
       "id": 163,
@@ -1647,7 +2016,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.045
+      "news": "Has joined RC Strasbourg on loan for the rest of the season",
+      "projEV": 0.895,
+      "projAvail": 0.045
     },
     {
       "id": 164,
@@ -1656,7 +2027,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.946
+      "news": "",
+      "projEV": 0.946,
+      "projAvail": 0.946
     },
     {
       "id": 165,
@@ -1665,7 +2038,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 5.098
+      "news": "",
+      "projEV": 5.098,
+      "projAvail": 5.098
     },
     {
       "id": 168,
@@ -1674,7 +2049,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.024
+      "news": "Has joined RB Leipzig permanently",
+      "projEV": 0.482,
+      "projAvail": 0.024
     },
     {
       "id": 169,
@@ -1683,7 +2060,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.482
+      "news": "",
+      "projEV": 0.482,
+      "projAvail": 0.482
     },
     {
       "id": 170,
@@ -1692,7 +2071,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.024
+      "news": "Hamstring injury - Expected back 10 Oct",
+      "projEV": 0.482,
+      "projAvail": 0.024
     },
     {
       "id": 200,
@@ -1701,7 +2082,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.728
+      "news": "",
+      "projEV": 3.728,
+      "projAvail": 3.728
     },
     {
       "id": 560,
@@ -1710,7 +2093,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.955
+      "news": "",
+      "projEV": 0.955,
+      "projAvail": 0.955
     },
     {
       "id": 561,
@@ -1719,7 +2104,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.255
+      "news": "",
+      "projEV": 1.255,
+      "projAvail": 1.255
     },
     {
       "id": 568,
@@ -1728,7 +2115,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.549
+      "news": "",
+      "projEV": 1.549,
+      "projAvail": 1.549
     },
     {
       "id": 583,
@@ -1737,7 +2126,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.402
+      "news": "",
+      "projEV": 2.402,
+      "projAvail": 2.402
     },
     {
       "id": 662,
@@ -1746,7 +2137,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.08
+      "news": "",
+      "projEV": 1.08,
+      "projAvail": 1.08
     },
     {
       "id": 91,
@@ -1755,7 +2148,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.401
+      "news": "",
+      "projEV": 4.401,
+      "projAvail": 4.401
     },
     {
       "id": 104,
@@ -1764,7 +2159,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.202
+      "news": "",
+      "projEV": 3.202,
+      "projAvail": 3.202
     },
     {
       "id": 110,
@@ -1773,7 +2170,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.132
+      "news": "",
+      "projEV": 4.132,
+      "projAvail": 4.132
     },
     {
       "id": 171,
@@ -1782,7 +2181,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.044
+      "news": "Has joined Leyton Orient on loan for the rest of the season",
+      "projEV": 0.879,
+      "projAvail": 0.044
     },
     {
       "id": 172,
@@ -1791,7 +2192,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.879
+      "news": "",
+      "projEV": 0.879,
+      "projAvail": 0.879
     },
     {
       "id": 173,
@@ -1800,7 +2203,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.862
+      "news": "",
+      "projEV": 4.862,
+      "projAvail": 4.862
     },
     {
       "id": 174,
@@ -1809,7 +2214,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.06
+      "news": "Has joined Sheffield United on loan for the rest of the season",
+      "projEV": 1.2,
+      "projAvail": 0.06
     },
     {
       "id": 175,
@@ -1818,7 +2225,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 2.313
+      "news": "Hamstring injury - 75% chance of playing",
+      "projEV": 3.084,
+      "projAvail": 2.313
     },
     {
       "id": 176,
@@ -1827,7 +2236,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.057
+      "news": "",
+      "projEV": 5.057,
+      "projAvail": 5.057
     },
     {
       "id": 177,
@@ -1836,7 +2247,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 50,
-      "projected_points": 0.6
+      "news": "Hamstring injury - 50% chance of playing",
+      "projEV": 1.2,
+      "projAvail": 0.6
     },
     {
       "id": 178,
@@ -1845,7 +2258,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.2
+      "news": "",
+      "projEV": 1.2,
+      "projAvail": 1.2
     },
     {
       "id": 179,
@@ -1854,7 +2269,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.308
+      "news": "",
+      "projEV": 1.308,
+      "projAvail": 1.308
     },
     {
       "id": 180,
@@ -1863,7 +2280,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.06
+      "news": "Knee injury - Unknown return date",
+      "projEV": 1.2,
+      "projAvail": 0.06
     },
     {
       "id": 181,
@@ -1872,7 +2291,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.06
+      "news": "Has joined Academico de Viseu on loan for the rest of the season",
+      "projEV": 1.2,
+      "projAvail": 0.06
     },
     {
       "id": 182,
@@ -1881,7 +2302,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.153
+      "news": "Calf injury - Unknown return date",
+      "projEV": 3.06,
+      "projAvail": 0.153
     },
     {
       "id": 183,
@@ -1890,7 +2313,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.936
+      "news": "",
+      "projEV": 3.936,
+      "projAvail": 3.936
     },
     {
       "id": 184,
@@ -1899,7 +2324,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.297
+      "news": "",
+      "projEV": 3.297,
+      "projAvail": 3.297
     },
     {
       "id": 185,
@@ -1908,7 +2335,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.348
+      "news": "",
+      "projEV": 1.348,
+      "projAvail": 1.348
     },
     {
       "id": 186,
@@ -1917,7 +2346,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.618
+      "news": "",
+      "projEV": 2.618,
+      "projAvail": 2.618
     },
     {
       "id": 187,
@@ -1926,7 +2357,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.047
+      "news": "Unspecified injury - Expected back 12 Oct",
+      "projEV": 0.934,
+      "projAvail": 0.047
     },
     {
       "id": 188,
@@ -1935,7 +2368,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.068
+      "news": "",
+      "projEV": 1.068,
+      "projAvail": 1.068
     },
     {
       "id": 189,
@@ -1944,7 +2379,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.934
+      "news": "",
+      "projEV": 0.934,
+      "projAvail": 0.934
     },
     {
       "id": 190,
@@ -1953,7 +2390,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.353
+      "news": "",
+      "projEV": 2.353,
+      "projAvail": 2.353
     },
     {
       "id": 191,
@@ -1962,7 +2401,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.047
+      "news": "Has joined Burton Albion on loan for the rest of the season",
+      "projEV": 0.934,
+      "projAvail": 0.047
     },
     {
       "id": 192,
@@ -1971,7 +2412,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.047
+      "news": "Has joined Oxford United on loan for the rest of the season",
+      "projEV": 0.934,
+      "projAvail": 0.047
     },
     {
       "id": 193,
@@ -1980,7 +2423,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.027
+      "news": "Thigh injury - Unknown return date",
+      "projEV": 0.536,
+      "projAvail": 0.027
     },
     {
       "id": 194,
@@ -1989,7 +2434,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.921
+      "news": "",
+      "projEV": 1.921,
+      "projAvail": 1.921
     },
     {
       "id": 195,
@@ -1998,7 +2445,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.788
+      "news": "",
+      "projEV": 0.788,
+      "projAvail": 0.788
     },
     {
       "id": 196,
@@ -2007,7 +2456,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.027
+      "news": "Has joined Shabab Al-Ahli Dubai permanently",
+      "projEV": 0.536,
+      "projAvail": 0.027
     },
     {
       "id": 197,
@@ -2016,7 +2467,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.027
+      "news": "Has joined KVC Westerlo on loan for the rest of the season",
+      "projEV": 0.536,
+      "projAvail": 0.027
     },
     {
       "id": 492,
@@ -2025,7 +2478,9 @@
       "element_type": 4,
       "status": "s",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.103
+      "news": "Suspended until 19 Oct",
+      "projEV": 2.061,
+      "projAvail": 0.103
     },
     {
       "id": 575,
@@ -2034,7 +2489,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.549
+      "news": "",
+      "projEV": 2.549,
+      "projAvail": 2.549
     },
     {
       "id": 584,
@@ -2043,7 +2500,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.922
+      "news": "",
+      "projEV": 0.922,
+      "projAvail": 0.922
     },
     {
       "id": 599,
@@ -2052,7 +2511,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.754
+      "news": "",
+      "projEV": 0.754,
+      "projAvail": 0.754
     },
     {
       "id": 623,
@@ -2061,7 +2522,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.879
+      "news": "",
+      "projEV": 0.879,
+      "projAvail": 0.879
     },
     {
       "id": 655,
@@ -2070,7 +2533,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.934
+      "news": "",
+      "projEV": 0.934,
+      "projAvail": 0.934
     },
     {
       "id": 656,
@@ -2079,7 +2544,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.985
+      "news": "",
+      "projEV": 2.985,
+      "projAvail": 2.985
     },
     {
       "id": 42,
@@ -2088,7 +2555,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.965
+      "news": "",
+      "projEV": 0.965,
+      "projAvail": 0.965
     },
     {
       "id": 153,
@@ -2097,7 +2566,9 @@
       "element_type": 2,
       "status": "s",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.062
+      "news": "Suspended until 25 Oct",
+      "projEV": 1.238,
+      "projAvail": 0.062
     },
     {
       "id": 198,
@@ -2106,7 +2577,9 @@
       "element_type": 1,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.132
+      "news": "Foot injury - Expected back 18 Oct",
+      "projEV": 2.642,
+      "projAvail": 0.132
     },
     {
       "id": 199,
@@ -2115,7 +2588,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.519
+      "news": "",
+      "projEV": 2.519,
+      "projAvail": 2.519
     },
     {
       "id": 202,
@@ -2124,7 +2599,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.809
+      "news": "",
+      "projEV": 3.809,
+      "projAvail": 3.809
     },
     {
       "id": 203,
@@ -2133,7 +2610,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.32
+      "news": "",
+      "projEV": 3.32,
+      "projAvail": 3.32
     },
     {
       "id": 204,
@@ -2142,7 +2621,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.336
+      "news": "",
+      "projEV": 3.336,
+      "projAvail": 3.336
     },
     {
       "id": 205,
@@ -2151,7 +2632,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.035
+      "news": "Has joined FC Cologne on loan for the rest of the season",
+      "projEV": 0.693,
+      "projAvail": 0.035
     },
     {
       "id": 206,
@@ -2160,7 +2643,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.081
+      "news": "Knee injury - Unknown return date",
+      "projEV": 1.626,
+      "projAvail": 0.081
     },
     {
       "id": 207,
@@ -2169,7 +2654,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.7
+      "news": "",
+      "projEV": 0.7,
+      "projAvail": 0.7
     },
     {
       "id": 208,
@@ -2178,7 +2665,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.815
+      "news": "",
+      "projEV": 0.815,
+      "projAvail": 0.815
     },
     {
       "id": 210,
@@ -2187,7 +2676,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.008
+      "news": "",
+      "projEV": 3.008,
+      "projAvail": 3.008
     },
     {
       "id": 211,
@@ -2196,7 +2687,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.495
+      "news": "",
+      "projEV": 2.495,
+      "projAvail": 2.495
     },
     {
       "id": 212,
@@ -2205,7 +2698,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.888
+      "news": "",
+      "projEV": 0.888,
+      "projAvail": 0.888
     },
     {
       "id": 213,
@@ -2214,7 +2709,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.155
+      "news": "",
+      "projEV": 1.155,
+      "projAvail": 1.155
     },
     {
       "id": 214,
@@ -2223,7 +2720,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.894
+      "news": "",
+      "projEV": 3.894,
+      "projAvail": 3.894
     },
     {
       "id": 215,
@@ -2232,7 +2731,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.037
+      "news": "Has joined Stoke City permanently",
+      "projEV": 0.749,
+      "projAvail": 0.037
     },
     {
       "id": 216,
@@ -2241,7 +2742,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.037
+      "news": "Has joined Millwall on loan for the rest of the season",
+      "projEV": 0.749,
+      "projAvail": 0.037
     },
     {
       "id": 217,
@@ -2250,7 +2753,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.037
+      "news": "Has joined Alverca on loan for the rest of the season",
+      "projEV": 0.749,
+      "projAvail": 0.037
     },
     {
       "id": 218,
@@ -2259,7 +2764,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.749
+      "news": "",
+      "projEV": 0.749,
+      "projAvail": 0.749
     },
     {
       "id": 219,
@@ -2268,7 +2775,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.037
+      "news": "has joined  Kasimpasa on loan for the rest of the seaon.",
+      "projEV": 0.749,
+      "projAvail": 0.037
     },
     {
       "id": 220,
@@ -2277,7 +2786,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.035
+      "news": "Has joined Bristol City on loan for the rest of the season",
+      "projEV": 0.693,
+      "projAvail": 0.035
     },
     {
       "id": 221,
@@ -2286,7 +2797,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.749
+      "news": "",
+      "projEV": 0.749,
+      "projAvail": 0.749
     },
     {
       "id": 222,
@@ -2295,7 +2808,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.562
+      "news": "",
+      "projEV": 2.562,
+      "projAvail": 2.562
     },
     {
       "id": 223,
@@ -2304,7 +2819,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.069
+      "news": "Hamstring injury - Expected back 18 Oct",
+      "projEV": 1.372,
+      "projAvail": 0.069
     },
     {
       "id": 224,
@@ -2313,7 +2830,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.901
+      "news": "",
+      "projEV": 0.901,
+      "projAvail": 0.901
     },
     {
       "id": 225,
@@ -2322,7 +2841,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.022
+      "news": "has returned to Getafe CF",
+      "projEV": 0.433,
+      "projAvail": 0.022
     },
     {
       "id": 241,
@@ -2331,7 +2852,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.262
+      "news": "",
+      "projEV": 1.262,
+      "projAvail": 1.262
     },
     {
       "id": 555,
@@ -2340,7 +2863,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.429
+      "news": "",
+      "projEV": 0.429,
+      "projAvail": 0.429
     },
     {
       "id": 577,
@@ -2349,7 +2874,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.062
+      "news": "Calf injury - Expected back 18 Oct",
+      "projEV": 1.242,
+      "projAvail": 0.062
     },
     {
       "id": 588,
@@ -2358,7 +2885,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.272
+      "news": "",
+      "projEV": 4.272,
+      "projAvail": 4.272
     },
     {
       "id": 595,
@@ -2367,7 +2896,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.81
+      "news": "",
+      "projEV": 0.81,
+      "projAvail": 0.81
     },
     {
       "id": 633,
@@ -2376,7 +2907,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.175
+      "news": "",
+      "projEV": 2.175,
+      "projAvail": 2.175
     },
     {
       "id": 643,
@@ -2385,7 +2918,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.775
+      "news": "",
+      "projEV": 0.775,
+      "projAvail": 0.775
     },
     {
       "id": 644,
@@ -2394,7 +2929,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.453
+      "news": "",
+      "projEV": 3.453,
+      "projAvail": 3.453
     },
     {
       "id": 647,
@@ -2403,7 +2940,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.759
+      "news": "",
+      "projEV": 0.759,
+      "projAvail": 0.759
     },
     {
       "id": 21,
@@ -2412,7 +2951,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 50,
-      "projected_points": 0.529
+      "news": "Groin injury - 50% chance of playing",
+      "projEV": 1.059,
+      "projAvail": 0.529
     },
     {
       "id": 209,
@@ -2421,7 +2962,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.38
+      "news": "",
+      "projEV": 3.38,
+      "projAvail": 3.38
     },
     {
       "id": 226,
@@ -2430,7 +2973,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.517
+      "news": "",
+      "projEV": 5.517,
+      "projAvail": 5.517
     },
     {
       "id": 227,
@@ -2439,7 +2984,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.465
+      "news": "",
+      "projEV": 1.465,
+      "projAvail": 1.465
     },
     {
       "id": 228,
@@ -2448,7 +2995,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.465
+      "news": "",
+      "projEV": 1.465,
+      "projAvail": 1.465
     },
     {
       "id": 229,
@@ -2457,7 +3006,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 6.821
+      "news": "",
+      "projEV": 6.821,
+      "projAvail": 6.821
     },
     {
       "id": 230,
@@ -2466,7 +3017,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.892
+      "news": "",
+      "projEV": 5.892,
+      "projAvail": 5.892
     },
     {
       "id": 231,
@@ -2475,7 +3028,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.799
+      "news": "",
+      "projEV": 1.799,
+      "projAvail": 1.799
     },
     {
       "id": 232,
@@ -2484,7 +3039,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.957
+      "news": "",
+      "projEV": 1.957,
+      "projAvail": 1.957
     },
     {
       "id": 233,
@@ -2493,7 +3050,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 4.286
+      "news": "Leg injury - 75% chance of playing",
+      "projEV": 5.315,
+      "projAvail": 4.286
     },
     {
       "id": 234,
@@ -2502,7 +3061,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.09
+      "news": "Has joined Torino permanently",
+      "projEV": 1.799,
+      "projAvail": 0.09
     },
     {
       "id": 235,
@@ -2511,7 +3072,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.09
+      "news": "Has joined Malaga on loan for the rest of the season",
+      "projEV": 1.799,
+      "projAvail": 0.09
     },
     {
       "id": 236,
@@ -2520,7 +3083,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.553
+      "news": "",
+      "projEV": 4.553,
+      "projAvail": 4.553
     },
     {
       "id": 238,
@@ -2529,7 +3094,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.821
+      "news": "",
+      "projEV": 1.821,
+      "projAvail": 1.821
     },
     {
       "id": 239,
@@ -2538,7 +3105,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.748
+      "news": "",
+      "projEV": 3.748,
+      "projAvail": 3.748
     },
     {
       "id": 242,
@@ -2547,7 +3116,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.997
+      "news": "",
+      "projEV": 2.997,
+      "projAvail": 2.997
     },
     {
       "id": 243,
@@ -2556,7 +3127,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.096
+      "news": "",
+      "projEV": 1.096,
+      "projAvail": 1.096
     },
     {
       "id": 244,
@@ -2565,7 +3138,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.734
+      "news": "",
+      "projEV": 3.734,
+      "projAvail": 3.734
     },
     {
       "id": 245,
@@ -2574,7 +3149,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.383
+      "news": "",
+      "projEV": 1.383,
+      "projAvail": 1.383
     },
     {
       "id": 246,
@@ -2583,7 +3160,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 50,
-      "projected_points": 1.585
+      "news": "Unspecified injury - 50% chance of playing",
+      "projEV": 3.171,
+      "projAvail": 1.585
     },
     {
       "id": 247,
@@ -2592,7 +3171,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.471
+      "news": "",
+      "projEV": 1.471,
+      "projAvail": 1.471
     },
     {
       "id": 248,
@@ -2601,7 +3182,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.026
+      "news": "Has joined Fiorentina permanently",
+      "projEV": 0.519,
+      "projAvail": 0.026
     },
     {
       "id": 249,
@@ -2610,7 +3193,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.173
+      "news": "",
+      "projEV": 5.173,
+      "projAvail": 5.173
     },
     {
       "id": 649,
@@ -2619,7 +3204,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.68
+      "news": "",
+      "projEV": 3.68,
+      "projAvail": 3.68
     },
     {
       "id": 654,
@@ -2628,7 +3215,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.059
+      "news": "",
+      "projEV": 1.059,
+      "projAvail": 1.059
     },
     {
       "id": 250,
@@ -2637,7 +3226,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.625
+      "news": "",
+      "projEV": 4.625,
+      "projAvail": 4.625
     },
     {
       "id": 251,
@@ -2646,7 +3237,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.943
+      "news": "",
+      "projEV": 0.943,
+      "projAvail": 0.943
     },
     {
       "id": 252,
@@ -2655,7 +3248,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.047
+      "news": "Has joined York City on loan for the rest of the season",
+      "projEV": 0.943,
+      "projAvail": 0.047
     },
     {
       "id": 253,
@@ -2664,7 +3259,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.231
+      "news": "",
+      "projEV": 2.231,
+      "projAvail": 2.231
     },
     {
       "id": 254,
@@ -2673,7 +3270,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 3.107
+      "news": "Ankle injury - 75% chance of playing",
+      "projEV": 3.942,
+      "projAvail": 3.107
     },
     {
       "id": 255,
@@ -2682,7 +3281,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.668
+      "news": "",
+      "projEV": 2.668,
+      "projAvail": 2.668
     },
     {
       "id": 256,
@@ -2691,7 +3292,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.514
+      "news": "",
+      "projEV": 1.514,
+      "projAvail": 1.514
     },
     {
       "id": 257,
@@ -2700,7 +3303,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.435
+      "news": "",
+      "projEV": 4.435,
+      "projAvail": 4.435
     },
     {
       "id": 258,
@@ -2709,7 +3314,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.422
+      "news": "",
+      "projEV": 4.422,
+      "projAvail": 4.422
     },
     {
       "id": 261,
@@ -2718,7 +3325,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.343
+      "news": "",
+      "projEV": 4.343,
+      "projAvail": 4.343
     },
     {
       "id": 262,
@@ -2727,7 +3336,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.027
+      "news": "",
+      "projEV": 1.027,
+      "projAvail": 1.027
     },
     {
       "id": 263,
@@ -2736,7 +3347,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.181
+      "news": "",
+      "projEV": 1.181,
+      "projAvail": 1.181
     },
     {
       "id": 264,
@@ -2745,7 +3358,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.897
+      "news": "",
+      "projEV": 3.897,
+      "projAvail": 3.897
     },
     {
       "id": 265,
@@ -2754,7 +3369,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.168
+      "news": "",
+      "projEV": 3.168,
+      "projAvail": 3.168
     },
     {
       "id": 266,
@@ -2763,7 +3380,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.048
+      "news": "Knee injury - Expected back 17 Oct",
+      "projEV": 0.969,
+      "projAvail": 0.048
     },
     {
       "id": 268,
@@ -2772,7 +3391,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.609
+      "news": "",
+      "projEV": 4.609,
+      "projAvail": 4.609
     },
     {
       "id": 269,
@@ -2781,7 +3402,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.331
+      "news": "",
+      "projEV": 1.331,
+      "projAvail": 1.331
     },
     {
       "id": 270,
@@ -2790,7 +3413,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.969
+      "news": "",
+      "projEV": 0.969,
+      "projAvail": 0.969
     },
     {
       "id": 271,
@@ -2799,7 +3424,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.641
+      "news": "",
+      "projEV": 0.641,
+      "projAvail": 0.641
     },
     {
       "id": 272,
@@ -2808,7 +3435,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.573
+      "news": "",
+      "projEV": 0.573,
+      "projAvail": 0.573
     },
     {
       "id": 569,
@@ -2817,7 +3446,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.582
+      "news": "",
+      "projEV": 4.582,
+      "projAvail": 4.582
     },
     {
       "id": 570,
@@ -2826,7 +3457,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.942
+      "news": "",
+      "projEV": 2.942,
+      "projAvail": 2.942
     },
     {
       "id": 580,
@@ -2835,7 +3468,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.819
+      "news": "",
+      "projEV": 3.819,
+      "projAvail": 3.819
     },
     {
       "id": 610,
@@ -2844,7 +3479,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.063
+      "news": "has joined  Real Salt Lake on loan for the rest of the seaon.",
+      "projEV": 1.258,
+      "projAvail": 0.063
     },
     {
       "id": 626,
@@ -2853,7 +3490,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.969
+      "news": "",
+      "projEV": 0.969,
+      "projAvail": 0.969
     },
     {
       "id": 635,
@@ -2862,7 +3501,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.163
+      "news": "",
+      "projEV": 1.163,
+      "projAvail": 1.163
     },
     {
       "id": 636,
@@ -2871,7 +3512,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.969
+      "news": "",
+      "projEV": 0.969,
+      "projAvail": 0.969
     },
     {
       "id": 650,
@@ -2880,7 +3523,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.636
+      "news": "",
+      "projEV": 3.636,
+      "projAvail": 3.636
     },
     {
       "id": 240,
@@ -2889,7 +3534,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.174
+      "news": "",
+      "projEV": 1.174,
+      "projAvail": 1.174
     },
     {
       "id": 273,
@@ -2898,7 +3545,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.764
+      "news": "",
+      "projEV": 0.764,
+      "projAvail": 0.764
     },
     {
       "id": 274,
@@ -2907,7 +3556,9 @@
       "element_type": 1,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.038
+      "news": "Arm injury - Unknown return date",
+      "projEV": 0.764,
+      "projAvail": 0.038
     },
     {
       "id": 275,
@@ -2916,7 +3567,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.038
+      "news": "Has joined Grimsby Town on loan for the rest of the season",
+      "projEV": 0.764,
+      "projAvail": 0.038
     },
     {
       "id": 276,
@@ -2925,7 +3578,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.038
+      "news": "Has joined Colchester United on loan for the rest of the season",
+      "projEV": 0.764,
+      "projAvail": 0.038
     },
     {
       "id": 277,
@@ -2934,7 +3589,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.585
+      "news": "",
+      "projEV": 3.585,
+      "projAvail": 3.585
     },
     {
       "id": 278,
@@ -2943,7 +3600,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.053
+      "news": "Groin injury - Unknown return date",
+      "projEV": 1.053,
+      "projAvail": 0.053
     },
     {
       "id": 279,
@@ -2952,7 +3611,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.13
+      "news": "",
+      "projEV": 3.13,
+      "projAvail": 3.13
     },
     {
       "id": 280,
@@ -2961,7 +3622,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.408
+      "news": "",
+      "projEV": 2.408,
+      "projAvail": 2.408
     },
     {
       "id": 281,
@@ -2970,7 +3633,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.069
+      "news": "Has joined Genoa permanently",
+      "projEV": 1.372,
+      "projAvail": 0.069
     },
     {
       "id": 282,
@@ -2979,7 +3644,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.065
+      "news": "",
+      "projEV": 3.065,
+      "projAvail": 3.065
     },
     {
       "id": 283,
@@ -2988,7 +3655,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.053
+      "news": "Has joined Newport County on loan until January",
+      "projEV": 1.053,
+      "projAvail": 0.053
     },
     {
       "id": 284,
@@ -2997,7 +3666,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.053
+      "news": "",
+      "projEV": 1.053,
+      "projAvail": 1.053
     },
     {
       "id": 285,
@@ -3006,7 +3677,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.255
+      "news": "",
+      "projEV": 1.255,
+      "projAvail": 1.255
     },
     {
       "id": 286,
@@ -3015,7 +3688,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.962
+      "news": "",
+      "projEV": 4.962,
+      "projAvail": 4.962
     },
     {
       "id": 287,
@@ -3024,7 +3699,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.057
+      "news": "Has joined Birmingham on loan for the rest of the season",
+      "projEV": 1.136,
+      "projAvail": 0.057
     },
     {
       "id": 288,
@@ -3033,7 +3710,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.851
+      "news": "",
+      "projEV": 0.851,
+      "projAvail": 0.851
     },
     {
       "id": 289,
@@ -3042,7 +3721,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.563
+      "news": "",
+      "projEV": 2.563,
+      "projAvail": 2.563
     },
     {
       "id": 290,
@@ -3051,7 +3732,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.14
+      "news": "",
+      "projEV": 3.14,
+      "projAvail": 3.14
     },
     {
       "id": 291,
@@ -3060,7 +3743,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.043
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.851,
+      "projAvail": 0.043
     },
     {
       "id": 292,
@@ -3069,7 +3754,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.851
+      "news": "",
+      "projEV": 0.851,
+      "projAvail": 0.851
     },
     {
       "id": 293,
@@ -3078,7 +3765,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.043
+      "news": "Has joined Portsmouth permanently",
+      "projEV": 0.851,
+      "projAvail": 0.043
     },
     {
       "id": 294,
@@ -3087,7 +3776,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.851
+      "news": "",
+      "projEV": 0.851,
+      "projAvail": 0.851
     },
     {
       "id": 295,
@@ -3096,7 +3787,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.447
+      "news": "",
+      "projEV": 3.447,
+      "projAvail": 3.447
     },
     {
       "id": 296,
@@ -3105,7 +3798,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.043
+      "news": "Has joined Omonoia FC permanently",
+      "projEV": 0.851,
+      "projAvail": 0.043
     },
     {
       "id": 297,
@@ -3114,7 +3809,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.043
+      "news": "Thigh injury - Unknown return date",
+      "projEV": 0.851,
+      "projAvail": 0.043
     },
     {
       "id": 298,
@@ -3123,7 +3820,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.024
+      "news": "Has joined Konyaspor permanently",
+      "projEV": 0.477,
+      "projAvail": 0.024
     },
     {
       "id": 299,
@@ -3132,7 +3831,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.024
+      "news": "Has joined Sheffield Wednesday on loan for the rest of the season",
+      "projEV": 0.477,
+      "projAvail": 0.024
     },
     {
       "id": 340,
@@ -3141,7 +3842,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.935
+      "news": "",
+      "projEV": 0.935,
+      "projAvail": 0.935
     },
     {
       "id": 556,
@@ -3150,7 +3853,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.052
+      "news": "Ankle injury - Unknown return date",
+      "projEV": 1.045,
+      "projAvail": 0.052
     },
     {
       "id": 563,
@@ -3159,7 +3864,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.477
+      "news": "",
+      "projEV": 1.477,
+      "projAvail": 1.477
     },
     {
       "id": 572,
@@ -3168,7 +3875,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.935
+      "news": "",
+      "projEV": 3.935,
+      "projAvail": 3.935
     },
     {
       "id": 574,
@@ -3177,7 +3886,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.851
+      "news": "",
+      "projEV": 0.851,
+      "projAvail": 0.851
     },
     {
       "id": 576,
@@ -3186,7 +3897,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.337
+      "news": "",
+      "projEV": 2.337,
+      "projAvail": 2.337
     },
     {
       "id": 585,
@@ -3195,7 +3908,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.574
+      "news": "",
+      "projEV": 1.574,
+      "projAvail": 1.574
     },
     {
       "id": 586,
@@ -3204,7 +3919,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.029
+      "news": "",
+      "projEV": 3.029,
+      "projAvail": 3.029
     },
     {
       "id": 589,
@@ -3213,7 +3930,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.558
+      "news": "",
+      "projEV": 1.558,
+      "projAvail": 1.558
     },
     {
       "id": 617,
@@ -3222,7 +3941,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.487
+      "news": "",
+      "projEV": 1.487,
+      "projAvail": 1.487
     },
     {
       "id": 632,
@@ -3231,7 +3952,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.024
+      "news": "Back injury - Unknown return date",
+      "projEV": 0.477,
+      "projAvail": 0.024
     },
     {
       "id": 637,
@@ -3240,7 +3963,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.624
+      "news": "",
+      "projEV": 0.624,
+      "projAvail": 0.624
     },
     {
       "id": 638,
@@ -3249,7 +3974,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.078
+      "news": "",
+      "projEV": 1.078,
+      "projAvail": 1.078
     },
     {
       "id": 642,
@@ -3258,7 +3985,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.563
+      "news": "",
+      "projEV": 1.563,
+      "projAvail": 1.563
     },
     {
       "id": 645,
@@ -3267,7 +3996,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.851
+      "news": "",
+      "projEV": 0.851,
+      "projAvail": 0.851
     },
     {
       "id": 259,
@@ -3276,7 +4007,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.417
+      "news": "",
+      "projEV": 3.417,
+      "projAvail": 3.417
     },
     {
       "id": 267,
@@ -3285,7 +4018,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.987
+      "news": "",
+      "projEV": 2.987,
+      "projAvail": 2.987
     },
     {
       "id": 300,
@@ -3294,7 +4029,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.227
+      "news": "",
+      "projEV": 2.227,
+      "projAvail": 2.227
     },
     {
       "id": 301,
@@ -3303,7 +4040,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.64
+      "news": "",
+      "projEV": 0.64,
+      "projAvail": 0.64
     },
     {
       "id": 302,
@@ -3312,7 +4051,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.64
+      "news": "",
+      "projEV": 0.64,
+      "projAvail": 0.64
     },
     {
       "id": 303,
@@ -3321,7 +4062,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.93
+      "news": "",
+      "projEV": 0.93,
+      "projAvail": 0.93
     },
     {
       "id": 304,
@@ -3330,7 +4073,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.305
+      "news": "",
+      "projEV": 3.305,
+      "projAvail": 3.305
     },
     {
       "id": 305,
@@ -3339,7 +4084,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 6.011
+      "news": "",
+      "projEV": 6.011,
+      "projAvail": 6.011
     },
     {
       "id": 306,
@@ -3348,7 +4095,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.817
+      "news": "",
+      "projEV": 2.817,
+      "projAvail": 2.817
     },
     {
       "id": 307,
@@ -3357,7 +4106,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.046
+      "news": "Has joined Stoke City on loan for the rest of the season",
+      "projEV": 0.93,
+      "projAvail": 0.046
     },
     {
       "id": 308,
@@ -3366,7 +4117,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.014
+      "news": "",
+      "projEV": 1.014,
+      "projAvail": 1.014
     },
     {
       "id": 309,
@@ -3375,7 +4128,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.195
+      "news": "",
+      "projEV": 2.195,
+      "projAvail": 2.195
     },
     {
       "id": 310,
@@ -3384,7 +4139,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.885
+      "news": "",
+      "projEV": 0.885,
+      "projAvail": 0.885
     },
     {
       "id": 311,
@@ -3393,7 +4150,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.044
+      "news": "Has joined Leicester City permanently",
+      "projEV": 0.885,
+      "projAvail": 0.044
     },
     {
       "id": 312,
@@ -3402,7 +4161,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.885
+      "news": "",
+      "projEV": 0.885,
+      "projAvail": 0.885
     },
     {
       "id": 313,
@@ -3411,7 +4172,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.788
+      "news": "",
+      "projEV": 1.788,
+      "projAvail": 1.788
     },
     {
       "id": 314,
@@ -3420,7 +4183,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.044
+      "news": "Has joined Lincoln City on loan until January",
+      "projEV": 0.885,
+      "projAvail": 0.044
     },
     {
       "id": 315,
@@ -3429,7 +4194,9 @@
       "element_type": 3,
       "status": "s",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.14
+      "news": "Suspended until 17 Oct",
+      "projEV": 2.794,
+      "projAvail": 0.14
     },
     {
       "id": 316,
@@ -3438,7 +4205,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.01
+      "news": "",
+      "projEV": 4.01,
+      "projAvail": 4.01
     },
     {
       "id": 317,
@@ -3447,7 +4216,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.028
+      "news": "Has joined Stoke City permanently",
+      "projEV": 0.553,
+      "projAvail": 0.028
     },
     {
       "id": 318,
@@ -3456,7 +4227,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.318
+      "news": "",
+      "projEV": 1.318,
+      "projAvail": 1.318
     },
     {
       "id": 319,
@@ -3465,7 +4238,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.044
+      "news": "Has joined Derby County on loan for the rest of the season",
+      "projEV": 0.885,
+      "projAvail": 0.044
     },
     {
       "id": 320,
@@ -3474,7 +4249,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.707
+      "news": "",
+      "projEV": 0.707,
+      "projAvail": 0.707
     },
     {
       "id": 321,
@@ -3483,7 +4260,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.544
+      "news": "",
+      "projEV": 0.544,
+      "projAvail": 0.544
     },
     {
       "id": 322,
@@ -3492,7 +4271,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.028
+      "news": "Has joined Sheffield Wednesday on loan for the rest of the season",
+      "projEV": 0.553,
+      "projAvail": 0.028
     },
     {
       "id": 323,
@@ -3501,7 +4282,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.896
+      "news": "",
+      "projEV": 0.896,
+      "projAvail": 0.896
     },
     {
       "id": 324,
@@ -3510,7 +4293,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.885
+      "news": "",
+      "projEV": 0.885,
+      "projAvail": 0.885
     },
     {
       "id": 554,
@@ -3519,7 +4304,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.032
+      "news": "Has joined Valencia on loan for the rest of the season",
+      "projEV": 0.64,
+      "projAvail": 0.032
     },
     {
       "id": 562,
@@ -3528,7 +4315,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.552
+      "news": "",
+      "projEV": 2.552,
+      "projAvail": 2.552
     },
     {
       "id": 564,
@@ -3537,7 +4326,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.981
+      "news": "",
+      "projEV": 2.981,
+      "projAvail": 2.981
     },
     {
       "id": 571,
@@ -3546,7 +4337,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.052
+      "news": "",
+      "projEV": 1.052,
+      "projAvail": 1.052
     },
     {
       "id": 591,
@@ -3555,7 +4348,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.207
+      "news": "",
+      "projEV": 4.207,
+      "projAvail": 4.207
     },
     {
       "id": 592,
@@ -3564,7 +4359,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.352
+      "news": "",
+      "projEV": 1.352,
+      "projAvail": 1.352
     },
     {
       "id": 602,
@@ -3573,7 +4370,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.044
+      "news": "Has joined Huddersfield Town on loan for the rest of the season",
+      "projEV": 0.885,
+      "projAvail": 0.044
     },
     {
       "id": 619,
@@ -3582,7 +4381,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.54
+      "news": "",
+      "projEV": 3.54,
+      "projAvail": 3.54
     },
     {
       "id": 640,
@@ -3591,7 +4392,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.936
+      "news": "",
+      "projEV": 0.936,
+      "projAvail": 0.936
     },
     {
       "id": 260,
@@ -3600,7 +4403,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 0.814
+      "news": "Thigh injury - 75% chance of playing",
+      "projEV": 1.065,
+      "projAvail": 0.814
     },
     {
       "id": 326,
@@ -3609,7 +4414,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.025
+      "news": "Has joined Torino on loan for the rest of the season",
+      "projEV": 0.505,
+      "projAvail": 0.025
     },
     {
       "id": 327,
@@ -3618,7 +4425,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.449
+      "news": "",
+      "projEV": 1.449,
+      "projAvail": 1.449
     },
     {
       "id": 329,
@@ -3627,7 +4436,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.073
+      "news": "Hamstring injury - Expected back 21 Nov",
+      "projEV": 1.451,
+      "projAvail": 0.073
     },
     {
       "id": 330,
@@ -3636,7 +4447,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.391
+      "news": "",
+      "projEV": 4.391,
+      "projAvail": 4.391
     },
     {
       "id": 331,
@@ -3645,7 +4458,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.485
+      "news": "",
+      "projEV": 3.485,
+      "projAvail": 3.485
     },
     {
       "id": 332,
@@ -3654,7 +4469,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.674
+      "news": "",
+      "projEV": 3.674,
+      "projAvail": 3.674
     },
     {
       "id": 333,
@@ -3663,7 +4480,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.037
+      "news": "Has joined Hamburg SV on loan for the rest of the season",
+      "projEV": 0.74,
+      "projAvail": 0.037
     },
     {
       "id": 334,
@@ -3672,7 +4491,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.382
+      "news": "",
+      "projEV": 4.382,
+      "projAvail": 4.382
     },
     {
       "id": 335,
@@ -3681,7 +4502,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.861
+      "news": "",
+      "projEV": 3.861,
+      "projAvail": 3.861
     },
     {
       "id": 336,
@@ -3690,7 +4513,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.059
+      "news": "",
+      "projEV": 3.059,
+      "projAvail": 3.059
     },
     {
       "id": 337,
@@ -3699,7 +4524,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.197
+      "news": "",
+      "projEV": 1.197,
+      "projAvail": 1.197
     },
     {
       "id": 338,
@@ -3708,7 +4535,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.027
+      "news": "",
+      "projEV": 4.027,
+      "projAvail": 4.027
     },
     {
       "id": 339,
@@ -3717,7 +4546,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.764
+      "news": "",
+      "projEV": 0.764,
+      "projAvail": 0.764
     },
     {
       "id": 341,
@@ -3726,7 +4557,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.035
+      "news": "Has joined ACF Fiorentina on loan for the rest of the season",
+      "projEV": 0.701,
+      "projAvail": 0.035
     },
     {
       "id": 342,
@@ -3735,7 +4568,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.035
+      "news": "Has joined New England Revolution permanently",
+      "projEV": 0.701,
+      "projAvail": 0.035
     },
     {
       "id": 343,
@@ -3744,7 +4579,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Back injury - Expected back 18 Oct",
+      "projEV": 0.775,
+      "projAvail": 0.039
     },
     {
       "id": 344,
@@ -3753,7 +4590,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.701
+      "news": "",
+      "projEV": 0.701,
+      "projAvail": 0.701
     },
     {
       "id": 345,
@@ -3762,7 +4601,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.02
+      "news": "",
+      "projEV": 3.02,
+      "projAvail": 3.02
     },
     {
       "id": 346,
@@ -3771,7 +4612,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.952
+      "news": "",
+      "projEV": 3.952,
+      "projAvail": 3.952
     },
     {
       "id": 347,
@@ -3780,7 +4623,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.515
+      "news": "",
+      "projEV": 0.515,
+      "projAvail": 0.515
     },
     {
       "id": 348,
@@ -3789,7 +4634,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.019
+      "news": "Has joined West Ham United on loan for the rest of the season",
+      "projEV": 0.376,
+      "projAvail": 0.019
     },
     {
       "id": 349,
@@ -3798,7 +4645,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.019
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.376,
+      "projAvail": 0.019
     },
     {
       "id": 385,
@@ -3807,7 +4656,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.28
+      "news": "",
+      "projEV": 4.28,
+      "projAvail": 4.28
     },
     {
       "id": 598,
@@ -3816,7 +4667,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.199
+      "news": "",
+      "projEV": 3.199,
+      "projAvail": 3.199
     },
     {
       "id": 603,
@@ -3825,7 +4678,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.74
+      "news": "",
+      "projEV": 0.74,
+      "projAvail": 0.74
     },
     {
       "id": 604,
@@ -3834,7 +4689,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.701
+      "news": "",
+      "projEV": 0.701,
+      "projAvail": 0.701
     },
     {
       "id": 625,
@@ -3843,7 +4700,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.505
+      "news": "",
+      "projEV": 0.505,
+      "projAvail": 0.505
     },
     {
       "id": 629,
@@ -3852,7 +4711,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.505
+      "news": "",
+      "projEV": 0.505,
+      "projAvail": 0.505
     },
     {
       "id": 641,
@@ -3861,7 +4722,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.888
+      "news": "",
+      "projEV": 0.888,
+      "projAvail": 0.888
     },
     {
       "id": 648,
@@ -3870,7 +4733,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 0.585
+      "news": "Ankle injury - 75% chance of playing",
+      "projEV": 0.76,
+      "projAvail": 0.585
     },
     {
       "id": 350,
@@ -3879,7 +4744,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.523
+      "news": "",
+      "projEV": 4.523,
+      "projAvail": 4.523
     },
     {
       "id": 351,
@@ -3888,7 +4755,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.503
+      "news": "",
+      "projEV": 0.503,
+      "projAvail": 0.503
     },
     {
       "id": 352,
@@ -3897,7 +4766,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.503
+      "news": "",
+      "projEV": 0.503,
+      "projAvail": 0.503
     },
     {
       "id": 353,
@@ -3906,7 +4777,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.025
+      "news": "Has joined TSV Hartberg on loan for the rest of the season",
+      "projEV": 0.503,
+      "projAvail": 0.025
     },
     {
       "id": 354,
@@ -3915,7 +4788,9 @@
       "element_type": 1,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.025
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.503,
+      "projAvail": 0.025
     },
     {
       "id": 355,
@@ -3924,7 +4799,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.503
+      "news": "",
+      "projEV": 0.503,
+      "projAvail": 0.503
     },
     {
       "id": 356,
@@ -3933,7 +4810,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.463
+      "news": "",
+      "projEV": 4.463,
+      "projAvail": 4.463
     },
     {
       "id": 357,
@@ -3942,7 +4821,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.523
+      "news": "",
+      "projEV": 1.523,
+      "projAvail": 1.523
     },
     {
       "id": 358,
@@ -3951,7 +4832,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.873
+      "news": "",
+      "projEV": 2.873,
+      "projAvail": 2.873
     },
     {
       "id": 359,
@@ -3960,7 +4843,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.716
+      "news": "",
+      "projEV": 0.716,
+      "projAvail": 0.716
     },
     {
       "id": 360,
@@ -3969,7 +4854,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.036
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.716,
+      "projAvail": 0.036
     },
     {
       "id": 361,
@@ -3978,7 +4865,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.716
+      "news": "",
+      "projEV": 0.716,
+      "projAvail": 0.716
     },
     {
       "id": 362,
@@ -3987,7 +4876,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.905
+      "news": "",
+      "projEV": 3.905,
+      "projAvail": 3.905
     },
     {
       "id": 363,
@@ -3996,7 +4887,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.036
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.716,
+      "projAvail": 0.036
     },
     {
       "id": 364,
@@ -4005,7 +4898,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.056
+      "news": "",
+      "projEV": 1.056,
+      "projAvail": 1.056
     },
     {
       "id": 365,
@@ -4014,7 +4909,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.036
+      "news": "Has joined St Mirren on loan for the rest of the season",
+      "projEV": 0.716,
+      "projAvail": 0.036
     },
     {
       "id": 366,
@@ -4023,7 +4920,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.787
+      "news": "",
+      "projEV": 3.787,
+      "projAvail": 3.787
     },
     {
       "id": 367,
@@ -4032,7 +4931,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.143
+      "news": "Ankle injury - Unknown return date",
+      "projEV": 2.855,
+      "projAvail": 0.143
     },
     {
       "id": 368,
@@ -4041,7 +4942,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.849
+      "news": "",
+      "projEV": 3.849,
+      "projAvail": 3.849
     },
     {
       "id": 369,
@@ -4050,7 +4953,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.119
+      "news": "",
+      "projEV": 1.119,
+      "projAvail": 1.119
     },
     {
       "id": 370,
@@ -4059,7 +4964,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 25,
-      "projected_points": 0.183
+      "news": "Back injury - 25% chance of playing",
+      "projEV": 0.733,
+      "projAvail": 0.183
     },
     {
       "id": 371,
@@ -4068,7 +4975,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.378
+      "news": "",
+      "projEV": 1.378,
+      "projAvail": 1.378
     },
     {
       "id": 372,
@@ -4077,7 +4986,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.904
+      "news": "",
+      "projEV": 2.904,
+      "projAvail": 2.904
     },
     {
       "id": 373,
@@ -4086,7 +4997,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.037
+      "news": "Has joined Internazionale permanently",
+      "projEV": 0.733,
+      "projAvail": 0.037
     },
     {
       "id": 374,
@@ -4095,7 +5008,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.733
+      "news": "",
+      "projEV": 0.733,
+      "projAvail": 0.733
     },
     {
       "id": 375,
@@ -4104,7 +5019,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.862
+      "news": "",
+      "projEV": 0.862,
+      "projAvail": 0.862
     },
     {
       "id": 376,
@@ -4113,7 +5030,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.037
+      "news": "Has joined Celta Vigo permanently",
+      "projEV": 0.733,
+      "projAvail": 0.037
     },
     {
       "id": 377,
@@ -4122,7 +5041,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.083
+      "news": "",
+      "projEV": 2.083,
+      "projAvail": 2.083
     },
     {
       "id": 378,
@@ -4131,7 +5052,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.733
+      "news": "",
+      "projEV": 0.733,
+      "projAvail": 0.733
     },
     {
       "id": 379,
@@ -4140,7 +5063,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.172
+      "news": "Thigh injury - Unknown return date",
+      "projEV": 3.432,
+      "projAvail": 0.172
     },
     {
       "id": 380,
@@ -4149,7 +5074,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.022
+      "news": "Achilles injury - Unknown return date",
+      "projEV": 0.44,
+      "projAvail": 0.022
     },
     {
       "id": 381,
@@ -4158,7 +5085,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.808
+      "news": "",
+      "projEV": 0.808,
+      "projAvail": 0.808
     },
     {
       "id": 382,
@@ -4167,7 +5096,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.44
+      "news": "",
+      "projEV": 0.44,
+      "projAvail": 0.44
     },
     {
       "id": 383,
@@ -4176,7 +5107,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.037
+      "news": "Has joined Valencia on loan for the rest of the season",
+      "projEV": 0.733,
+      "projAvail": 0.037
     },
     {
       "id": 579,
@@ -4185,7 +5118,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.163
+      "news": "",
+      "projEV": 3.163,
+      "projAvail": 3.163
     },
     {
       "id": 627,
@@ -4194,7 +5129,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.942
+      "news": "",
+      "projEV": 1.942,
+      "projAvail": 1.942
     },
     {
       "id": 155,
@@ -4203,7 +5140,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.292
+      "news": "",
+      "projEV": 3.292,
+      "projAvail": 3.292
     },
     {
       "id": 237,
@@ -4212,7 +5151,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.488
+      "news": "",
+      "projEV": 2.488,
+      "projAvail": 2.488
     },
     {
       "id": 384,
@@ -4221,7 +5162,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.77
+      "news": "",
+      "projEV": 3.77,
+      "projAvail": 3.77
     },
     {
       "id": 386,
@@ -4230,7 +5173,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.643
+      "news": "",
+      "projEV": 0.643,
+      "projAvail": 0.643
     },
     {
       "id": 387,
@@ -4239,7 +5184,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 1.154
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 1.499,
+      "projAvail": 1.154
     },
     {
       "id": 388,
@@ -4248,7 +5195,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.121
+      "news": "",
+      "projEV": 4.121,
+      "projAvail": 4.121
     },
     {
       "id": 389,
@@ -4257,7 +5206,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.448
+      "news": "",
+      "projEV": 3.448,
+      "projAvail": 3.448
     },
     {
       "id": 390,
@@ -4266,7 +5217,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.471
+      "news": "",
+      "projEV": 3.471,
+      "projAvail": 3.471
     },
     {
       "id": 391,
@@ -4275,7 +5228,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.364
+      "news": "",
+      "projEV": 4.364,
+      "projAvail": 4.364
     },
     {
       "id": 392,
@@ -4284,7 +5239,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.889
+      "news": "",
+      "projEV": 0.889,
+      "projAvail": 0.889
     },
     {
       "id": 393,
@@ -4293,7 +5250,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.538
+      "news": "",
+      "projEV": 2.538,
+      "projAvail": 2.538
     },
     {
       "id": 394,
@@ -4302,7 +5261,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.044
+      "news": "Has joined Burnley on loan for the rest of the season",
+      "projEV": 0.889,
+      "projAvail": 0.044
     },
     {
       "id": 395,
@@ -4311,7 +5272,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.567
+      "news": "",
+      "projEV": 1.567,
+      "projAvail": 1.567
     },
     {
       "id": 396,
@@ -4320,7 +5283,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.888
+      "news": "",
+      "projEV": 0.888,
+      "projAvail": 0.888
     },
     {
       "id": 397,
@@ -4329,7 +5294,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 3.744
+      "news": "Ankle injury - 75% chance of playing",
+      "projEV": 4.491,
+      "projAvail": 3.744
     },
     {
       "id": 398,
@@ -4338,7 +5305,9 @@
       "element_type": 3,
       "status": "s",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.118
+      "news": "Suspended until 17 Oct",
+      "projEV": 2.36,
+      "projAvail": 0.118
     },
     {
       "id": 399,
@@ -4347,7 +5316,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.282
+      "news": "",
+      "projEV": 3.282,
+      "projAvail": 3.282
     },
     {
       "id": 400,
@@ -4356,7 +5327,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.902
+      "news": "",
+      "projEV": 0.902,
+      "projAvail": 0.902
     },
     {
       "id": 402,
@@ -4365,7 +5338,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Barcelona permanently",
+      "projEV": 0.77,
+      "projAvail": 0.039
     },
     {
       "id": 404,
@@ -4374,7 +5349,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Al Qadsiah permanently",
+      "projEV": 0.77,
+      "projAvail": 0.039
     },
     {
       "id": 406,
@@ -4383,7 +5360,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.885
+      "news": "",
+      "projEV": 0.885,
+      "projAvail": 0.885
     },
     {
       "id": 407,
@@ -4392,7 +5371,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Benfica on loan for the rest of the season",
+      "projEV": 0.77,
+      "projAvail": 0.039
     },
     {
       "id": 408,
@@ -4401,7 +5382,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Sheffield United on loan for the rest of the season",
+      "projEV": 0.77,
+      "projAvail": 0.039
     },
     {
       "id": 409,
@@ -4410,7 +5393,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "has joined West Ham on loan for the rest of the seaon.",
+      "projEV": 0.77,
+      "projAvail": 0.039
     },
     {
       "id": 410,
@@ -4419,7 +5404,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Swansea City on loan for the rest of the season",
+      "projEV": 0.77,
+      "projAvail": 0.039
     },
     {
       "id": 411,
@@ -4428,7 +5415,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.916
+      "news": "",
+      "projEV": 5.916,
+      "projAvail": 5.916
     },
     {
       "id": 481,
@@ -4437,7 +5426,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.571
+      "news": "",
+      "projEV": 3.571,
+      "projAvail": 3.571
     },
     {
       "id": 587,
@@ -4446,7 +5437,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.643
+      "news": "",
+      "projEV": 0.643,
+      "projAvail": 0.643
     },
     {
       "id": 616,
@@ -4455,7 +5448,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.811
+      "news": "",
+      "projEV": 0.811,
+      "projAvail": 0.811
     },
     {
       "id": 621,
@@ -4464,7 +5459,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.805
+      "news": "",
+      "projEV": 0.805,
+      "projAvail": 0.805
     },
     {
       "id": 622,
@@ -4473,7 +5470,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.888
+      "news": "",
+      "projEV": 0.888,
+      "projAvail": 0.888
     },
     {
       "id": 628,
@@ -4482,7 +5481,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.77
+      "news": "",
+      "projEV": 0.77,
+      "projAvail": 0.77
     },
     {
       "id": 653,
@@ -4491,7 +5492,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.77
+      "news": "",
+      "projEV": 0.77,
+      "projAvail": 0.77
     },
     {
       "id": 43,
@@ -4500,7 +5503,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.156
+      "news": "",
+      "projEV": 4.156,
+      "projAvail": 4.156
     },
     {
       "id": 131,
@@ -4509,7 +5514,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.077
+      "news": "",
+      "projEV": 1.077,
+      "projAvail": 1.077
     },
     {
       "id": 162,
@@ -4518,7 +5525,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.507
+      "news": "",
+      "projEV": 1.507,
+      "projAvail": 1.507
     },
     {
       "id": 325,
@@ -4527,7 +5536,9 @@
       "element_type": 1,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 1.189
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 1.586,
+      "projAvail": 1.189
     },
     {
       "id": 412,
@@ -4536,7 +5547,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.749
+      "news": "",
+      "projEV": 4.749,
+      "projAvail": 4.749
     },
     {
       "id": 413,
@@ -4545,7 +5558,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.079
+      "news": "Has joined Celta Vigo on loan for the rest of the season",
+      "projEV": 1.586,
+      "projAvail": 0.079
     },
     {
       "id": 414,
@@ -4554,7 +5569,9 @@
       "element_type": 1,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.079
+      "news": "Hamstring injury - Unknown return date",
+      "projEV": 1.586,
+      "projAvail": 0.079
     },
     {
       "id": 415,
@@ -4563,7 +5580,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.085
+      "news": "Hamstring injury - Expected back 25 Oct",
+      "projEV": 1.706,
+      "projAvail": 0.085
     },
     {
       "id": 416,
@@ -4572,7 +5591,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.096
+      "news": "Back injury - Unknown return date",
+      "projEV": 1.925,
+      "projAvail": 0.096
     },
     {
       "id": 417,
@@ -4581,7 +5602,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.979
+      "news": "",
+      "projEV": 3.979,
+      "projAvail": 3.979
     },
     {
       "id": 418,
@@ -4590,7 +5613,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.43
+      "news": "",
+      "projEV": 4.43,
+      "projAvail": 4.43
     },
     {
       "id": 419,
@@ -4599,7 +5624,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.222
+      "news": "",
+      "projEV": 4.222,
+      "projAvail": 4.222
     },
     {
       "id": 420,
@@ -4608,7 +5635,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.979
+      "news": "",
+      "projEV": 1.979,
+      "projAvail": 1.979
     },
     {
       "id": 421,
@@ -4617,7 +5646,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.212
+      "news": "",
+      "projEV": 3.212,
+      "projAvail": 3.212
     },
     {
       "id": 422,
@@ -4626,7 +5657,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 1.679
+      "news": "Back injury - 75% chance of playing",
+      "projEV": 2.239,
+      "projAvail": 1.679
     },
     {
       "id": 423,
@@ -4635,7 +5668,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.205
+      "news": "",
+      "projEV": 4.205,
+      "projAvail": 4.205
     },
     {
       "id": 424,
@@ -4644,7 +5679,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.925
+      "news": "",
+      "projEV": 1.925,
+      "projAvail": 1.925
     },
     {
       "id": 425,
@@ -4653,7 +5690,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.096
+      "news": "Has joined Lausanne-Sport permanently",
+      "projEV": 1.925,
+      "projAvail": 0.096
     },
     {
       "id": 426,
@@ -4662,7 +5701,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.49
+      "news": "",
+      "projEV": 5.49,
+      "projAvail": 5.49
     },
     {
       "id": 427,
@@ -4671,7 +5712,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.599
+      "news": "",
+      "projEV": 5.599,
+      "projAvail": 5.599
     },
     {
       "id": 428,
@@ -4680,7 +5723,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.556
+      "news": "",
+      "projEV": 4.556,
+      "projAvail": 4.556
     },
     {
       "id": 429,
@@ -4689,7 +5734,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 2.548
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 3.297,
+      "projAvail": 2.548
     },
     {
       "id": 430,
@@ -4698,7 +5745,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.157
+      "news": "",
+      "projEV": 1.157,
+      "projAvail": 1.157
     },
     {
       "id": 431,
@@ -4707,7 +5756,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.054
+      "news": "Unspecified injury - Unknown return date",
+      "projEV": 1.077,
+      "projAvail": 0.054
     },
     {
       "id": 432,
@@ -4716,7 +5767,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 3.256
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 4.142,
+      "projAvail": 3.256
     },
     {
       "id": 433,
@@ -4725,7 +5778,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.054
+      "news": "Knee injury - Unknown return date",
+      "projEV": 1.077,
+      "projAvail": 0.054
     },
     {
       "id": 434,
@@ -4734,7 +5789,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.077
+      "news": "",
+      "projEV": 1.077,
+      "projAvail": 1.077
     },
     {
       "id": 435,
@@ -4743,7 +5800,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.074
+      "news": "",
+      "projEV": 1.074,
+      "projAvail": 1.074
     },
     {
       "id": 436,
@@ -4752,7 +5811,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.054
+      "news": "Has joined West Brom permanently",
+      "projEV": 1.077,
+      "projAvail": 0.054
     },
     {
       "id": 437,
@@ -4761,7 +5822,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.077
+      "news": "",
+      "projEV": 1.077,
+      "projAvail": 1.077
     },
     {
       "id": 438,
@@ -4770,7 +5833,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.077
+      "news": "",
+      "projEV": 1.077,
+      "projAvail": 1.077
     },
     {
       "id": 439,
@@ -4779,7 +5844,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.025
+      "news": "Shin injury - Expected back 18 Oct",
+      "projEV": 0.499,
+      "projAvail": 0.025
     },
     {
       "id": 440,
@@ -4788,7 +5855,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.682
+      "news": "",
+      "projEV": 0.682,
+      "projAvail": 0.682
     },
     {
       "id": 441,
@@ -4797,7 +5866,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.026
+      "news": "Has joined Willem II on loan for the rest of the season",
+      "projEV": 0.525,
+      "projAvail": 0.026
     },
     {
       "id": 405,
@@ -4806,7 +5877,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.998
+      "news": "",
+      "projEV": 1.998,
+      "projAvail": 1.998
     },
     {
       "id": 442,
@@ -4815,7 +5888,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.286
+      "news": "",
+      "projEV": 1.286,
+      "projAvail": 1.286
     },
     {
       "id": 443,
@@ -4824,7 +5899,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.286
+      "news": "",
+      "projEV": 1.286,
+      "projAvail": 1.286
     },
     {
       "id": 444,
@@ -4833,7 +5910,9 @@
       "element_type": 1,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.064
+      "news": "Hamstring injury - Unknown return date",
+      "projEV": 1.286,
+      "projAvail": 0.064
     },
     {
       "id": 445,
@@ -4842,7 +5921,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.421
+      "news": "",
+      "projEV": 4.421,
+      "projAvail": 4.421
     },
     {
       "id": 446,
@@ -4851,7 +5932,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.794
+      "news": "",
+      "projEV": 1.794,
+      "projAvail": 1.794
     },
     {
       "id": 447,
@@ -4860,7 +5943,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.858
+      "news": "",
+      "projEV": 4.858,
+      "projAvail": 4.858
     },
     {
       "id": 448,
@@ -4869,7 +5954,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.082
+      "news": "Ankle injury - Expected back 12 Oct",
+      "projEV": 1.632,
+      "projAvail": 0.082
     },
     {
       "id": 449,
@@ -4878,7 +5965,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 5.9
+      "news": "",
+      "projEV": 5.9,
+      "projAvail": 5.9
     },
     {
       "id": 450,
@@ -4887,7 +5976,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 50,
-      "projected_points": 0.962
+      "news": "Unspecified injury - 50% chance of playing",
+      "projEV": 1.805,
+      "projAvail": 0.962
     },
     {
       "id": 451,
@@ -4896,7 +5987,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.082
+      "news": "Has joined FC Kaiserslautern on loan for the rest of the season",
+      "projEV": 1.632,
+      "projAvail": 0.082
     },
     {
       "id": 453,
@@ -4905,7 +5998,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.781
+      "news": "",
+      "projEV": 4.781,
+      "projAvail": 4.781
     },
     {
       "id": 454,
@@ -4914,7 +6009,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.164
+      "news": "Unspecified injury - Unknown return date",
+      "projEV": 3.286,
+      "projAvail": 0.164
     },
     {
       "id": 456,
@@ -4923,7 +6020,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.067
+      "news": "Thigh injury - Unknown return date",
+      "projEV": 1.349,
+      "projAvail": 0.067
     },
     {
       "id": 457,
@@ -4932,7 +6031,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.627
+      "news": "",
+      "projEV": 1.627,
+      "projAvail": 1.627
     },
     {
       "id": 458,
@@ -4941,7 +6042,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 0.791
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 1.055,
+      "projAvail": 0.791
     },
     {
       "id": 459,
@@ -4950,7 +6053,9 @@
       "element_type": 3,
       "status": "d",
       "chance_of_playing_next_round": 75,
-      "projected_points": 2.676
+      "news": "Unspecified injury - 75% chance of playing",
+      "projEV": 3.468,
+      "projAvail": 2.676
     },
     {
       "id": 460,
@@ -4959,7 +6064,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.038
+      "news": "",
+      "projEV": 4.038,
+      "projAvail": 4.038
     },
     {
       "id": 461,
@@ -4968,7 +6075,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.677
+      "news": "",
+      "projEV": 1.677,
+      "projAvail": 1.677
     },
     {
       "id": 462,
@@ -4977,7 +6086,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.703
+      "news": "",
+      "projEV": 2.703,
+      "projAvail": 2.703
     },
     {
       "id": 463,
@@ -4986,7 +6097,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.028
+      "news": "Has joined Juventus on loan for the rest of the season",
+      "projEV": 0.557,
+      "projAvail": 0.028
     },
     {
       "id": 464,
@@ -4995,7 +6108,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.309
+      "news": "",
+      "projEV": 4.309,
+      "projAvail": 4.309
     },
     {
       "id": 465,
@@ -5004,7 +6119,9 @@
       "element_type": 4,
       "status": "d",
       "chance_of_playing_next_round": 50,
-      "projected_points": 0.74
+      "news": "Foot injury - 50% chance of playing",
+      "projEV": 1.48,
+      "projAvail": 0.74
     },
     {
       "id": 466,
@@ -5013,7 +6130,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.029
+      "news": "Has joined Wolves on loan for the rest of the season",
+      "projEV": 0.574,
+      "projAvail": 0.029
     },
     {
       "id": 559,
@@ -5022,7 +6141,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.272
+      "news": "",
+      "projEV": 1.272,
+      "projAvail": 1.272
     },
     {
       "id": 567,
@@ -5031,7 +6152,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.219
+      "news": "",
+      "projEV": 4.219,
+      "projAvail": 4.219
     },
     {
       "id": 593,
@@ -5040,7 +6163,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 50,
-      "projected_points": 1.767
+      "news": "Unspecified injury - 50% chance of playing",
+      "projEV": 3.534,
+      "projAvail": 1.767
     },
     {
       "id": 609,
@@ -5049,7 +6174,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.082
+      "news": "has joined Arouca on loan for the rest of the seaon.",
+      "projEV": 1.632,
+      "projAvail": 0.082
     },
     {
       "id": 634,
@@ -5058,7 +6185,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.4
+      "news": "",
+      "projEV": 1.4,
+      "projAvail": 1.4
     },
     {
       "id": 659,
@@ -5067,7 +6196,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.055
+      "news": "",
+      "projEV": 1.055,
+      "projAvail": 1.055
     },
     {
       "id": 663,
@@ -5076,7 +6207,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.797
+      "news": "",
+      "projEV": 1.797,
+      "projAvail": 1.797
     },
     {
       "id": 664,
@@ -5085,7 +6218,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.724
+      "news": "",
+      "projEV": 0.724,
+      "projAvail": 0.724
     },
     {
       "id": 665,
@@ -5094,7 +6229,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.22
+      "news": "",
+      "projEV": 1.22,
+      "projAvail": 1.22
     },
     {
       "id": 666,
@@ -5103,7 +6240,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.22
+      "news": "",
+      "projEV": 1.22,
+      "projAvail": 1.22
     },
     {
       "id": 167,
@@ -5112,7 +6251,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.112
+      "news": "",
+      "projEV": 3.112,
+      "projAvail": 3.112
     },
     {
       "id": 201,
@@ -5121,7 +6262,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.105
+      "news": "",
+      "projEV": 4.105,
+      "projAvail": 4.105
     },
     {
       "id": 467,
@@ -5130,7 +6273,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.291
+      "news": "",
+      "projEV": 4.291,
+      "projAvail": 4.291
     },
     {
       "id": 468,
@@ -5139,7 +6284,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.486
+      "news": "",
+      "projEV": 1.486,
+      "projAvail": 1.486
     },
     {
       "id": 469,
@@ -5148,7 +6295,9 @@
       "element_type": 2,
       "status": "d",
       "chance_of_playing_next_round": 50,
-      "projected_points": 2.336
+      "news": "Illness - 50% chance of playing",
+      "projEV": 4.471,
+      "projAvail": 2.336
     },
     {
       "id": 470,
@@ -5157,7 +6306,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.09
+      "news": "Has joined West Ham on loan for the rest of the season",
+      "projEV": 1.807,
+      "projAvail": 0.09
     },
     {
       "id": 471,
@@ -5166,7 +6317,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.214
+      "news": "Knee injury - Unknown return date",
+      "projEV": 4.276,
+      "projAvail": 0.214
     },
     {
       "id": 472,
@@ -5175,7 +6328,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 5.816
+      "news": "",
+      "projEV": 5.816,
+      "projAvail": 5.816
     },
     {
       "id": 473,
@@ -5184,7 +6339,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.001
+      "news": "",
+      "projEV": 4.001,
+      "projAvail": 4.001
     },
     {
       "id": 474,
@@ -5193,7 +6350,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.117
+      "news": "",
+      "projEV": 4.117,
+      "projAvail": 4.117
     },
     {
       "id": 475,
@@ -5202,7 +6361,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.09
+      "news": "Knee injury - Unknown return date",
+      "projEV": 1.807,
+      "projAvail": 0.09
     },
     {
       "id": 476,
@@ -5211,7 +6372,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.807
+      "news": "",
+      "projEV": 1.807,
+      "projAvail": 1.807
     },
     {
       "id": 477,
@@ -5220,7 +6383,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.09
+      "news": "Has joined Southampton on loan for the rest of the season",
+      "projEV": 1.807,
+      "projAvail": 0.09
     },
     {
       "id": 478,
@@ -5229,7 +6394,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.853
+      "news": "",
+      "projEV": 1.853,
+      "projAvail": 1.853
     },
     {
       "id": 479,
@@ -5238,7 +6405,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.09
+      "news": "Has joined Charlton Athletic on loan for the rest of the season",
+      "projEV": 1.807,
+      "projAvail": 0.09
     },
     {
       "id": 480,
@@ -5247,7 +6416,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 5.663
+      "news": "",
+      "projEV": 5.663,
+      "projAvail": 5.663
     },
     {
       "id": 482,
@@ -5256,7 +6427,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.059
+      "news": "",
+      "projEV": 1.059,
+      "projAvail": 1.059
     },
     {
       "id": 483,
@@ -5265,7 +6438,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.567
+      "news": "",
+      "projEV": 3.567,
+      "projAvail": 3.567
     },
     {
       "id": 484,
@@ -5274,7 +6449,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.053
+      "news": "Has joined AC Milan on loan for the rest of the season",
+      "projEV": 1.061,
+      "projAvail": 0.053
     },
     {
       "id": 485,
@@ -5283,7 +6460,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.053
+      "news": "Has joined Lille on loan for the rest of the season",
+      "projEV": 1.061,
+      "projAvail": 0.053
     },
     {
       "id": 486,
@@ -5292,7 +6471,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.033
+      "news": "",
+      "projEV": 4.033,
+      "projAvail": 4.033
     },
     {
       "id": 487,
@@ -5301,7 +6482,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.059
+      "news": "",
+      "projEV": 1.059,
+      "projAvail": 1.059
     },
     {
       "id": 488,
@@ -5310,7 +6493,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.636
+      "news": "",
+      "projEV": 1.636,
+      "projAvail": 1.636
     },
     {
       "id": 489,
@@ -5319,7 +6504,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.061
+      "news": "",
+      "projEV": 1.061,
+      "projAvail": 1.061
     },
     {
       "id": 490,
@@ -5328,7 +6515,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.661
+      "news": "",
+      "projEV": 0.661,
+      "projAvail": 0.661
     },
     {
       "id": 491,
@@ -5337,7 +6526,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.089
+      "news": "Calf injury - Unknown return date",
+      "projEV": 1.781,
+      "projAvail": 0.089
     },
     {
       "id": 493,
@@ -5346,7 +6537,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.548
+      "news": "",
+      "projEV": 0.548,
+      "projAvail": 0.548
     },
     {
       "id": 558,
@@ -5355,7 +6548,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.699
+      "news": "",
+      "projEV": 3.699,
+      "projAvail": 3.699
     },
     {
       "id": 581,
@@ -5364,7 +6559,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.087
+      "news": "",
+      "projEV": 3.087,
+      "projAvail": 3.087
     },
     {
       "id": 590,
@@ -5373,7 +6570,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.486
+      "news": "",
+      "projEV": 1.486,
+      "projAvail": 1.486
     },
     {
       "id": 112,
@@ -5382,7 +6581,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 4.301
+      "news": "",
+      "projEV": 4.301,
+      "projAvail": 4.301
     },
     {
       "id": 147,
@@ -5391,7 +6592,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.687
+      "news": "",
+      "projEV": 0.687,
+      "projAvail": 0.687
     },
     {
       "id": 401,
@@ -5400,7 +6603,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.87
+      "news": "",
+      "projEV": 2.87,
+      "projAvail": 2.87
     },
     {
       "id": 403,
@@ -5409,7 +6614,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.238
+      "news": "",
+      "projEV": 3.238,
+      "projAvail": 3.238
     },
     {
       "id": 455,
@@ -5418,7 +6625,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.169
+      "news": "",
+      "projEV": 3.169,
+      "projAvail": 3.169
     },
     {
       "id": 494,
@@ -5427,7 +6636,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.016
+      "news": "Has joined Juventus on loan for the rest of the season",
+      "projEV": 0.326,
+      "projAvail": 0.016
     },
     {
       "id": 495,
@@ -5436,7 +6647,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.326
+      "news": "",
+      "projEV": 0.326,
+      "projAvail": 0.326
     },
     {
       "id": 496,
@@ -5445,7 +6658,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.267
+      "news": "",
+      "projEV": 3.267,
+      "projAvail": 3.267
     },
     {
       "id": 497,
@@ -5454,7 +6669,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.326
+      "news": "",
+      "projEV": 0.326,
+      "projAvail": 0.326
     },
     {
       "id": 498,
@@ -5463,7 +6680,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.907
+      "news": "",
+      "projEV": 1.907,
+      "projAvail": 1.907
     },
     {
       "id": 499,
@@ -5472,7 +6691,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.069
+      "news": "Hamstring injury - Unknown return date",
+      "projEV": 1.39,
+      "projAvail": 0.069
     },
     {
       "id": 500,
@@ -5481,7 +6702,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.028
+      "news": "Has joined Atletico Madrid permanently",
+      "projEV": 0.56,
+      "projAvail": 0.028
     },
     {
       "id": 502,
@@ -5490,7 +6713,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.022
+      "news": "",
+      "projEV": 3.022,
+      "projAvail": 3.022
     },
     {
       "id": 503,
@@ -5499,7 +6724,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.264
+      "news": "",
+      "projEV": 3.264,
+      "projAvail": 3.264
     },
     {
       "id": 505,
@@ -5508,7 +6735,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.028
+      "news": "Has joined Internazionale permanently",
+      "projEV": 0.56,
+      "projAvail": 0.028
     },
     {
       "id": 506,
@@ -5517,7 +6746,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.751
+      "news": "",
+      "projEV": 0.751,
+      "projAvail": 0.751
     },
     {
       "id": 507,
@@ -5526,7 +6757,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.028
+      "news": "Has joined Middlesbrough permanently",
+      "projEV": 0.56,
+      "projAvail": 0.028
     },
     {
       "id": 508,
@@ -5535,7 +6768,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.56
+      "news": "",
+      "projEV": 0.56,
+      "projAvail": 0.56
     },
     {
       "id": 509,
@@ -5544,7 +6779,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.56
+      "news": "",
+      "projEV": 0.56,
+      "projAvail": 0.56
     },
     {
       "id": 510,
@@ -5553,7 +6790,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.56
+      "news": "",
+      "projEV": 0.56,
+      "projAvail": 0.56
     },
     {
       "id": 511,
@@ -5562,7 +6801,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.028
+      "news": "Has joined FC Porto on loan for the rest of the season",
+      "projEV": 0.56,
+      "projAvail": 0.028
     },
     {
       "id": 512,
@@ -5571,7 +6812,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.496
+      "news": "",
+      "projEV": 1.496,
+      "projAvail": 1.496
     },
     {
       "id": 513,
@@ -5580,7 +6823,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.036
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.724,
+      "projAvail": 0.036
     },
     {
       "id": 514,
@@ -5589,7 +6834,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.14
+      "news": "",
+      "projEV": 2.14,
+      "projAvail": 2.14
     },
     {
       "id": 515,
@@ -5598,7 +6845,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.046
+      "news": "",
+      "projEV": 1.046,
+      "projAvail": 1.046
     },
     {
       "id": 516,
@@ -5607,7 +6856,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.381
+      "news": "",
+      "projEV": 3.381,
+      "projAvail": 3.381
     },
     {
       "id": 517,
@@ -5616,7 +6867,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.036
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.724,
+      "projAvail": 0.036
     },
     {
       "id": 518,
@@ -5625,7 +6878,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.036
+      "news": "Has joined Juventus on loan for the rest of the season",
+      "projEV": 0.724,
+      "projAvail": 0.036
     },
     {
       "id": 519,
@@ -5634,7 +6889,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.885
+      "news": "",
+      "projEV": 1.885,
+      "projAvail": 1.885
     },
     {
       "id": 520,
@@ -5643,7 +6900,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.183
+      "news": "",
+      "projEV": 1.183,
+      "projAvail": 1.183
     },
     {
       "id": 521,
@@ -5652,7 +6911,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.036
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.724,
+      "projAvail": 0.036
     },
     {
       "id": 522,
@@ -5661,7 +6922,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.862
+      "news": "",
+      "projEV": 2.862,
+      "projAvail": 2.862
     },
     {
       "id": 523,
@@ -5670,7 +6933,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.066
+      "news": "Has joined FC Köln on loan for the rest of the season",
+      "projEV": 1.323,
+      "projAvail": 0.066
     },
     {
       "id": 524,
@@ -5679,7 +6944,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.724
+      "news": "",
+      "projEV": 0.724,
+      "projAvail": 0.724
     },
     {
       "id": 525,
@@ -5688,7 +6955,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.217
+      "news": "",
+      "projEV": 2.217,
+      "projAvail": 2.217
     },
     {
       "id": 526,
@@ -5697,7 +6966,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.907
+      "news": "",
+      "projEV": 0.907,
+      "projAvail": 0.907
     },
     {
       "id": 527,
@@ -5706,7 +6977,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.073
+      "news": "not included in squad.",
+      "projEV": 1.466,
+      "projAvail": 0.073
     },
     {
       "id": 528,
@@ -5715,7 +6988,9 @@
       "element_type": 4,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.022
+      "news": "Has joined Leyton Orient permanently",
+      "projEV": 0.444,
+      "projAvail": 0.022
     },
     {
       "id": 578,
@@ -5724,7 +6999,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.038
+      "news": "Ankle injury - Unknown return date",
+      "projEV": 0.755,
+      "projAvail": 0.038
     },
     {
       "id": 601,
@@ -5733,7 +7010,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.724
+      "news": "",
+      "projEV": 0.724,
+      "projAvail": 0.724
     },
     {
       "id": 501,
@@ -5742,7 +7021,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.476
+      "news": "",
+      "projEV": 2.476,
+      "projAvail": 2.476
     },
     {
       "id": 529,
@@ -5751,7 +7032,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.216
+      "news": "",
+      "projEV": 2.216,
+      "projAvail": 2.216
     },
     {
       "id": 530,
@@ -5760,7 +7043,9 @@
       "element_type": 1,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.017
+      "news": "Has joined Wrexham permanently",
+      "projEV": 0.347,
+      "projAvail": 0.017
     },
     {
       "id": 531,
@@ -5769,7 +7054,9 @@
       "element_type": 1,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.347
+      "news": "",
+      "projEV": 0.347,
+      "projAvail": 0.347
     },
     {
       "id": 532,
@@ -5778,7 +7065,9 @@
       "element_type": 2,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.133
+      "news": "Hamstring injury - Unknown return date",
+      "projEV": 2.663,
+      "projAvail": 0.133
     },
     {
       "id": 533,
@@ -5787,7 +7076,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 3.292
+      "news": "",
+      "projEV": 3.292,
+      "projAvail": 3.292
     },
     {
       "id": 534,
@@ -5796,7 +7087,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.696
+      "news": "",
+      "projEV": 1.696,
+      "projAvail": 1.696
     },
     {
       "id": 535,
@@ -5805,7 +7098,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 0.72
+      "news": "",
+      "projEV": 0.72,
+      "projAvail": 0.72
     },
     {
       "id": 536,
@@ -5814,7 +7109,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.07
+      "news": "",
+      "projEV": 2.07,
+      "projAvail": 2.07
     },
     {
       "id": 537,
@@ -5823,7 +7120,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.029
+      "news": "Has joined Swansea City on loan for the rest of the season",
+      "projEV": 0.584,
+      "projAvail": 0.029
     },
     {
       "id": 538,
@@ -5832,7 +7131,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.029
+      "news": "Has joined KV Mechelen on loan for the rest of the season",
+      "projEV": 0.584,
+      "projAvail": 0.029
     },
     {
       "id": 539,
@@ -5841,7 +7142,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.473
+      "news": "",
+      "projEV": 1.473,
+      "projAvail": 1.473
     },
     {
       "id": 540,
@@ -5850,7 +7153,9 @@
       "element_type": 2,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.029
+      "news": "Has joined Konyaspor permanently",
+      "projEV": 0.584,
+      "projAvail": 0.029
     },
     {
       "id": 541,
@@ -5859,7 +7164,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 2.778
+      "news": "",
+      "projEV": 2.778,
+      "projAvail": 2.778
     },
     {
       "id": 542,
@@ -5868,7 +7175,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 4.74
+      "news": "",
+      "projEV": 4.74,
+      "projAvail": 4.74
     },
     {
       "id": 543,
@@ -5877,7 +7186,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.038
+      "news": "Hamstring injury - Expected back 18 Oct",
+      "projEV": 0.759,
+      "projAvail": 0.038
     },
     {
       "id": 544,
@@ -5886,7 +7197,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.53
+      "news": "",
+      "projEV": 3.53,
+      "projAvail": 3.53
     },
     {
       "id": 545,
@@ -5895,7 +7208,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 3.056
+      "news": "",
+      "projEV": 3.056,
+      "projAvail": 3.056
     },
     {
       "id": 546,
@@ -5904,7 +7219,9 @@
       "element_type": 3,
       "status": "u",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.039
+      "news": "Has joined Ajax on loan for the rest of the season",
+      "projEV": 0.773,
+      "projAvail": 0.039
     },
     {
       "id": 547,
@@ -5913,7 +7230,9 @@
       "element_type": 3,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.04
+      "news": "Knee injury - Unknown return date",
+      "projEV": 0.795,
+      "projAvail": 0.04
     },
     {
       "id": 548,
@@ -5922,7 +7241,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.761
+      "news": "",
+      "projEV": 0.761,
+      "projAvail": 0.761
     },
     {
       "id": 549,
@@ -5931,7 +7252,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.145
+      "news": "",
+      "projEV": 1.145,
+      "projAvail": 1.145
     },
     {
       "id": 550,
@@ -5940,7 +7263,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.773
+      "news": "",
+      "projEV": 0.773,
+      "projAvail": 0.773
     },
     {
       "id": 551,
@@ -5949,7 +7274,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 2.99
+      "news": "",
+      "projEV": 2.99,
+      "projAvail": 2.99
     },
     {
       "id": 552,
@@ -5958,7 +7285,9 @@
       "element_type": 4,
       "status": "i",
       "chance_of_playing_next_round": 0,
-      "projected_points": 0.197
+      "news": "Hamstring injury - Expected back 25 Oct",
+      "projEV": 3.938,
+      "projAvail": 0.197
     },
     {
       "id": 553,
@@ -5967,7 +7296,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.682
+      "news": "",
+      "projEV": 0.682,
+      "projAvail": 0.682
     },
     {
       "id": 612,
@@ -5976,7 +7307,9 @@
       "element_type": 2,
       "status": "a",
       "chance_of_playing_next_round": 100,
-      "projected_points": 1.756
+      "news": "",
+      "projEV": 1.756,
+      "projAvail": 1.756
     },
     {
       "id": 613,
@@ -5985,7 +7318,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.773
+      "news": "",
+      "projEV": 0.773,
+      "projAvail": 0.773
     },
     {
       "id": 646,
@@ -5994,7 +7329,9 @@
       "element_type": 3,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 1.068
+      "news": "",
+      "projEV": 1.068,
+      "projAvail": 1.068
     },
     {
       "id": 651,
@@ -6003,7 +7340,9 @@
       "element_type": 4,
       "status": "a",
       "chance_of_playing_next_round": null,
-      "projected_points": 0.505
+      "news": "",
+      "projEV": 0.505,
+      "projAvail": 0.505
     }
   ],
   "teams": [
