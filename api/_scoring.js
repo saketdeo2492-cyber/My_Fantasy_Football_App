@@ -165,6 +165,28 @@ function fixtureConcedeFactor(difficulty) { return 1 + (difficulty - 3) * 0.08; 
 function poissonZeroProb(lambda) { return Math.exp(-Math.max(0, lambda)); }
 function poissonAtLeastOneProb(lambda) { return 1 - Math.exp(-Math.max(0, lambda)); }
 
+// Mirrors index.html's expectedGoalsConcededDeduction(): expected FPL
+// goals-conceded deduction (GKP/DEF lose 1pt per 2 conceded) under the
+// same Poisson(lambda) already used for csProb, via
+// E[floor(X/2)] = sum_{k=1..15} P(X >= 2k).
+function expectedGoalsConcededDeduction(lambda) {
+  const lam = Math.max(0, lambda);
+  let cumulativePmf = Math.exp(-lam);
+  let pmf = cumulativePmf;
+  let n = 0;
+  let total = 0;
+  for (let k = 1; k <= 15; k++) {
+    const threshold = 2 * k;
+    while (n < threshold - 1) {
+      n++;
+      pmf = pmf * lam / n;
+      cumulativePmf += pmf;
+    }
+    total += 1 - cumulativePmf;
+  }
+  return total;
+}
+
 function adjustedGoalsConceded(teamId, opponentTeamId, difficulty, bs) {
   const baseline = teamDefensiveFactor(teamId, bs);
   const oppFactor = clamp(teamAttackingFactor(opponentTeamId, bs) / leagueAvgXGI90(bs), 0.5, 2.2);
@@ -185,6 +207,10 @@ function formOpponentFactor(opponentTeamId, difficulty, bs) {
   const full = opponentAttackFactor(opponentTeamId, difficulty, bs);
   return 1 + (full - 1) * FORM_OPPONENT_DAMPENING;
 }
+
+// Mirrors index.html's FORM_WEIGHT_MULTIPLIER -- form double-counts what
+// csProb/attackPts/defconProb already capture; GW1-5 backtest-calibrated.
+const FORM_WEIGHT_MULTIPLIER = { 1: 0.25, 2: 0.25, 3: 0.25, 4: 0.5 }; // GKP, DEF, MID, FWD
 
 // Denies the opponent's defensive-contribution opportunity when they're a
 // strong attacking side (they dominate the ball, leaving fewer defensive
@@ -280,7 +306,8 @@ function singleGwFixtureScore(p, fixture, bs) {
   const isHome = fixture.team_h === p.team;
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
-  const csProb = poissonZeroProb(adjustedGoalsConceded(p.team, oppId, difficulty, bs));
+  const xGC = adjustedGoalsConceded(p.team, oppId, difficulty, bs);
+  const csProb = poissonZeroProb(xGC);
   const attFactor = opponentAttackFactor(oppId, difficulty, bs);
 
   const xg90 = reliablePer90(p, 'expected_goals_per_90', bs);
@@ -289,15 +316,16 @@ function singleGwFixtureScore(p, fixture, bs) {
   const defcon90 = reliablePer90(p, 'defensive_contribution_per_90', bs) * defconOpportunityFactor(oppId, bs);
 
   const minsFactor = minutesReliabilityFactor(p);
-  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs);
+  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs) * FORM_WEIGHT_MULTIPLIER[p.element_type];
+  const gcDeduction = expectedGoalsConcededDeduction(xGC); // GKP/DEF only, -1pt per 2 conceded
 
   let pts;
   if (p.element_type === 1) {
-    pts = 2 * minsFactor + csProb * 4 + (saves90 * minsFactor) / 3 + form * 0.25;
+    pts = 2 * minsFactor + csProb * 4 + (saves90 * minsFactor) / 3 + form * 0.25 - gcDeduction;
   } else if (p.element_type === 2) {
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[2]);
     const attackPts = (xg90 * 6 + xa90 * 3) * minsFactor * attFactor;
-    pts = 2 * minsFactor + csProb * 4 + attackPts + defconProb * 2 + form * 0.2;
+    pts = 2 * minsFactor + csProb * 4 + attackPts + defconProb * 2 + form * 0.2 - gcDeduction;
   } else if (p.element_type === 3) {
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[3]);
     const attackPts = (xg90 * 5 + xa90 * 3) * minsFactor * attFactor;
@@ -349,22 +377,24 @@ function playerFixtureScoreMultiGw(p, fixture, bs) {
   const isHome = fixture.team_h === p.team;
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
-  const csProb = poissonZeroProb(adjustedGoalsConceded(p.team, oppId, difficulty, bs));
+  const xGC = adjustedGoalsConceded(p.team, oppId, difficulty, bs);
+  const csProb = poissonZeroProb(xGC);
   const attFactor = opponentAttackFactor(oppId, difficulty, bs);
   const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
-  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs);
+  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs) * FORM_WEIGHT_MULTIPLIER[p.element_type];
   const xg90 = reliablePer90(p, 'expected_goals_per_90', bs);
   const xa90 = reliablePer90(p, 'expected_assists_per_90', bs);
   const defcon90 = reliablePer90(p, 'defensive_contribution_per_90', bs);
+  const gcDeduction = expectedGoalsConcededDeduction(xGC); // GKP/DEF only, -1pt per 2 conceded
 
   let pts;
   if (p.element_type === 1) {
     const saves90 = reliablePer90(p, 'saves_per_90', bs);
-    pts = 2 * minsFactor + csProb * 4 + (saves90 * minsFactor) / 3 + form * 0.25;
+    pts = 2 * minsFactor + csProb * 4 + (saves90 * minsFactor) / 3 + form * 0.25 - gcDeduction;
   } else if (p.element_type === 2) {
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[2]);
     const attackPts = (xg90 * 6 + xa90 * 3) * minsFactor * attFactor;
-    pts = 2 * minsFactor + csProb * 4 + attackPts + defconProb * 2 + form * 0.2;
+    pts = 2 * minsFactor + csProb * 4 + attackPts + defconProb * 2 + form * 0.2 - gcDeduction;
   } else if (p.element_type === 3) {
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[3]);
     const attackPts = (xg90 * 5 + xa90 * 3) * minsFactor * attFactor;

@@ -2206,6 +2206,30 @@ function fixtureAttackFactor(difficulty){
 function poissonZeroProb(lambda){ return Math.exp(-Math.max(0, lambda)); }
 function poissonAtLeastOneProb(lambda){ return 1 - Math.exp(-Math.max(0, lambda)); }
 
+// Expected FPL goals-conceded deduction (GKP/DEF lose 1pt per 2 goals
+// conceded, i.e. -floor(goalsConceded/2)) under the same Poisson(lambda)
+// already used for csProb. E[floor(X/2)] = sum_{k=1..inf} P(X >= 2k) — the
+// standard floor-division expectation identity — truncated at k=15 (40
+// goals conceded), many multiples past where the Poisson tail is
+// indistinguishable from 0 for any realistic lambda.
+function expectedGoalsConcededDeduction(lambda){
+  const lam = Math.max(0, lambda);
+  let cumulativePmf = Math.exp(-lam); // P(X<=0)
+  let pmf = cumulativePmf;
+  let n = 0;
+  let total = 0;
+  for(let k = 1; k <= 15; k++){
+    const threshold = 2*k;
+    while(n < threshold - 1){
+      n++;
+      pmf = pmf * lam / n;
+      cumulativePmf += pmf;
+    }
+    total += 1 - cumulativePmf; // P(X >= threshold)
+  }
+  return total;
+}
+
 // Fixture difficulty's pull on expected goals CONCEDED is the mirror
 // image of its pull on expected goals scored (fixtureAttackFactor above)
 // — a tougher fixture should scale a team's expected-goals-conceded UP,
@@ -2267,6 +2291,17 @@ function formOpponentFactor(opponentTeamId, difficulty, bs){
   const full = opponentAttackFactor(opponentTeamId, difficulty, bs);
   return 1 + (full - 1) * FORM_OPPONENT_DAMPENING;
 }
+
+// Form double-counts what csProb/attackPts/defconProb already capture —
+// each of those is itself fixture-adjusted, so form's own fixture-adjusted
+// bonus on top is mostly redundant signal, not new information. A GW1-5
+// backtest (projected vs actual FPL points, per position) confirmed this:
+// zeroing form's weight fixed most of GKP/DEF's over-projection outright,
+// a quarter-weight best-calibrated MID, and a half-weight best-calibrated
+// FWD. Applied as a straight multiplier on `form` itself below, so it
+// scales every position's existing form*0.25/0.2 coefficient without
+// touching each branch individually.
+const FORM_WEIGHT_MULTIPLIER = { 1: 0.25, 2: 0.25, 3: 0.25, 4: 0.5 }; // GKP, DEF, MID, FWD
 
 // One player's fixture-adjusted expected goals / assists for a single
 // fixture, as raw rates (not yet run through Poisson) — feeds the Goals &
@@ -2364,22 +2399,24 @@ function playerFixtureScore(p, fixture, bs){
   const isHome = fixture.team_h === p.team;
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
-  const csProb = poissonZeroProb(adjustedGoalsConceded(p.team, oppId, difficulty, bs));
+  const xGC = adjustedGoalsConceded(p.team, oppId, difficulty, bs);
+  const csProb = poissonZeroProb(xGC);
   const attFactor = opponentAttackFactor(oppId, difficulty, bs);
   const minsFactor = clamp(avgMinutesPerGame(p) / 90, 0.3, 1);
-  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs);
+  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs) * FORM_WEIGHT_MULTIPLIER[p.element_type];
   const xg90 = reliablePer90(p, 'expected_goals_per_90', bs);
   const xa90 = reliablePer90(p, 'expected_assists_per_90', bs);
   const defcon90 = reliablePer90(p, 'defensive_contribution_per_90', bs);
+  const gcDeduction = expectedGoalsConcededDeduction(xGC); // GKP/DEF only, -1pt per 2 conceded
 
   let pts;
-  if(p.element_type === 1){ // GKP: appearance + CS (4pt) + save points + form
+  if(p.element_type === 1){ // GKP: appearance + CS (4pt) + save points + form - goals-conceded deduction
     const saves90 = reliablePer90(p, 'saves_per_90', bs);
-    pts = 2*minsFactor + csProb*4 + (saves90*minsFactor)/3 + form*0.25;
-  } else if(p.element_type === 2){ // DEF: appearance + CS (4pt) + attacking threat + DEFCON(10) + form
+    pts = 2*minsFactor + csProb*4 + (saves90*minsFactor)/3 + form*0.25 - gcDeduction;
+  } else if(p.element_type === 2){ // DEF: appearance + CS (4pt) + attacking threat + DEFCON(10) + form - goals-conceded deduction
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[2]);
     const attackPts = (xg90*6 + xa90*3) * minsFactor * attFactor;
-    pts = 2*minsFactor + csProb*4 + attackPts + defconProb*2 + form*0.2;
+    pts = 2*minsFactor + csProb*4 + attackPts + defconProb*2 + form*0.2 - gcDeduction;
   } else if(p.element_type === 3){ // MID: xGI (primary) + CS (1pt) + DEFCON(12) + form
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[3]);
     const attackPts = (xg90*5 + xa90*3) * minsFactor * attFactor;
@@ -2523,7 +2560,8 @@ function singleGwFixtureScore(p, fixture, bs, history, mode){
   const isHome = fixture.team_h === p.team;
   const oppId = isHome ? fixture.team_a : fixture.team_h;
   const difficulty = isHome ? fixture.team_h_difficulty : fixture.team_a_difficulty;
-  const csProb = poissonZeroProb(adjustedGoalsConceded(p.team, oppId, difficulty, bs));
+  const xGC = adjustedGoalsConceded(p.team, oppId, difficulty, bs);
+  const csProb = poissonZeroProb(xGC);
   const attFactor = opponentAttackFactor(oppId, difficulty, bs);
 
   const recencyWindow = mode === 'ceiling' ? 3 : 6; // shorter window = more reactive to a hot streak
@@ -2534,15 +2572,16 @@ function singleGwFixtureScore(p, fixture, bs, history, mode){
   const defcon90 = defcon90raw * defconOpportunityFactor(oppId, bs);
 
   const minsFactor = minutesReliabilityFactor(p, mode);
-  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs);
+  const form = reliableForm(p, bs) * formOpponentFactor(oppId, difficulty, bs) * FORM_WEIGHT_MULTIPLIER[p.element_type];
+  const gcDeduction = expectedGoalsConcededDeduction(xGC); // GKP/DEF only, -1pt per 2 conceded
 
   let pts;
   if(p.element_type === 1){
-    pts = 2*minsFactor + csProb*4 + (saves90*minsFactor)/3 + form*0.25;
+    pts = 2*minsFactor + csProb*4 + (saves90*minsFactor)/3 + form*0.25 - gcDeduction;
   } else if(p.element_type === 2){
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[2]);
     const attackPts = (xg90*6 + xa90*3) * minsFactor * attFactor;
-    pts = 2*minsFactor + csProb*4 + attackPts + defconProb*2 + form*0.2;
+    pts = 2*minsFactor + csProb*4 + attackPts + defconProb*2 + form*0.2 - gcDeduction;
   } else if(p.element_type === 3){
     const defconProb = defconHitProbability(defcon90, DEFCON_THRESHOLD[3]);
     const attackPts = (xg90*5 + xa90*3) * minsFactor * attFactor;
